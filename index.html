@@ -1,0 +1,273 @@
+<title>Semicon Weekly</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Roboto+Slab:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="search.js" defer></script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="chip" viewBox="0 0 100 100">
+    <rect x="22" y="22" width="56" height="56" rx="6" fill="none" stroke="currentColor" stroke-width="4"/>
+    <rect x="36" y="36" width="28" height="28" rx="3" fill="currentColor" opacity=".55"/>
+    <g stroke="currentColor" stroke-width="4" stroke-linecap="round">
+      <path d="M32 22V8M44 22V8M56 22V8M68 22V8M32 78v14M44 78v14M56 78v14M68 78v14M22 32H8M22 44H8M22 56H8M22 68H8M78 32h14M78 44h14M78 56h14M78 68h14"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="notice"><div class="wrap">Preview, version 3. Stories, events and jobs are real and link to their sources; last checked 30 Oct 2026.</div></div>
+
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="#top" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="#top">Home</a><span class="sep">|</span>
+        <a href="#top-news">News</a><span class="sep">|</span>
+        <a href="#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar">
+    <div class="wrap">
+      <nav class="cats" aria-label="Categories">
+        <a href="#in-short">Policy</a>
+        <a href="#in-short">Companies</a>
+        <a href="#in-short">Fabs and factories</a>
+        <a href="#in-short">Chip design</a>
+        <a href="careers.html#freshers">Fresher jobs</a>
+        <a href="careers.html#experienced">Experienced jobs</a>
+        <a href="events.html">Events</a>
+      </nav>
+      <div class="social" aria-label="Follow us">
+        <a href="#top" aria-label="WhatsApp channel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg></a>
+        <a href="#top" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 9h3v10H5zM6.5 4a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM10 9h3v1.4c.5-.9 1.6-1.6 3.1-1.6 3 0 3.4 2 3.4 4.4V19h-3v-5.1c0-1.2 0-2.6-1.6-2.6s-1.9 1.2-1.9 2.5V19h-3z"/></svg></a>
+        <a href="#top" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 4L3 11l5 2 2 6 3-4 5 4z"/></svg></a>
+        <a href="#top" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 8.5a3 3 0 0 0-2-2C18 6 12 6 12 6s-6 0-8 .5a3 3 0 0 0-2 2C2 10 2 12 2 12s0 2 .5 3.5a3 3 0 0 0 2 2C6 18 12 18 12 18s6 0 8-.5a3 3 0 0 0 2-2c.5-1.5.5-3.5.5-3.5s0-2-.5-3.5zM10 15V9l5 3z"/></svg></a>
+        <a href="#top" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="dateline">
+    <div class="wrap">
+      <span>Friday, 30 October 2026 · Week 44</span>
+      <span><b>Jobs:</b> <span id="jobs-count">12 real openings</span> · updated weekly</span>
+    </div>
+  </div>
+</header>
+
+<main id="top" class="wrap">
+
+  <a class="pick" href="story-design-vs-making.html">
+    <span class="pic pick-pic"><img src="img/pick-design-vs-making.jpg" alt="Chip design vs chip making: which jobs are for freshers"></span>
+    <div>
+      <div class="k">Semicon pick of the week</div>
+      <h2>Chip design vs chip making: which jobs are for freshers?</h2>
+    </div>
+    <span class="read">Read now</span>
+  </a>
+
+  <div class="drule"></div>
+
+  <div class="shead" id="top-news"><h2>Top News</h2></div>
+
+  <section class="top" aria-label="Top news">
+    <article class="lead">
+      <a href="story-ism2.html" class="pic pic-lead"><img src="img/ism2.jpg" alt="India Semiconductor Mission 2.0 graphic"></a>
+      <span class="kicker k-policy">Policy · 15 Jul 2026</span>
+      <h3><a href="story-ism2.html">India clears ₹1.25 lakh crore for Chip Mission 2.0</a></h3>
+      <p>The second phase of the India Semiconductor Mission is about 1.6 times bigger than the first. It now pays for machines, materials and Indian chip designs too, not only factories.</p>
+      <p class="why"><b>Why it matters for you:</b> more support for design companies can mean more RTL and verification jobs in India.</p>
+    </article>
+    <div class="side">
+      <article>
+        <div><span class="kicker k-company">Companies</span><h3><a href="story-tata-suppliers.html">Tata's chip plant will need 450 suppliers</a></h3></div>
+        <a href="story-tata-suppliers.html" class="art" style="padding:0"><img class="thumb-img" src="img/tata.jpg" alt="450 suppliers expected at Tata's Dholera fab"></a>
+      </article>
+      <article>
+        <div><span class="kicker k-design">Chip design</span><h3><a href="story-tapeout.html">What is tape-out? The big day in a chip's life</a></h3></div>
+        <a href="story-tapeout.html" class="art" style="padding:0"><img class="thumb-img" src="img/tapeout.jpg" alt="Tape-out illustration"></a>
+      </article>
+      <article>
+        <div><span class="kicker k-jobs">Jobs</span><h3><a href="careers.html">NVIDIA, Arm, TI and Meta are hiring chip engineers in Bengaluru</a></h3></div>
+        <a href="careers.html" class="art" style="padding:0"><img class="thumb-img" src="img/hiring-freshers.jpg" alt="Freshers at a hiring desk"></a>
+      </article>
+      <article>
+        <div><span class="kicker k-event">Events</span><h3><a href="events.html#embedded-world-india">Embedded World India comes to Bengaluru, 17–19 Nov</a></h3></div>
+        <a href="events.html" class="art" style="padding:0"><img class="thumb-img" src="img/events-2026.jpg" alt="Semiconductor and VLSI events"></a>
+      </article>
+    </div>
+  </section>
+
+  <div class="shead" id="in-short"><h2>In Short</h2></div>
+
+  <div class="layout">
+    <section aria-label="Short news">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" id="tab-daily">Daily</button>
+        <button class="tab" role="tab" aria-selected="false" id="tab-weekly">Weekly</button>
+      </div>
+      <div class="shorts" id="daily-view">
+        <article class="short">
+          <a href="story-ism2.html" class="pic"><img src="img/ism2.jpg" alt="India Semiconductor Mission 2.0 graphic"></a>
+          <div>
+            <h3><a href="story-ism2.html">Govt clears ₹1.25 lakh crore for Chip Mission 2.0</a></h3>
+            <div class="byline"><b>short</b> by Semicon Weekly / 15 Jul 2026</div>
+            <p class="body">India's chip mission is getting a much bigger budget for its second phase: ₹1.25 lakh crore, up from ₹76,000 crore. The programme period is now 12 years instead of 5. The money also goes to machines, materials, chemicals and Indian chip designs. Design companies will get special focus, which could bring more design and verification jobs.</p>
+            <span class="src">read more at <a href="https://economictimes.indiatimes.com/industry/cons-products/electronics/indias-chip-dreams-get-a-rs-1-25-lakh-crore-push-with-semiconductor-mission-2-0/articleshow/132090736.cms" target="_blank" rel="noopener">The Economic Times</a> · <a href="story-ism2.html">Full story here →</a></span>
+          </div>
+        </article>
+        <article class="short">
+          <a href="story-tata-suppliers.html" class="pic"><img src="img/tata.jpg" alt="450 suppliers expected at Tata's Dholera fab"></a>
+          <div>
+            <h3><a href="story-tata-suppliers.html">Tata's chip plant to have 450 suppliers in a 363-acre park</a></h3>
+            <div class="byline"><b>short</b> by Semicon Weekly / 18 Sep 2026</div>
+            <p class="body">Tata Electronics expects about 450 Indian and foreign suppliers to support its chip factory in Dholera, Gujarat. It is building a 363-acre ready-to-use vendor park for them. A fab cannot stop even for a few hours, so repair teams, spare parts, chemicals and gases must be close by. This can create many engineering jobs beyond chip design.</p>
+            <span class="src">read more at <a href="https://economictimes.indiatimes.com/tech/technology/tatas-chip-plant-to-have-450-suppliers-building-363-acre-vendor-park-to-house-them-official/articleshow/134316407.cms" target="_blank" rel="noopener">The Economic Times</a> · <a href="story-tata-suppliers.html">Full story here →</a></span>
+          </div>
+        </article>
+        <article class="short">
+          <a href="story-tapeout.html" class="pic"><img src="img/tapeout.jpg" alt="Tape-out illustration"></a>
+          <div>
+            <h3><a href="story-tapeout.html">What is tape-out? The big day in a chip's life</a></h3>
+            <div class="byline"><b>short</b> by Semicon Weekly / 28 Oct 2026</div>
+            <p class="body">Tape-out is the moment a finished, fully checked chip design is handed over to make photomasks, the stencils used to print the chip. After that, a wafer spends about three months in the factory. A mistake found later means fixing and taping out again, which costs months and money. That is why verification engineers are so important.</p>
+            <span class="src">read more at <a href="https://fab24hr.com/en/blog/what-is-tapeout/" target="_blank" rel="noopener">fab24hr</a> · <a href="story-tapeout.html">Full story here →</a></span>
+          </div>
+        </article>
+      </div>
+          <div id="weekly-view" hidden>
+        <article class="short" style="grid-template-columns:minmax(0,1fr)">
+          <div>
+            <span class="kicker k-design">Weekly issue · Week 44 · 26 Oct – 1 Nov 2026</span>
+            <h3 style="font-family:var(--serif);font-size:26px;font-weight:700;margin-top:6px">This week in India's chip world</h3>
+            <ol style="margin:14px 0 0;padding-left:22px;line-height:1.7">
+              <li><a href="story-ism2.html" style="font-weight:700">Chip Mission 2.0 gets ₹1.25 lakh crore.</a> More support for chip design companies, which can mean more RTL and verification jobs.</li>
+              <li><a href="story-tata-suppliers.html" style="font-weight:700">Tata's Dholera fab will need 450 suppliers.</a> Jobs will open well beyond chip design: equipment, process and testing.</li>
+              <li><a href="story-tapeout.html" style="font-weight:700">Explainer: what is tape-out?</a> Why verification engineers are always in demand.</li>
+            </ol>
+            <p class="body" style="margin-top:14px"><b>Coming up:</b> <a href="events.html#embedded-world-india" style="color:var(--accent)">Embedded World India, 17–19 Nov, Bengaluru</a> · <a href="events.html#vlsid-2027" style="color:var(--accent)">VLSID Tape-Out Contest finalists, 10 Nov</a></p>
+            <p class="body"><b>Jobs:</b> <a href="careers.html#freshers" style="color:var(--accent)">5 fresher</a> and <a href="careers.html#experienced" style="color:var(--accent)">7 experienced</a> openings this week.</p>
+            <p class="body"><b>Pick of the week:</b> <a href="story-design-vs-making.html" style="color:var(--accent)">Chip design vs chip making: which jobs are for freshers?</a></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <aside aria-label="Jobs and events">
+      <div class="box" id="jobs">
+        <div class="box-h">Jobs this week <a href="careers.html">View all →</a></div>
+        <div class="seg" role="tablist">
+          <button role="tab" aria-selected="true" id="seg-fresh">Freshers</button>
+          <button role="tab" aria-selected="false" id="seg-exp">Experienced</button>
+        </div>
+        <div id="jobs-fresh">
+          <div class="job"><b><a href="https://to.indeed.com/aastqbxf2wny" target="_blank" rel="noopener">Engineer – Firmware Design</a></b><span class="co">Evolute Fintech Innovations · Bengaluru</span><div class="row"><span class="chip hot">0–1 yr</span><span class="chip">Embedded C</span><span class="chip">UART/SPI/I2C</span></div><a class="apply" href="https://to.indeed.com/aastqbxf2wny" target="_blank" rel="noopener">View and apply →</a></div>
+          <div class="job"><b><a href="https://to.indeed.com/aa9lr4xtzth7" target="_blank" rel="noopener">ASIC Engineer Intern, Design Verification</a></b><span class="co">Meta · Bengaluru</span><div class="row"><span class="chip hot">Internship</span><span class="chip">SystemVerilog</span><span class="chip">UVM</span></div><a class="apply" href="https://to.indeed.com/aa9lr4xtzth7" target="_blank" rel="noopener">View and apply →</a></div>
+          <div class="job"><b><a href="https://to.indeed.com/aankrzrtz4qp" target="_blank" rel="noopener">Physical Design Engineer (Trained Intern)</a></b><span class="co">MAXVY · Bengaluru</span><div class="row"><span class="chip hot">Fresher · unpaid</span><span class="chip">OpenLane</span><span class="chip">STA</span></div><a class="apply" href="https://to.indeed.com/aankrzrtz4qp" target="_blank" rel="noopener">View and apply →</a></div>
+        </div>
+        <div id="jobs-exp" hidden>
+          <div class="job"><b><a href="https://to.indeed.com/aavgsfcmdkgg" target="_blank" rel="noopener">Senior IP DV Engineer – NOC IP</a></b><span class="co">NVIDIA · Bengaluru</span><div class="row"><span class="chip hot">5+ yrs</span><span class="chip">UVM</span><span class="chip">Coverage</span></div><a class="apply" href="https://to.indeed.com/aavgsfcmdkgg" target="_blank" rel="noopener">View and apply →</a></div>
+          <div class="job"><b><a href="https://to.indeed.com/aahttrncy4bg" target="_blank" rel="noopener">Engineer / Senior Engineer (Verification)</a></b><span class="co">Arm · Bengaluru</span><div class="row"><span class="chip hot">2–8 yrs</span><span class="chip">C/C++</span><span class="chip">SoC</span></div><a class="apply" href="https://to.indeed.com/aahttrncy4bg" target="_blank" rel="noopener">View and apply →</a></div>
+          <div class="job"><b><a href="https://to.indeed.com/aazqtthw9lwk" target="_blank" rel="noopener">Physical Design Engineer</a></b><span class="co">Texas Instruments · Bengaluru</span><div class="row"><span class="chip hot">2–5 yrs</span><span class="chip">Innovus</span><span class="chip">STA</span></div><a class="apply" href="https://to.indeed.com/aazqtthw9lwk" target="_blank" rel="noopener">View and apply →</a></div>
+        </div>
+        <p class="safe">Real companies never ask you to pay money for a job.</p>
+      </div>
+
+      <div class="box" id="events">
+        <div class="box-h">Upcoming events <a href="events.html">View all →</a></div>
+        <a class="ev" href="events.html#embedded-world-india"><div class="d"><b>17</b>Nov</div><div><h4>Embedded World India 2026</h4><p>BIEC, Bengaluru · 17–19 Nov · Expo + talks</p></div></a>
+        <a class="ev" href="events.html#vlsid-2027"><div class="d"><b>2</b>Jan</div><div><h4>VLSID 2027 conference</h4><p>Bengaluru · 2–6 Jan 2027 · Tape-out contest</p></div></a>
+        <a class="ev" href="events.html#learn-verilog"><div class="d"><b>Free</b>Online</div><div><h4>Learn Verilog: NPTEL course</h4><p>Beginner · free video lectures</p></div></a>
+      </div>
+    </aside>
+  </div>
+
+  <div class="shead" id="uses"><h2>Where Chips Are Used</h2></div>
+  <section class="uses" aria-label="Uses of semiconductors">
+    <a class="use" href="uses.html#phones"><span class="pin">PIN 01</span><b>Mobile phones</b><span>Calls, camera, UPI</span></a>
+    <a class="use" href="uses.html#computers"><span class="pin">PIN 02</span><b>Computers</b><span>Processor and memory</span></a>
+    <a class="use" href="uses.html#cars"><span class="pin">PIN 03</span><b>Cars and EVs</b><span>Battery, brakes, airbags</span></a>
+    <a class="use" href="uses.html#medical"><span class="pin">PIN 04</span><b>Hospitals</b><span>ECG, scanners</span></a>
+    <a class="use" href="uses.html#solar"><span class="pin">PIN 05</span><b>Solar power</b><span>Panels, inverters</span></a>
+    <a class="use" href="uses.html#led"><span class="pin">PIN 06</span><b>LED lights</b><span>A chip that glows</span></a>
+    <a class="use" href="uses.html#appliances"><span class="pin">PIN 07</span><b>Appliances</b><span>AC, fridge, washer</span></a>
+    <a class="use" href="uses.html#network"><span class="pin">PIN 08</span><b>Internet and 5G</b><span>Towers, routers</span></a>
+    <a class="use" href="uses.html#ai"><span class="pin">PIN 09</span><b>AI</b><span>Data centres</span></a>
+    <a class="use" href="uses.html#space"><span class="pin">PIN 10</span><b>Space</b><span>Satellites, rockets</span></a>
+    <a class="use" href="uses.html#defence"><span class="pin">PIN 11</span><b>Defence</b><span>Radar, navigation</span></a>
+    <a class="use" href="uses.html#railways"><span class="pin">PIN 12</span><b>Railways</b><span>Signals, control</span></a>
+    <a class="use" href="uses.html#payments"><span class="pin">PIN 13</span><b>Payments</b><span>ATMs, cards</span></a>
+    <a class="use" href="uses.html#farming"><span class="pin">PIN 14</span><b>Farming</b><span>Sensors, smart pumps</span></a>
+    <a class="use" href="uses.html#wearables"><span class="pin">PIN 15</span><b>Wearables</b><span>Watches, earbuds</span></a>
+  </section>
+</main>
+
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="contact.html">Advertise</a></nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+
+// Daily / Weekly tabs
+const tDaily = document.getElementById('tab-daily'), tWeekly = document.getElementById('tab-weekly');
+const vDaily = document.getElementById('daily-view'), vWeekly = document.getElementById('weekly-view');
+[tDaily, tWeekly].forEach(t => t.addEventListener('click', () => {
+  const daily = t === tDaily;
+  tDaily.setAttribute('aria-selected', String(daily));
+  tWeekly.setAttribute('aria-selected', String(!daily));
+  vDaily.hidden = !daily; vWeekly.hidden = daily;
+}));
+
+// Freshers / Experienced switch
+const sF = document.getElementById('seg-fresh'), sE = document.getElementById('seg-exp');
+const jF = document.getElementById('jobs-fresh'), jE = document.getElementById('jobs-exp');
+function pick(fresh) {
+  sF.setAttribute('aria-selected', String(fresh)); sE.setAttribute('aria-selected', String(!fresh));
+  jF.hidden = !fresh; jE.hidden = fresh;
+}
+sF.addEventListener('click', () => pick(true));
+sE.addEventListener('click', () => pick(false));
+
+</script>
+<script src="config.js"></script>
+<script src="sw.js"></script>
