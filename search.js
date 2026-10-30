@@ -16,6 +16,7 @@
     ["Where chips are used (15 uses)", "uses.html", "Uses", "phones cars solar led 5g ai space defence railways payments farming wearables"],
     ["About Semicon Weekly", "about.html", "Page", "about who we are rules"],
     ["Contact us", "contact.html", "Page", "contact email recruiters sponsor"],
+    ["Privacy", "privacy.html", "Page", "privacy email data cookies"],
   ];
 
   const css = `

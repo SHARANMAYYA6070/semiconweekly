@@ -141,4 +141,72 @@
       });
     }).catch(() => { /* keep the stories already on the page */ });
   }
+
+  // ---------- Visitor counter (GoatCounter) ----------
+  if (/^[a-z0-9-]+$/i.test(C.GOATCOUNTER_CODE || "")) {
+    const g = document.createElement("script");
+    g.async = true;
+    g.src = "https://gc.zgo.at/count.js";
+    g.setAttribute("data-goatcounter", "https://" + C.GOATCOUNTER_CODE + ".goatcounter.com/count");
+    document.head.appendChild(g);
+  }
+
+  // ---------- Events from the Google Sheet ----------
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const parseDay = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec((s || "").trim()); return m ? { y: +m[1], m: +m[2], d: +m[3], t: Date.UTC(+m[1], +m[2] - 1, +m[3]) } : null; };
+  const slug = t => (t || "event").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
+  function dateBox(ev) {
+    const a = parseDay(ev.start_date), b = parseDay(ev.end_date);
+    if (ev.date_label || !a) {
+      const parts = (ev.date_label || "TBA").split(" ");
+      return [parts[0], parts.slice(1).join(" ")];
+    }
+    if (b && (b.m !== a.m || b.y !== a.y)) return [a.d + "–" + b.d, MONTHS[a.m - 1] + "–" + MONTHS[b.m - 1] + " " + b.y];
+    return [b && b.d !== a.d ? a.d + "–" + b.d : String(a.d), MONTHS[a.m - 1] + " " + a.y];
+  }
+  function eventCard(ev, past) {
+    const art = el("article", "ev-card" + (past ? " past" : ""));
+    art.id = slug(ev.title);
+    const top = el("div", "ev-top");
+    const [big, small] = dateBox(ev);
+    const box = el("div", "ev-date"); box.appendChild(el("b", null, big)); box.appendChild(document.createTextNode(small));
+    top.appendChild(box);
+    const head = el("div");
+    head.appendChild(el("h3", null, ev.title));
+    if (ev.place) head.appendChild(el("div", "ev-meta", ev.place));
+    if (ev.type) { const tg = el("div", "ev-tags"); tg.appendChild(el("span", "chip", ev.type)); head.appendChild(tg); }
+    top.appendChild(head); art.appendChild(top);
+    const dl = el("dl");
+    [["What it is", ev.summary], [past ? "What happened" : "What happens", ev.what_happens], ["Who should go", ev.who], ["Why go", ev.why], ["How to register", ev.how_to_register]]
+      .forEach(([k, v]) => { if (v) { dl.appendChild(el("dt", null, k)); dl.appendChild(el("dd", null, v)); } });
+    art.appendChild(dl);
+    if (isUrl(ev.link)) art.appendChild(link(ev.link, (ev.link_label || "Official page") + " →", "go-btn"));
+    return art;
+  }
+  if (isUrl(C.EVENTS_CSV_URL)) {
+    getCSV(C.EVENTS_CSV_URL).then(rows => {
+      const now = new Date(), today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      const evs = rows.filter(r => r.title && active(r));
+      if (!evs.length) return;
+      const endOf = r => (parseDay(r.end_date) || parseDay(r.start_date) || { t: Infinity }).t;
+      const startOf = r => (parseDay(r.start_date) || { t: Infinity }).t;
+      const upcoming = evs.filter(r => endOf(r) >= today).sort((a, b) => startOf(a) - startOf(b));
+      const past = evs.filter(r => endOf(r) < today).sort((a, b) => startOf(b) - startOf(a));
+      const up = $("#ev-upcoming"), pa = $("#ev-past");
+      if (up) { up.textContent = ""; upcoming.forEach(r => up.appendChild(eventCard(r, false))); }
+      if (pa) { pa.textContent = ""; past.forEach(r => pa.appendChild(eventCard(r, true))); }
+      const home = $("#home-events");
+      if (home && upcoming.length) {
+        home.textContent = "";
+        upcoming.slice(0, 3).forEach(r => {
+          const a = link("events.html#" + slug(r.title), "", "ev");
+          const [big, small] = dateBox(r);
+          const d = el("div", "d"); d.appendChild(el("b", null, big)); d.appendChild(document.createTextNode(small.split(" ")[0]));
+          const t = el("div"); t.appendChild(el("h4", null, r.title)); t.appendChild(el("p", null, [r.place, r.type].filter(Boolean).join(" · ")));
+          a.appendChild(d); a.appendChild(t); home.appendChild(a);
+        });
+      }
+      if (location.hash) { const target = document.getElementById(location.hash.slice(1)); if (target) target.scrollIntoView(); }
+    }).catch(() => { /* keep the events already on the page */ });
+  }
 })();
