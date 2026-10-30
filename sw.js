@@ -68,6 +68,7 @@
     return rows.filter(r => r.some(x => x.trim())).map(r => Object.fromEntries(head.map((h, i) => [h, (r[i] || "").trim()])));
   }
   const getCSV = url => fetch(url, { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(r.status); return r.text(); }).then(parseCSV);
+  const hasCols = (rows, ...cols) => rows.length > 0 && cols.every(c => c in rows[0]);
   const active = r => !/^(no|closed|n)$/i.test(r.active || "yes");
 
   // ---------- Jobs from the Google Sheet ----------
@@ -99,6 +100,7 @@
   }
   if (isUrl(C.JOBS_CSV_URL)) {
     getCSV(C.JOBS_CSV_URL).then(rows => {
+      if (!hasCols(rows, "type", "title", "link")) return; // wrong tab: keep jobs on the page
       const jobs = rows.filter(r => r.title && active(r));
       const fresh = jobs.filter(j => /fresh|intern|trainee/i.test(j.type));
       const exp = jobs.filter(j => !/fresh|intern|trainee/i.test(j.type));
@@ -118,6 +120,7 @@
   // ---------- News (In Short) from the Google Sheet ----------
   if (isUrl(C.NEWS_CSV_URL)) {
     getCSV(C.NEWS_CSV_URL).then(rows => {
+      if (!hasCols(rows, "title", "summary")) return; // wrong tab: keep stories on the page
       const items = rows.filter(r => r.title && active(r)).reverse().slice(0, 6);
       const box = $("#daily-view");
       if (!box || !items.length) return;
@@ -185,6 +188,7 @@
   }
   if (isUrl(C.EVENTS_CSV_URL)) {
     getCSV(C.EVENTS_CSV_URL).then(rows => {
+      if (!hasCols(rows, "start_date", "title")) return; // wrong tab: keep events on the page
       const now = new Date(), today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
       const evs = rows.filter(r => r.title && active(r));
       if (!evs.length) return;
