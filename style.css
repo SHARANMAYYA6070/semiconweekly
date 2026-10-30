@@ -1,3 +1,9 @@
+/* Base rules for the live site */
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
+
 /* Layout: newspaper. Brand bar → black category bar → pick-of-the-week → "Top News" lead + side list → "In Short" 60-word cards with a jobs/events sidebar → uses strip → footer */
 :root {
   --paper: #ffffff;
