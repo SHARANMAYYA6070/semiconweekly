@@ -5,7 +5,7 @@
 // ============================================================
 window.SW_CONFIG = {
   // Your Substack address, e.g. "https://semiconweekly.substack.com"
-  SUBSTACK_URL: "",
+  SUBSTACK_URL: "https://semiconweekly.substack.com",
 
   // Google Sheet links (File → Share → Publish to web → choose the tab → CSV → Publish → copy link)
   JOBS_CSV_URL: "",   // the "Jobs" tab
