@@ -8,8 +8,8 @@ window.SW_CONFIG = {
   SUBSTACK_URL: "https://semiconweeklyindia.substack.com",
 
   // Google Sheet links (File → Share → Publish to web → choose the tab → CSV → Publish → copy link)
-  JOBS_CSV_URL: "",   // the "Jobs" tab
-  NEWS_CSV_URL: "",   // the "News" tab
+  JOBS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRexjiEPlG01yQZXjOYErfxfOJEZoDax0qQ24cogSNsiD-C_Yh-dYQ-X3TAPeDHIUsiEPd98LPYuxZ3/pub?gid=0&single=true&output=csv",   // the "Jobs" tab
+  NEWS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRexjiEPlG01yQZXjOYErfxfOJEZoDax0qQ24cogSNsiD-C_Yh-dYQ-X3TAPeDHIUsiEPd98LPYuxZ3/pub?gid=1&single=true&output=csv",   // the "News" tab
 
   // Contact
   CONTACT_EMAIL: "",      // e.g. "hello@semiconweekly.in"
