@@ -12,7 +12,7 @@ window.SW_CONFIG = {
   NEWS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRexjiEPlG01yQZXjOYErfxfOJEZoDax0qQ24cogSNsiD-C_Yh-dYQ-X3TAPeDHIUsiEPd98LPYuxZ3/pub?gid=1&single=true&output=csv",   // the "News" tab
 
   // Contact
-  CONTACT_EMAIL: "",      // e.g. "hello@semiconweekly.in"
+  CONTACT_EMAIL: "semiconweekly.team@gmail.com",      // e.g. "hello@semiconweekly.in"
   CONTACT_FORM_URL: "",   // a Google Form link for messages (optional)
 
   // Social media (optional)
