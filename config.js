@@ -13,7 +13,7 @@ window.SW_CONFIG = {
   EVENTS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRexjiEPlG01yQZXjOYErfxfOJEZoDax0qQ24cogSNsiD-C_Yh-dYQ-X3TAPeDHIUsiEPd98LPYuxZ3/pub?gid=3&single=true&output=csv", // the "Events" tab
 
   // Visitor counter: your GoatCounter code, e.g. "semiconweekly" (from semiconweekly.goatcounter.com)
-  GOATCOUNTER_CODE: "",
+  GOATCOUNTER_CODE: "semiconweekly",
 
   // Contact
   CONTACT_EMAIL: "semiconweekly.team@gmail.com",      // e.g. "hello@semiconweekly.in"
