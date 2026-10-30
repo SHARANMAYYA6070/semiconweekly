@@ -10,7 +10,7 @@ window.SW_CONFIG = {
   // Google Sheet links (File → Share → Publish to web → choose the tab → CSV → Publish → copy link)
   JOBS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRexjiEPlG01yQZXjOYErfxfOJEZoDax0qQ24cogSNsiD-C_Yh-dYQ-X3TAPeDHIUsiEPd98LPYuxZ3/pub?gid=0&single=true&output=csv",   // the "Jobs" tab
   NEWS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRexjiEPlG01yQZXjOYErfxfOJEZoDax0qQ24cogSNsiD-C_Yh-dYQ-X3TAPeDHIUsiEPd98LPYuxZ3/pub?gid=1&single=true&output=csv",   // the "News" tab
-  EVENTS_CSV_URL: "", // the "Events" tab
+  EVENTS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRexjiEPlG01yQZXjOYErfxfOJEZoDax0qQ24cogSNsiD-C_Yh-dYQ-X3TAPeDHIUsiEPd98LPYuxZ3/pub?gid=3&single=true&output=csv", // the "Events" tab
 
   // Visitor counter: your GoatCounter code, e.g. "semiconweekly" (from semiconweekly.goatcounter.com)
   GOATCOUNTER_CODE: "",
