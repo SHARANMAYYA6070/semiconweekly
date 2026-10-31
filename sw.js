@@ -6,6 +6,16 @@
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const link = (href, text, cls) => { const a = el("a", cls, text); a.href = href; if (/^https?:/.test(href)) { a.target = "_blank"; a.rel = "noopener"; } return a; };
 
+  // ---------- Today's date in the top strip (India time) ----------
+  const dl = document.querySelector(".dateline .wrap > span");
+  if (dl) {
+    const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+    const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const week = Math.ceil(((d - Date.UTC(d.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7);
+    dl.textContent = now.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).replace(/^(\w+),?/, "$1,") + " · Week " + week;
+  }
+
   // ---------- Email sign-up (Substack) ----------
   document.querySelectorAll("form#signup").forEach(form => {
     form.addEventListener("submit", e => {
