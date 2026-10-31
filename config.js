@@ -20,9 +20,9 @@ window.SW_CONFIG = {
   CONTACT_FORM_URL: "",   // a Google Form link for messages (optional)
 
   // Social media (optional)
-  LINKEDIN_URL: "",
+  LINKEDIN_URL: "https://www.linkedin.com/in/semiconweekly",
   TELEGRAM_URL: "",
-  WHATSAPP_URL: "",
+  WHATSAPP_URL: "https://whatsapp.com/channel/0029VbEFK7JFnSzC6rOW862g",
   YOUTUBE_URL: "",
   INSTAGRAM_URL: "",
 };
