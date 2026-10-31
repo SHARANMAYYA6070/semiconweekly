@@ -142,6 +142,36 @@
         art.appendChild(body);
         box.appendChild(art);
       });
+
+      // ----- Top News: newest story as the lead, next two as side stories -----
+      const KIND = { policy: "policy", company: "company", companies: "company", fab: "fab", fabs: "fab", "fabs and factories": "fab", "chip design": "design", design: "design", explainer: "design", jobs: "jobs", events: "event", event: "event" };
+      const kind = c => KIND[(c || "").trim().toLowerCase()] || "design";
+      const isImg = u => isUrl(u) || /^img\/[\w.-]+$/.test(u || "");
+      const lead = $(".top .lead");
+      if (lead) {
+        const n = items[0], target = n.story_link || n.source_link || "#in-short";
+        lead.textContent = "";
+        if (isImg(n.image_link)) {
+          const pic = link(target, "", "pic pic-lead"); const img = el("img"); img.src = n.image_link; img.alt = n.title; pic.appendChild(img); lead.appendChild(pic);
+        } else {
+          const a = link(target, "", "art a-" + kind(n.category)); a.style.cssText = "aspect-ratio:16/8;max-width:500px"; a.appendChild(el("span", "cap", n.category || "News")); lead.appendChild(a);
+        }
+        lead.appendChild(el("span", "kicker k-" + kind(n.category), [n.category, n.date].filter(Boolean).join(" · ")));
+        const h = el("h3"); h.appendChild(link(target, n.title)); lead.appendChild(h);
+        lead.appendChild(el("p", null, n.summary || ""));
+        if (n.why) { const w = el("p", "why"); w.appendChild(el("b", null, "Why it matters for you: ")); w.appendChild(document.createTextNode(n.why)); lead.appendChild(w); }
+        if (isUrl(n.source_link)) { const sr = el("p", "byline"); sr.appendChild(document.createTextNode("Source: ")); sr.appendChild(link(n.source_link, n.source_name || "read more")); lead.appendChild(sr); }
+      }
+      const sides = [...document.querySelectorAll(".top .side article")].slice(0, 2);
+      items.slice(1, 3).forEach((n, i) => {
+        const slot = sides[i]; if (!slot) return;
+        const target = n.story_link || n.source_link || "#in-short";
+        slot.textContent = "";
+        const t = el("div"); t.appendChild(el("span", "kicker k-" + kind(n.category), n.category || "News"));
+        const h = el("h3"); h.appendChild(link(target, n.title)); t.appendChild(h); slot.appendChild(t);
+        if (isImg(n.image_link)) { const a = link(target, "", "art"); a.style.padding = "0"; const img = el("img", "thumb-img"); img.src = n.image_link; img.alt = n.title; a.appendChild(img); slot.appendChild(a); }
+        else { const a = link(target, "", "art a-" + kind(n.category)); slot.appendChild(a); }
+      });
     }).catch(() => { /* keep the stories already on the page */ });
   }
 
