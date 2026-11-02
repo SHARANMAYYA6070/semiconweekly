@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SystemVerilog Assertions (SVA) and Coverage Interview Questions | Semicon Weekly</title>
+<meta name="description" content="14 SVA and functional coverage interview questions with answers: implication, $rose, repetition, disable iff, FIFO assertions, bins, cross coverage.">
+<link rel="canonical" href="https://semiconweekly.in/sva-coverage-interview-questions.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Semicon Weekly">
+<meta property="og:title" content="SystemVerilog Assertions (SVA) and Coverage Interview Questions">
+<meta property="og:description" content="14 SVA and functional coverage interview questions with answers: implication, $rose, repetition, disable iff, FIFO assertions, bins, cross coverage.">
+<meta property="og:url" content="https://semiconweekly.in/sva-coverage-interview-questions.html">
+<meta property="og:image" content="https://semiconweekly.in/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b2447">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Roboto+Slab:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="search.js" defer></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "FAQPage", "name": "SystemVerilog Assertions (SVA) and Coverage Interview Questions", "mainEntity": [{"@type": "Question", "name": "Difference between immediate and concurrent assertions?", "acceptedAnswer": {"@type": "Answer", "text": "Immediate: checks a condition at that point in procedural code, like an if (assert (x)); concurrent: checks a property over clock cycles, sampled on a clock (in the Preponed region), runs in parallel, uses sequences"}}, {"@type": "Question", "name": "Explain overlapped |-> and non-overlapped |=> implication.", "acceptedAnswer": {"@type": "Answer", "text": "|-> : if antecedent matches, check consequent in the SAME cycle; |=> : check consequent starting the NEXT cycle (same as |-> ##1); if antecedent does not match, the property is vacuously true"}}, {"@type": "Question", "name": "What are $rose, $fell, $stable and $past? Difference between @(posedge sig) and $rose(sig)?", "acceptedAnswer": {"@type": "Answer", "text": "$rose: signal went 0 to 1 between previous and current sample; $fell: 1 to 0; $stable: unchanged; $past(sig, n): value n cycles ago; @(posedge sig) is an event that wakes up immediately when sig changes; $rose is evaluated only at the sampling clock edge"}}, {"@type": "Question", "name": "Write an assertion: once req goes high, gnt must come within 1 to 5 cycles.", "acceptedAnswer": {"@type": "Answer", "text": "property p; @(posedge clk) disable iff (rst) $rose(req) |-> ##[1:5] gnt; endproperty assert property (p);"}}, {"@type": "Question", "name": "Assertion: a 5-bit grant must be one-hot (or all zero) at every clock.", "acceptedAnswer": {"@type": "Answer", "text": "assert property (@(posedge clk) $onehot0(grant)); use $onehot if exactly one bit must be set"}}, {"@type": "Question", "name": "Write an assertion that an output never goes X or Z.", "acceptedAnswer": {"@type": "Answer", "text": "assert property (@(posedge clk) disable iff (rst) !$isunknown(dout));"}}, {"@type": "Question", "name": "Signal a must stay high for at least 3 cycles once it rises.", "acceptedAnswer": {"@type": "Answer", "text": "$rose(a) |-> a[*3]; (consecutive repetition)"}}, {"@type": "Question", "name": "When a is asserted, b must be asserted and stay high until c arrives.", "acceptedAnswer": {"@type": "Answer", "text": "$rose(a) |-> (b until_with c); until_with means b must hold up to and including the cycle where c is true; plain until stops checking b one cycle before c"}}, {"@type": "Question", "name": "How do you disable an assertion during reset? How do you turn off all assertions?", "acceptedAnswer": {"@type": "Answer", "text": "disable iff (rst) inside the property; $assertoff / $asserton / $assertkill system tasks to control assertions globally or per hierarchy during simulation"}}, {"@type": "Question", "name": "For a FIFO, write assertions: no write when full, and full and empty never both high.", "acceptedAnswer": {"@type": "Answer", "text": "assert property (@(posedge clk) disable iff (rst) full |-> !wr_en); (or check overflow flag) assert property (@(posedge clk) !(full && empty));"}}, {"@type": "Question", "name": "Where do you write assertions in a UVM testbench?", "acceptedAnswer": {"@type": "Answer", "text": "Not in UVM classes (classes cannot hold concurrent assertions); put them in the interface, in a separate checker module bound to the DUT with bind, or in the RTL; protocol checks usually live in the interface"}}, {"@type": "Question", "name": "Difference between code coverage and functional coverage?", "acceptedAnswer": {"@type": "Answer", "text": "Code coverage: automatic, measures which code was exercised (line/statement, branch, condition/expression, toggle, FSM); functional coverage: user-written covergroups that measure whether the spec features/scenarios were exercised; 100% code coverage does not mean the design is correct"}}, {"@type": "Question", "name": "What are bins, cross coverage, ignore_bins and illegal_bins?", "acceptedAnswer": {"@type": "Answer", "text": "Bins group values of a coverpoint; cross covers combinations of two or more coverpoints; ignore_bins removes values from coverage calculation; illegal_bins flags an error if that value occurs"}}, {"@type": "Question", "name": "Code coverage is near 100% but functional coverage is only 60%. What does it mean? And the reverse?", "acceptedAnswer": {"@type": "Answer", "text": "High code + low functional: the code ran but important scenarios/combinations from the spec were not hit, so improve constraints or write directed tests; high functional + low code: either the coverage plan is missing features, or there is dead/unreachable RTL code to review"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://semiconweekly.in/"}, {"@type": "ListItem", "position": 2, "name": "VLSI Interview Questions", "item": "https://semiconweekly.in/vlsi-interview-questions.html"}, {"@type": "ListItem", "position": 3, "name": "Assertions & Coverage", "item": "https://semiconweekly.in/sva-coverage-interview-questions.html"}]}]}</script>
+<style>
+:root { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
+body { margin: 0; } img { max-width: 100%; } [hidden] { display: none !important; }
+.qpage { max-width: 880px; margin: 0 auto; padding: 22px 0 40px; }
+.crumbs { font-size: 13px; color: var(--ink-3); }
+.crumbs a { color: var(--accent); }
+.qpage h1 { font-family: var(--serif); font-weight: 800; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.12; margin-top: 10px; }
+.qpage .dek { font-family: var(--slab); color: var(--ink-2); font-size: 18px; margin-top: 12px; }
+.qpage .meta { font-size: 13.5px; color: var(--ink-3); margin-top: 10px; }
+.tryband { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; background: linear-gradient(100deg, #0b2447, #12366b); color: #fff; border-radius: 10px; padding: 14px 18px; margin: 20px 0 8px; }
+.tryband p { flex: 1 1 300px; font-size: 15.5px; color: #dbe7ff; }
+.tryband b { color: #ffd666; }
+.tryband a { background: #f5b82e; color: #1a1300; font: 700 15px/1 var(--slab); padding: 11px 16px; border-radius: 8px; white-space: nowrap; }
+.toc { margin: 18px 0 6px; padding: 14px 18px; border: 1px solid var(--rule); border-radius: 10px; background: #fff; }
+.toc h2 { font: 700 13px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+.toc ol { margin: 0; padding-left: 22px; columns: 2; column-gap: 28px; font-size: 14.5px; }
+.toc li { break-inside: avoid; padding: 2px 0; }
+.toc a { color: var(--ink); } .toc a:hover { color: var(--accent); text-decoration: underline; }
+.iq { background: #fff; border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; margin-top: 16px; scroll-margin-top: 16px; }
+.iq-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.iq-meta span { font: 700 11px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; padding: 5px 8px; border-radius: 4px; background: var(--paper-2); color: var(--ink-2); }
+.iq-meta .easy { background: #dcfce7; color: #166534; } .iq-meta .medium { background: #fef3c7; color: #92400e; } .iq-meta .hard { background: #fee2e2; color: #991b1b; }
+.iq h2 { font-family: var(--slab); font-weight: 600; font-size: 19px; line-height: 1.4; }
+.iq h2 .n { color: var(--accent); margin-right: 6px; }
+.iq details { margin-top: 12px; border-top: 1px solid #eef0f4; padding-top: 10px; }
+.iq summary { cursor: pointer; font: 600 15px var(--slab); color: var(--brand); }
+.iq summary::marker { color: var(--accent); }
+.iq ul { margin: 10px 0 0; padding-left: 20px; } .iq li { margin: 5px 0; line-height: 1.55; }
+.iq-code { margin-top: 10px; font-family: "Roboto Mono", Consolas, monospace; font-size: 14px; background: #f4f6f9; border-radius: 8px; padding: 10px 12px; white-space: pre-wrap; line-height: 1.6; }
+.iq-note { margin-top: 10px; font-size: 14.5px; line-height: 1.55; }
+.iq-note b { color: var(--ink); }
+.iq-note.mis { background: #fff7ed; border-left: 3px solid #d97706; padding: 8px 12px; border-radius: 0 6px 6px 0; }
+.iq-try { display: inline-block; margin-top: 12px; font-size: 14px; font-weight: 600; color: var(--accent); }
+.iq-try:hover { text-decoration: underline; }
+.more { margin-top: 30px; }
+.more h2 { font-family: var(--serif); font-size: 26px; margin-bottom: 12px; }
+.tcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.tcard { display: block; background: #fff; border: 1px solid var(--rule); border-radius: 10px; padding: 16px; }
+.tcard:hover { border-color: var(--accent); box-shadow: 0 6px 18px -10px rgba(11,36,71,.35); }
+.tcard b { display: block; font-family: var(--slab); font-size: 18px; color: var(--ink); }
+.tcard span { display: block; font-size: 14px; color: var(--ink-2); margin-top: 4px; }
+.tcard .c { color: var(--accent); font-weight: 700; margin-top: 8px; }
+.prep { margin-top: 26px; background: #fff; border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; }
+.prep h2 { font-family: var(--serif); font-size: 24px; margin-bottom: 8px; }
+.prep ol { padding-left: 20px; margin: 0; } .prep li { margin: 6px 0; line-height: 1.55; }
+@media (max-width: 640px) { .toc ol { columns: 1; } .iq { padding: 16px; } .tryband a { flex: 1; text-align: center; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="chip" viewBox="0 0 100 100">
+    <rect x="22" y="22" width="56" height="56" rx="6" fill="none" stroke="currentColor" stroke-width="4"/>
+    <rect x="36" y="36" width="28" height="28" rx="3" fill="currentColor" opacity=".55"/>
+    <g stroke="currentColor" stroke-width="4" stroke-linecap="round">
+      <path d="M32 22V8M44 22V8M56 22V8M68 22V8M32 78v14M44 78v14M56 78v14M68 78v14M22 32H8M22 44H8M22 56H8M22 68H8M78 32h14M78 44h14M78 56h14M78 68h14"/>
+    </g>
+  </symbol>
+</svg>
+
+
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html" aria-current="page" style="color:#fff;text-decoration:underline;text-underline-offset:6px">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar"><div class="wrap"><nav class="cats" aria-label="Interview question topics"><a href="vlsi-interview-questions.html">All topics</a><a href="verilog-interview-questions.html">Verilog</a><a href="rtl-design-interview-questions.html">RTL Design</a><a href="systemverilog-interview-questions.html">SystemVerilog</a><a href="sv-constraints-interview-questions.html">Constraints</a><a href="sva-coverage-interview-questions.html" aria-current="page" style="color:var(--gold)">Assertions &amp; Coverage</a><a href="uvm-interview-questions.html">UVM</a></nav></div></div>
+</header>
+<main class="wrap">
+<div class="qpage">
+  <div class="crumbs"><a href="./">Home</a> › <a href="vlsi-interview-questions.html">VLSI Interview Questions</a> › Assertions &amp; Coverage</div>
+  <h1>14 SystemVerilog Assertions (SVA) and Coverage Interview Questions</h1>
+  <p class="dek">Assertion and coverage questions with ready-to-use SVA code, plus the coverage questions interviewers use to check your verification thinking.</p>
+  <p class="meta">Updated 02 November 2026 · Written by Semicon Weekly in our own words · 14 questions</p>
+  <div class="tryband"><p><b>Practise these 14 questions free</b>: type, speak or pick from 4 options and get an instant AI score.</p><a href="interview.html?ref=seo-top&amp;mode=drill&amp;topic=SVA">Start practising →</a></div>
+  <nav class="toc" aria-label="Questions on this page"><h2>Questions on this page</h2><ol><li><a href="#sva-001">Difference between immediate and concurrent assertions?</a></li><li><a href="#sva-002">Explain overlapped |-&gt; and non-overlapped |=&gt; implication.</a></li><li><a href="#sva-003">What are $rose, $fell, $stable and $past? Difference between @(posedge sig) and $rose(sig)?</a></li><li><a href="#sva-004">Write an assertion: once req goes high, gnt must come within 1 to 5 cycles.</a></li><li><a href="#sva-005">Assertion: a 5-bit grant must be one-hot (or all zero) at every clock.</a></li><li><a href="#sva-006">Write an assertion that an output never goes X or Z.</a></li><li><a href="#sva-007">Signal a must stay high for at least 3 cycles once it rises.</a></li><li><a href="#sva-008">When a is asserted, b must be asserted and stay high until c arrives.</a></li><li><a href="#sva-009">How do you disable an assertion during reset? How do you turn off all assertions?</a></li><li><a href="#sva-010">For a FIFO, write assertions: no write when full, and full and empty never both high.</a></li><li><a href="#sva-011">Where do you write assertions in a UVM testbench?</a></li><li><a href="#cov-001">Difference between code coverage and functional coverage?</a></li><li><a href="#cov-002">What are bins, cross coverage, ignore_bins and illegal_bins?</a></li><li><a href="#cov-003">Code coverage is near 100% but functional coverage is only 60%. What does it mean? And the reverse?</a></li></ol></nav>
+  <article class="iq" id="sva-001"><div class="iq-meta"><span class="easy">easy</span><span>Basics</span><span>theory</span></div><h2><span class="n">1.</span>Difference between immediate and concurrent assertions?</h2><details><summary>Show answer</summary><ul><li>Immediate: checks a condition at that point in procedural code, like an if (assert (x))</li><li>concurrent: checks a property over clock cycles, sampled on a clock (in the Preponed region), runs in parallel, uses sequences</li></ul></details><a class="iq-try" href="interview.html?ref=seo-sva-001&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="sva-002"><div class="iq-meta"><span class="easy">easy</span><span>Implication</span><span>theory</span></div><h2><span class="n">2.</span>Explain overlapped |-&gt; and non-overlapped |=&gt; implication.</h2><details><summary>Show answer</summary><p class="iq-code">|-&gt; : if antecedent matches, check consequent in the SAME cycle; |=&gt; : check consequent starting the NEXT cycle (same as |-&gt; ##1); if antecedent does not match, the property is vacuously true</p><p class="iq-note mis"><b>Common mistake:</b> Not knowing vacuous pass</p></details><a class="iq-try" href="interview.html?ref=seo-sva-002&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="sva-003"><div class="iq-meta"><span class="medium">medium</span><span>Functions</span><span>theory</span></div><h2><span class="n">3.</span>What are $rose, $fell, $stable and $past? Difference between @(posedge sig) and $rose(sig)?</h2><details><summary>Show answer</summary><ul><li>$rose: signal went 0 to 1 between previous and current sample</li><li>$fell: 1 to 0</li><li>$stable: unchanged</li><li>$past(sig, n): value n cycles ago</li><li>@(posedge sig) is an event that wakes up immediately when sig changes</li><li>$rose is evaluated only at the sampling clock edge</li></ul></details><a class="iq-try" href="interview.html?ref=seo-sva-003&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="sva-004"><div class="iq-meta"><span class="medium">medium</span><span>Scenarios</span><span>code</span></div><h2><span class="n">4.</span>Write an assertion: once req goes high, gnt must come within 1 to 5 cycles.</h2><details><summary>Show answer</summary><p class="iq-code">property p; @(posedge clk) disable iff (rst) $rose(req) |-&gt; ##[1:5] gnt; endproperty assert property (p);</p><p class="iq-note mis"><b>Common mistake:</b> Using req instead of $rose(req) so it re-triggers every cycle</p><p class="iq-note"><b>Interviewer may ask next:</b> How would you write &#x27;gnt eventually&#x27; with no upper bound?</p></details><a class="iq-try" href="interview.html?ref=seo-sva-004&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="sva-005"><div class="iq-meta"><span class="medium">medium</span><span>Scenarios</span><span>code</span></div><h2><span class="n">5.</span>Assertion: a 5-bit grant must be one-hot (or all zero) at every clock.</h2><details><summary>Show answer</summary><p class="iq-code">assert property (@(posedge clk) $onehot0(grant)); use $onehot if exactly one bit must be set</p></details><a class="iq-try" href="interview.html?ref=seo-sva-005&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="sva-006"><div class="iq-meta"><span class="easy">easy</span><span>Scenarios</span><span>code</span></div><h2><span class="n">6.</span>Write an assertion that an output never goes X or Z.</h2><details><summary>Show answer</summary><p class="iq-code">assert property (@(posedge clk) disable iff (rst) !$isunknown(dout));</p></details><a class="iq-try" href="interview.html?ref=seo-sva-006&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="sva-007"><div class="iq-meta"><span class="medium">medium</span><span>Scenarios</span><span>code</span></div><h2><span class="n">7.</span>Signal a must stay high for at least 3 cycles once it rises.</h2><details><summary>Show answer</summary><p class="iq-code">$rose(a) |-&gt; a[*3]; (consecutive repetition)</p><p class="iq-note"><b>Interviewer may ask next:</b> What is the difference between [*3], [-&gt;3] and [=3]?</p></details><a class="iq-try" href="interview.html?ref=seo-sva-007&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="sva-008"><div class="iq-meta"><span class="medium">medium</span><span>Scenarios</span><span>code</span></div><h2><span class="n">8.</span>When a is asserted, b must be asserted and stay high until c arrives.</h2><details><summary>Show answer</summary><p class="iq-code">$rose(a) |-&gt; (b until_with c); until_with means b must hold up to and including the cycle where c is true; plain until stops checking b one cycle before c</p></details><a class="iq-try" href="interview.html?ref=seo-sva-008&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="sva-009"><div class="iq-meta"><span class="easy">easy</span><span>Control</span><span>theory</span></div><h2><span class="n">9.</span>How do you disable an assertion during reset? How do you turn off all assertions?</h2><details><summary>Show answer</summary><ul><li>Disable iff (rst) inside the property</li><li>$assertoff / $asserton / $assertkill system tasks to control assertions globally or per hierarchy during simulation</li></ul></details><a class="iq-try" href="interview.html?ref=seo-sva-009&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="sva-010"><div class="iq-meta"><span class="medium">medium</span><span>FIFO</span><span>code</span></div><h2><span class="n">10.</span>For a FIFO, write assertions: no write when full, and full and empty never both high.</h2><details><summary>Show answer</summary><p class="iq-code">assert property (@(posedge clk) disable iff (rst) full |-&gt; !wr_en); (or check overflow flag) assert property (@(posedge clk) !(full &amp;&amp; empty));</p><p class="iq-note"><b>Interviewer may ask next:</b> Write one for: after reset, empty must be 1.</p></details><a class="iq-try" href="interview.html?ref=seo-sva-010&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><div class="tryband"><p><b>Reading is not enough.</b> Say your answer out loud or type it, and get a score out of 10 with what you missed.</p><a href="interview.html?ref=seo-mid&amp;mode=drill&amp;topic=SVA">Practise free →</a></div><article class="iq" id="sva-011"><div class="iq-meta"><span class="medium">medium</span><span>Placement</span><span>theory</span></div><h2><span class="n">11.</span>Where do you write assertions in a UVM testbench?</h2><details><summary>Show answer</summary><ul><li>Not in UVM classes (classes cannot hold concurrent assertions)</li><li>Put them in the interface, in a separate checker module bound to the DUT with bind, or in the RTL</li><li>Protocol checks usually live in the interface</li></ul><p class="iq-note mis"><b>Common mistake:</b> Saying inside the monitor class</p></details><a class="iq-try" href="interview.html?ref=seo-sva-011&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="cov-001"><div class="iq-meta"><span class="easy">easy</span><span>Types</span><span>theory</span></div><h2><span class="n">12.</span>Difference between code coverage and functional coverage?</h2><details><summary>Show answer</summary><ul><li>Code coverage: automatic, measures which code was exercised (line/statement, branch, condition/expression, toggle, FSM)</li><li>Functional coverage: user-written covergroups that measure whether the spec features/scenarios were exercised</li><li>100% code coverage does not mean the design is correct</li></ul></details><a class="iq-try" href="interview.html?ref=seo-cov-001&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="cov-002"><div class="iq-meta"><span class="medium">medium</span><span>Covergroups</span><span>theory</span></div><h2><span class="n">13.</span>What are bins, cross coverage, ignore_bins and illegal_bins?</h2><details><summary>Show answer</summary><ul><li>Bins group values of a coverpoint</li><li>Cross covers combinations of two or more coverpoints</li><li>Ignore_bins removes values from coverage calculation</li><li>Illegal_bins flags an error if that value occurs</li></ul><p class="iq-note mis"><b>Common mistake:</b> Saying ignore and illegal are the same</p></details><a class="iq-try" href="interview.html?ref=seo-cov-002&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article><article class="iq" id="cov-003"><div class="iq-meta"><span class="hard">hard</span><span>Closure</span><span>scenario</span></div><h2><span class="n">14.</span>Code coverage is near 100% but functional coverage is only 60%. What does it mean? And the reverse?</h2><details><summary>Show answer</summary><ul><li>High code + low functional: the code ran but important scenarios/combinations from the spec were not hit, so improve constraints or write directed tests</li><li>High functional + low code: either the coverage plan is missing features, or there is dead/unreachable RTL code to review</li></ul></details><a class="iq-try" href="interview.html?ref=seo-cov-003&amp;mode=drill&amp;topic=SVA">Answer this in the AI interview bot →</a></article>
+  <div class="tryband"><p><b>Done reading?</b> Take a 5-question mock interview and see your strong and weak topics.</p><a href="interview.html?ref=seo-sva-end">Take a mock interview →</a></div>
+  <section class="more"><h2>More interview questions</h2><div class="tcards"><a class="tcard" href="verilog-interview-questions.html"><b>Verilog</b><span>Verilog Interview Questions and Answers for Freshers</span><span class="c">35 questions →</span></a><a class="tcard" href="rtl-design-interview-questions.html"><b>RTL Design</b><span>RTL Design Interview Questions: FSM, CDC, FIFO and Timing</span><span class="c">21 questions →</span></a><a class="tcard" href="systemverilog-interview-questions.html"><b>SystemVerilog</b><span>SystemVerilog Interview Questions and Answers</span><span class="c">33 questions →</span></a><a class="tcard" href="sv-constraints-interview-questions.html"><b>Constraints</b><span>SystemVerilog Constraint Interview Questions with Code</span><span class="c">10 questions →</span></a><a class="tcard" href="uvm-interview-questions.html"><b>UVM</b><span>UVM Interview Questions and Answers for Freshers</span><span class="c">28 questions →</span></a></div></section>
+</div>
+</main>
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+</script>
+<script src="config.js"></script>
+<script src="sw.js"></script>
+<script src="promo.js" defer></script>
+<script src="site-ui.js" defer></script>
+</body>
+</html>

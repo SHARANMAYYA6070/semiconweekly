@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VLSI Interview Questions for Freshers | Semicon Weekly</title>
+<meta name="description" content="141 VLSI interview questions with answers for freshers: Verilog, RTL design, SystemVerilog, constraints, assertions, coverage and UVM. Practise free with an AI interview bot.">
+<link rel="canonical" href="https://semiconweekly.in/vlsi-interview-questions.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Semicon Weekly">
+<meta property="og:title" content="VLSI Interview Questions for Freshers">
+<meta property="og:description" content="141 VLSI interview questions with answers for freshers: Verilog, RTL design, SystemVerilog, constraints, assertions, coverage and UVM. Practise free with an AI interview bot.">
+<meta property="og:url" content="https://semiconweekly.in/vlsi-interview-questions.html">
+<meta property="og:image" content="https://semiconweekly.in/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b2447">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Roboto+Slab:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="search.js" defer></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "CollectionPage", "name": "VLSI Interview Questions for Freshers", "description": "141 VLSI interview questions with answers for freshers: Verilog, RTL design, SystemVerilog, constraints, assertions, coverage and UVM. Practise free with an AI interview bot.", "url": "https://semiconweekly.in/vlsi-interview-questions.html", "hasPart": [{"@type": "WebPage", "name": "Verilog Interview Questions and Answers for Freshers", "url": "https://semiconweekly.in/verilog-interview-questions.html"}, {"@type": "WebPage", "name": "RTL Design Interview Questions: FSM, CDC, FIFO and Timing", "url": "https://semiconweekly.in/rtl-design-interview-questions.html"}, {"@type": "WebPage", "name": "SystemVerilog Interview Questions and Answers", "url": "https://semiconweekly.in/systemverilog-interview-questions.html"}, {"@type": "WebPage", "name": "SystemVerilog Constraint Interview Questions with Code", "url": "https://semiconweekly.in/sv-constraints-interview-questions.html"}, {"@type": "WebPage", "name": "SystemVerilog Assertions (SVA) and Coverage Interview Questions", "url": "https://semiconweekly.in/sva-coverage-interview-questions.html"}, {"@type": "WebPage", "name": "UVM Interview Questions and Answers for Freshers", "url": "https://semiconweekly.in/uvm-interview-questions.html"}]}</script>
+<style>
+:root { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
+body { margin: 0; } img { max-width: 100%; } [hidden] { display: none !important; }
+.qpage { max-width: 880px; margin: 0 auto; padding: 22px 0 40px; }
+.crumbs { font-size: 13px; color: var(--ink-3); }
+.crumbs a { color: var(--accent); }
+.qpage h1 { font-family: var(--serif); font-weight: 800; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.12; margin-top: 10px; }
+.qpage .dek { font-family: var(--slab); color: var(--ink-2); font-size: 18px; margin-top: 12px; }
+.qpage .meta { font-size: 13.5px; color: var(--ink-3); margin-top: 10px; }
+.tryband { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; background: linear-gradient(100deg, #0b2447, #12366b); color: #fff; border-radius: 10px; padding: 14px 18px; margin: 20px 0 8px; }
+.tryband p { flex: 1 1 300px; font-size: 15.5px; color: #dbe7ff; }
+.tryband b { color: #ffd666; }
+.tryband a { background: #f5b82e; color: #1a1300; font: 700 15px/1 var(--slab); padding: 11px 16px; border-radius: 8px; white-space: nowrap; }
+.toc { margin: 18px 0 6px; padding: 14px 18px; border: 1px solid var(--rule); border-radius: 10px; background: #fff; }
+.toc h2 { font: 700 13px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+.toc ol { margin: 0; padding-left: 22px; columns: 2; column-gap: 28px; font-size: 14.5px; }
+.toc li { break-inside: avoid; padding: 2px 0; }
+.toc a { color: var(--ink); } .toc a:hover { color: var(--accent); text-decoration: underline; }
+.iq { background: #fff; border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; margin-top: 16px; scroll-margin-top: 16px; }
+.iq-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.iq-meta span { font: 700 11px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; padding: 5px 8px; border-radius: 4px; background: var(--paper-2); color: var(--ink-2); }
+.iq-meta .easy { background: #dcfce7; color: #166534; } .iq-meta .medium { background: #fef3c7; color: #92400e; } .iq-meta .hard { background: #fee2e2; color: #991b1b; }
+.iq h2 { font-family: var(--slab); font-weight: 600; font-size: 19px; line-height: 1.4; }
+.iq h2 .n { color: var(--accent); margin-right: 6px; }
+.iq details { margin-top: 12px; border-top: 1px solid #eef0f4; padding-top: 10px; }
+.iq summary { cursor: pointer; font: 600 15px var(--slab); color: var(--brand); }
+.iq summary::marker { color: var(--accent); }
+.iq ul { margin: 10px 0 0; padding-left: 20px; } .iq li { margin: 5px 0; line-height: 1.55; }
+.iq-code { margin-top: 10px; font-family: "Roboto Mono", Consolas, monospace; font-size: 14px; background: #f4f6f9; border-radius: 8px; padding: 10px 12px; white-space: pre-wrap; line-height: 1.6; }
+.iq-note { margin-top: 10px; font-size: 14.5px; line-height: 1.55; }
+.iq-note b { color: var(--ink); }
+.iq-note.mis { background: #fff7ed; border-left: 3px solid #d97706; padding: 8px 12px; border-radius: 0 6px 6px 0; }
+.iq-try { display: inline-block; margin-top: 12px; font-size: 14px; font-weight: 600; color: var(--accent); }
+.iq-try:hover { text-decoration: underline; }
+.more { margin-top: 30px; }
+.more h2 { font-family: var(--serif); font-size: 26px; margin-bottom: 12px; }
+.tcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.tcard { display: block; background: #fff; border: 1px solid var(--rule); border-radius: 10px; padding: 16px; }
+.tcard:hover { border-color: var(--accent); box-shadow: 0 6px 18px -10px rgba(11,36,71,.35); }
+.tcard b { display: block; font-family: var(--slab); font-size: 18px; color: var(--ink); }
+.tcard span { display: block; font-size: 14px; color: var(--ink-2); margin-top: 4px; }
+.tcard .c { color: var(--accent); font-weight: 700; margin-top: 8px; }
+.prep { margin-top: 26px; background: #fff; border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; }
+.prep h2 { font-family: var(--serif); font-size: 24px; margin-bottom: 8px; }
+.prep ol { padding-left: 20px; margin: 0; } .prep li { margin: 6px 0; line-height: 1.55; }
+@media (max-width: 640px) { .toc ol { columns: 1; } .iq { padding: 16px; } .tryband a { flex: 1; text-align: center; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="chip" viewBox="0 0 100 100">
+    <rect x="22" y="22" width="56" height="56" rx="6" fill="none" stroke="currentColor" stroke-width="4"/>
+    <rect x="36" y="36" width="28" height="28" rx="3" fill="currentColor" opacity=".55"/>
+    <g stroke="currentColor" stroke-width="4" stroke-linecap="round">
+      <path d="M32 22V8M44 22V8M56 22V8M68 22V8M32 78v14M44 78v14M56 78v14M68 78v14M22 32H8M22 44H8M22 56H8M22 68H8M78 32h14M78 44h14M78 56h14M78 68h14"/>
+    </g>
+  </symbol>
+</svg>
+
+
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html" aria-current="page" style="color:#fff;text-decoration:underline;text-underline-offset:6px">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar"><div class="wrap"><nav class="cats" aria-label="Interview question topics"><a href="vlsi-interview-questions.html">All topics</a><a href="verilog-interview-questions.html">Verilog</a><a href="rtl-design-interview-questions.html">RTL Design</a><a href="systemverilog-interview-questions.html">SystemVerilog</a><a href="sv-constraints-interview-questions.html">Constraints</a><a href="sva-coverage-interview-questions.html">Assertions &amp; Coverage</a><a href="uvm-interview-questions.html">UVM</a></nav></div></div>
+</header>
+<main class="wrap">
+<div class="qpage">
+  <div class="crumbs"><a href="./">Home</a> › VLSI Interview Questions</div>
+  <h1>141 VLSI Interview Questions and Answers for Freshers</h1>
+  <p class="dek">Real questions asked in RTL design and design verification (DV) interviews in India, with short answers in simple words. Pick a topic, try each question yourself, then open the answer.</p>
+  <p class="meta">Updated 02 November 2026 · Written by Semicon Weekly in our own words</p>
+  <div class="tryband"><p><b>Practise with our free AI Interview Bot.</b> Type, speak or pick from 4 options. Get a score out of 10, what you missed and the model answer.</p><a href="interview.html?ref=seo-hub">Start free mock interview →</a></div>
+  <section class="more" style="margin-top:20px"><h2>Choose a topic</h2><div class="tcards"><a class="tcard" href="verilog-interview-questions.html"><b>Verilog</b><span>Verilog Interview Questions and Answers for Freshers</span><span class="c">35 questions →</span></a><a class="tcard" href="rtl-design-interview-questions.html"><b>RTL Design</b><span>RTL Design Interview Questions: FSM, CDC, FIFO and Timing</span><span class="c">21 questions →</span></a><a class="tcard" href="systemverilog-interview-questions.html"><b>SystemVerilog</b><span>SystemVerilog Interview Questions and Answers</span><span class="c">33 questions →</span></a><a class="tcard" href="sv-constraints-interview-questions.html"><b>Constraints</b><span>SystemVerilog Constraint Interview Questions with Code</span><span class="c">10 questions →</span></a><a class="tcard" href="sva-coverage-interview-questions.html"><b>Assertions &amp; Coverage</b><span>SystemVerilog Assertions (SVA) and Coverage Interview Questions</span><span class="c">14 questions →</span></a><a class="tcard" href="uvm-interview-questions.html"><b>UVM</b><span>UVM Interview Questions and Answers for Freshers</span><span class="c">28 questions →</span></a></div></section>
+  <section class="prep"><h2>How to prepare for a VLSI interview</h2><ol>
+    <li><b>Start with Verilog and digital basics.</b> Blocking vs non-blocking, latches, FSMs and resets come up in almost every fresher interview.</li>
+    <li><b>For verification (DV) roles,</b> go deeper into SystemVerilog OOP, randomization, assertions and UVM.</li>
+    <li><b>Answer out loud.</b> Knowing the answer is different from explaining it clearly in 1 minute. Use the bot's 🎤 Speak mode to practise.</li>
+    <li><b>Be ready for the follow-up.</b> Every answer here lists what the interviewer may ask next.</li>
+    <li><b>Know your own projects.</b> Interviewers always ask about the FIFO, protocol or testbench on your resume.</li>
+  </ol></section>
+  <section class="more"><h2>Looking for a job too?</h2>
+    <div class="tcards"><a class="tcard" href="careers.html#freshers"><b>🔥 Fresher VLSI jobs</b><span>Verified openings for 0–1 year candidates, linked to the original post.</span><span class="c">See fresher jobs →</span></a>
+    <a class="tcard" href="learn.html"><b>New to chips?</b><span>What a semiconductor is, how a chip is made, and who does what.</span><span class="c">Start learning →</span></a></div></section>
+</div>
+</main>
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+</script>
+<script src="config.js"></script>
+<script src="sw.js"></script>
+<script src="promo.js" defer></script>
+<script src="site-ui.js" defer></script>
+</body>
+</html>
