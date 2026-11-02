@@ -18,6 +18,9 @@ window.SW_CONFIG = {
   // Interview Prep bot: your Cloudflare Worker link, e.g. "https://sw-interview.yourname.workers.dev"
   INTERVIEW_API_URL: "https://sw-interview.sharanmayya929.workers.dev",
 
+  // Google sign-in for Interview Prep: the OAuth "Web client ID" (ends with .apps.googleusercontent.com)
+  GOOGLE_CLIENT_ID: "821506707975-5p8393qks2q3v5g49v0r2efcg1rvkgu9.apps.googleusercontent.com",
+
   // Interview Prep launch promotion (top bar, pop-up, floating button). Set to false to hide it all.
   PROMO_ON: true,
 

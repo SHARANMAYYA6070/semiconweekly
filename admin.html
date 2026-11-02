@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin · Interview bot</title>
+<meta name="description" content="Admin view">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://semiconweekly.in/admin.html">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b2447">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Roboto+Slab:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="search.js" defer></script>
+<style>
+:root { --good:#059669; --bad:#dc2626; }
+.pg { max-width: 920px; margin: 0 auto; padding: 28px 0 56px; }
+.ip-crumbs { font-size: 14px; color: var(--ink-3); margin-bottom: 10px; }
+.ip-crumbs a { color: var(--accent); }
+.pg h1 { font-family: var(--serif); font-size: clamp(30px, 5vw, 44px); line-height: 1.1; }
+.pg .dek { font-family: var(--slab); color: var(--ink-2); font-size: 18px; margin-top: 10px; }
+.card { border: 1px solid var(--rule); border-radius: 10px; background: #fff; padding: 22px; margin-top: 22px; }
+.card h2 { font-family: var(--slab); font-size: 20px; font-weight: 600; margin-bottom: 14px; }
+.h3 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin: 18px 0 8px; }
+.muted { color: var(--ink-3); font-size: 14px; }
+.spacer { flex: 1; }
+.btn { font-family: var(--slab); font-weight: 600; font-size: 16px; padding: 10px 18px; border-radius: 8px; border: 0; cursor: pointer; display: inline-block; }
+.btn-gold { background: var(--gold); color: #1a1300; }
+.btn-ghost { background: none; border: 1px solid #b9c2cf; color: var(--ink); }
+.btn-danger { background: var(--bad); color: #fff; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.err { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; border-radius: 8px; padding: 12px 14px; margin-top: 14px; }
+.loading { display: flex; align-items: center; gap: 12px; color: var(--ink-2); padding: 24px 0; }
+.spin { width: 22px; height: 22px; border: 3px solid var(--rule); border-top-color: var(--accent); border-radius: 50%; animation: s .8s linear infinite; }
+@keyframes s { to { transform: rotate(360deg); } }
+
+.who { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
+.who img { width: 52px; height: 52px; border-radius: 50%; }
+.who b { display: block; font-family: var(--slab); font-size: 19px; }
+.tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 18px; }
+.tile { border: 1px solid var(--rule); border-radius: 10px; padding: 14px; background: var(--paper-2); }
+.tile b { display: block; font-family: var(--serif); font-size: 32px; line-height: 1.1; color: var(--brand); }
+.tile span { font-size: 13px; color: var(--ink-2); }
+
+.tt { width: 100%; border-collapse: collapse; font-size: 15px; }
+.tt th, .tt td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #eef0f4; vertical-align: middle; }
+.tt th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); font-weight: 600; }
+.tt .n { text-align: right; }
+.meter { display: flex; align-items: center; gap: 10px; min-width: 160px; }
+.meter .bar { flex: 1; height: 8px; background: #e6eaf0; border-radius: 99px; overflow: hidden; max-width: 220px; }
+.meter .bar i { display: block; height: 100%; background: var(--brand); border-radius: 99px; }
+.meter b { min-width: 34px; font-variant-numeric: tabular-nums; }
+.tt a.go { color: var(--accent); font-weight: 600; white-space: nowrap; }
+.tip { margin-top: 14px; background: #fffbea; border-left: 4px solid var(--gold); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips a { border: 1px solid #b9c2cf; border-radius: 99px; padding: 6px 12px; font-size: 14px; color: var(--ink); }
+.chips a:hover { border-color: var(--brand); color: var(--brand); }
+
+.ans { border-bottom: 1px solid #eef0f4; }
+.ans summary { display: flex; gap: 12px; align-items: baseline; cursor: pointer; padding: 12px 0; list-style: none; }
+.ans summary::-webkit-details-marker { display: none; }
+.ans .sc { font-family: var(--serif); font-weight: 800; font-size: 20px; min-width: 52px; color: var(--brand); }
+.ans .qt { flex: 1; font-size: 15.5px; }
+.ans .meta { font-size: 12.5px; color: var(--ink-3); white-space: nowrap; }
+.ans .body { padding: 0 0 14px 64px; font-size: 14.5px; }
+.ans .body h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 10px 0 4px; }
+.ans .body p, .ans .body pre { white-space: pre-wrap; font-family: inherit; margin: 0; line-height: 1.55; }
+.ans .body ul { margin: 0; padding-left: 18px; }
+.danger { border-color: #f3d4d4; }
+@media (max-width: 760px) {
+  .tiles { grid-template-columns: repeat(2, 1fr); }
+  .tiles .tile:last-child { grid-column: span 2; }
+  .tt th:nth-child(3), .tt td:nth-child(3) { display: none; }
+  .meter { min-width: 0; }
+  .ans .body { padding-left: 0; }
+  .ans summary { flex-wrap: wrap; }
+  .ans .qt { flex: 1 1 60%; }
+  .ans .meta { flex-basis: 100%; padding-left: 64px; white-space: normal; }
+}
+
+[hidden] { display: none !important; }
+body { margin: 0; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar">
+    <div class="wrap">
+      <nav class="cats" aria-label="On this page">
+        <a href="./">Home</a>
+        <a href="careers.html">Careers</a>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="pg">
+  <div class="ip-crumbs"><a href="./">Home</a> › <a href="interview.html">Interview Prep</a> › Admin</div>
+  <h1>Interview bot · Admin</h1>
+  <p class="dek">Who is using the bot, how they score, and which questions need fixing.</p>
+
+  <section class="card" id="out" hidden>
+    <h2>Admin sign-in</h2>
+    <p class="muted" style="margin-bottom:14px">Only the admin Google account can open this page.</p>
+    <div id="gsiBtn"></div>
+  </section>
+  <div class="loading" id="loading"><div class="spin"></div>Loading…</div>
+  <p class="err" id="err" hidden></p>
+
+  <div id="in" hidden>
+    <div class="actions" style="margin-top:18px">
+      <span class="muted" id="updated"></span><span class="spacer"></span>
+      <button class="btn btn-ghost" id="refresh" type="button">Refresh</button>
+    </div>
+    <div class="tiles">
+      <div class="tile"><b id="kUsers">0</b><span>signed-in users</span></div>
+      <div class="tile"><b id="kNew">0</b><span>new today</span></div>
+      <div class="tile"><b id="kAnswers">0</b><span>answers graded</span></div>
+      <div class="tile"><b id="kAvg">–</b><span>average score / 10</span></div>
+      <div class="tile"><b id="kFair">–</b><span id="kFairOf">said feedback was fair</span></div>
+    </div>
+
+    <section class="card">
+      <h2>Last 14 days</h2>
+      <table class="tt"><thead><tr><th>Day</th><th class="n">Answers</th><th class="n">Signed-in users</th><th class="n">Guests</th><th class="n">Avg score</th></tr></thead><tbody id="days"></tbody></table>
+    </section>
+
+    <section class="card">
+      <h2>👎 Feedback to fix</h2>
+      <p class="muted" style="margin-bottom:10px">Each one points to a row in the Questions sheet. Usually the fix is in that row's <b>key_points</b>.</p>
+      <p class="muted" id="noDown" hidden>No thumbs-down yet.</p>
+      <div id="down"></div>
+    </section>
+
+    <section class="card">
+      <h2>Questions to check</h2>
+      <p class="muted" style="margin-bottom:10px">Most 👎 first, then lowest average score.</p>
+      <table class="tt"><thead><tr><th>ID</th><th>Question</th><th class="n">Answers</th><th class="n">Avg</th><th class="n">👍</th><th class="n">👎</th></tr></thead><tbody id="qs"></tbody></table>
+    </section>
+
+    <section class="card">
+      <h2>Newest users</h2>
+      <table class="tt"><thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Last seen</th></tr></thead><tbody id="users"></tbody></table>
+    </section>
+
+    <section class="card">
+      <h2>Recent errors</h2>
+      <p class="muted" id="noErr" hidden>No errors. 🎉</p>
+      <table class="tt" id="errTable"><thead><tr><th>When</th><th>Type</th><th>Detail</th></tr></thead><tbody id="errs"></tbody></table>
+    </section>
+
+    <section class="card">
+      <h2>Download for Google Sheets</h2>
+      <p class="muted" style="margin-bottom:12px">Downloads a CSV file. In Google Sheets: File → Import → Upload → choose the file → "Insert new sheet".</p>
+      <div class="actions">
+        <button class="btn btn-ghost dl" data-t="attempts" type="button">All answers</button>
+        <button class="btn btn-ghost dl" data-t="feedback" type="button">All feedback</button>
+        <button class="btn btn-ghost dl" data-t="users" type="button">Users</button>
+        <button class="btn btn-ghost dl" data-t="errors" type="button">Errors</button>
+      </div>
+    </section>
+  </div>
+</div>
+</main>
+
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+    </div>
+  </div>
+</footer>
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+</script>
+<script src="config.js"></script>
+<script src="sw.js"></script>
+<script src="sw-auth.js"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const show = (id, on) => { $(id).hidden = !on; };
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const when = t => t ? new Date(t).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) : "";
+  function row(tbody, cells) {
+    const tr = el("tr");
+    cells.forEach(c => { const td = el("td", c.n ? "n" : null, c.t == null ? "" : String(c.t)); tr.appendChild(td); });
+    tbody.appendChild(tr);
+  }
+
+  async function load() {
+    const u = SWAuth.user();
+    show("in", false); show("err", false);
+    if (!u) { show("loading", false); show("out", true); SWAuth.renderButton($("gsiBtn")); return; }
+    show("out", false); show("loading", true);
+    try { render(await SWAuth.api("/admin/stats")); }
+    catch (e) { if (e.status === 401) return load(); $("err").textContent = e.message; show("err", true); }
+    finally { show("loading", false); }
+  }
+
+  function render(d) {
+    const t = d.totals || {};
+    $("kUsers").textContent = t.users || 0;
+    $("kNew").textContent = t.newToday || 0;
+    $("kAnswers").textContent = t.answers || 0;
+    $("kAvg").textContent = t.average == null ? "–" : t.average;
+    const votes = (t.thumbsUp || 0) + (t.thumbsDown || 0);
+    $("kFair").textContent = votes ? Math.round(100 * t.thumbsUp / votes) + "%" : "–";
+    $("kFairOf").textContent = votes ? `said feedback was fair (${t.thumbsUp} 👍 / ${t.thumbsDown} 👎)` : "no votes yet";
+    $("updated").textContent = "Updated " + when(Date.now());
+
+    const days = $("days"); days.replaceChildren();
+    (d.days || []).forEach(x => row(days, [{ t: x.day }, { t: x.answers, n: 1 }, { t: x.users, n: 1 }, { t: x.guests, n: 1 }, { t: x.avg, n: 1 }]));
+    if (!(d.days || []).length) row(days, [{ t: "No answers in the last 14 days." }]);
+
+    const down = $("down"); down.replaceChildren();
+    (d.thumbsDown || []).forEach(x => {
+      const det = el("details", "ans");
+      const s = el("summary");
+      s.appendChild(el("span", "sc", x.id));
+      s.appendChild(el("span", "qt", x.comment ? "“" + x.comment + "”" : "(no comment)"));
+      s.appendChild(el("span", "meta", x.email + " · " + when(x.at)));
+      det.appendChild(s);
+      const b = el("div", "body");
+      b.appendChild(el("h4", null, "Question")); b.appendChild(el("p", null, x.question));
+      b.appendChild(el("h4", null, "Score given")); b.appendChild(el("p", null, x.score + "/10 · " + x.verdict));
+      b.appendChild(el("h4", null, "Student's answer")); b.appendChild(el("pre", null, x.answer));
+      det.appendChild(b); down.appendChild(det);
+    });
+    show("noDown", !(d.thumbsDown || []).length);
+
+    const qs = $("qs"); qs.replaceChildren();
+    (d.questions || []).forEach(x => row(qs, [{ t: x.id }, { t: x.question }, { t: x.n, n: 1 }, { t: x.avg, n: 1 }, { t: x.up, n: 1 }, { t: x.down, n: 1 }]));
+
+    const us = $("users"); us.replaceChildren();
+    (d.newestUsers || []).forEach(x => row(us, [{ t: x.name }, { t: x.email }, { t: when(x.created_at) }, { t: when(x.last_seen) }]));
+
+    const er = $("errs"); er.replaceChildren();
+    (d.errors || []).forEach(x => row(er, [{ t: when(x.created_at) }, { t: x.busy ? "AI busy" : x.path }, { t: x.detail }]));
+    show("noErr", !(d.errors || []).length); show("errTable", (d.errors || []).length > 0);
+    show("in", true);
+  }
+
+  document.querySelectorAll(".dl").forEach(b => b.addEventListener("click", async () => {
+    const t = b.dataset.t; b.disabled = true;
+    try { await SWAuth.download("/admin/export?type=" + t, `interview-${t}-${new Date().toISOString().slice(0, 10)}.csv`); }
+    catch (e) { $("err").textContent = e.message; show("err", true); }
+    finally { b.disabled = false; }
+  }));
+  $("refresh").addEventListener("click", load);
+  SWAuth.onChange(load);
+  load();
+})();
+</script>
+<script src="promo.js" defer></script>
+</body>
+</html>

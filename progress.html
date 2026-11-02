@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My progress · Semicon Weekly</title>
+<meta name="description" content="Your VLSI interview practice scores, strong and weak topics.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://semiconweekly.in/progress.html">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b2447">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Roboto+Slab:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="search.js" defer></script>
+<style>
+:root { --good:#059669; --bad:#dc2626; }
+.pg { max-width: 920px; margin: 0 auto; padding: 28px 0 56px; }
+.ip-crumbs { font-size: 14px; color: var(--ink-3); margin-bottom: 10px; }
+.ip-crumbs a { color: var(--accent); }
+.pg h1 { font-family: var(--serif); font-size: clamp(30px, 5vw, 44px); line-height: 1.1; }
+.pg .dek { font-family: var(--slab); color: var(--ink-2); font-size: 18px; margin-top: 10px; }
+.card { border: 1px solid var(--rule); border-radius: 10px; background: #fff; padding: 22px; margin-top: 22px; }
+.card h2 { font-family: var(--slab); font-size: 20px; font-weight: 600; margin-bottom: 14px; }
+.h3 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin: 18px 0 8px; }
+.muted { color: var(--ink-3); font-size: 14px; }
+.spacer { flex: 1; }
+.btn { font-family: var(--slab); font-weight: 600; font-size: 16px; padding: 10px 18px; border-radius: 8px; border: 0; cursor: pointer; display: inline-block; }
+.btn-gold { background: var(--gold); color: #1a1300; }
+.btn-ghost { background: none; border: 1px solid #b9c2cf; color: var(--ink); }
+.btn-danger { background: var(--bad); color: #fff; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.err { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; border-radius: 8px; padding: 12px 14px; margin-top: 14px; }
+.loading { display: flex; align-items: center; gap: 12px; color: var(--ink-2); padding: 24px 0; }
+.spin { width: 22px; height: 22px; border: 3px solid var(--rule); border-top-color: var(--accent); border-radius: 50%; animation: s .8s linear infinite; }
+@keyframes s { to { transform: rotate(360deg); } }
+
+.who { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
+.who img { width: 52px; height: 52px; border-radius: 50%; }
+.who b { display: block; font-family: var(--slab); font-size: 19px; }
+.tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 18px; }
+.tile { border: 1px solid var(--rule); border-radius: 10px; padding: 14px; background: var(--paper-2); }
+.tile b { display: block; font-family: var(--serif); font-size: 32px; line-height: 1.1; color: var(--brand); }
+.tile span { font-size: 13px; color: var(--ink-2); }
+
+.tt { width: 100%; border-collapse: collapse; font-size: 15px; }
+.tt th, .tt td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #eef0f4; vertical-align: middle; }
+.tt th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); font-weight: 600; }
+.tt .n { text-align: right; }
+.meter { display: flex; align-items: center; gap: 10px; min-width: 160px; }
+.meter .bar { flex: 1; height: 8px; background: #e6eaf0; border-radius: 99px; overflow: hidden; max-width: 220px; }
+.meter .bar i { display: block; height: 100%; background: var(--brand); border-radius: 99px; }
+.meter b { min-width: 34px; font-variant-numeric: tabular-nums; }
+.tt a.go { color: var(--accent); font-weight: 600; white-space: nowrap; }
+.tip { margin-top: 14px; background: #fffbea; border-left: 4px solid var(--gold); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips a { border: 1px solid #b9c2cf; border-radius: 99px; padding: 6px 12px; font-size: 14px; color: var(--ink); }
+.chips a:hover { border-color: var(--brand); color: var(--brand); }
+
+.ans { border-bottom: 1px solid #eef0f4; }
+.ans summary { display: flex; gap: 12px; align-items: baseline; cursor: pointer; padding: 12px 0; list-style: none; }
+.ans summary::-webkit-details-marker { display: none; }
+.ans .sc { font-family: var(--serif); font-weight: 800; font-size: 20px; min-width: 52px; color: var(--brand); }
+.ans .qt { flex: 1; font-size: 15.5px; }
+.ans .meta { font-size: 12.5px; color: var(--ink-3); white-space: nowrap; }
+.ans .body { padding: 0 0 14px 64px; font-size: 14.5px; }
+.ans .body h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 10px 0 4px; }
+.ans .body p, .ans .body pre { white-space: pre-wrap; font-family: inherit; margin: 0; line-height: 1.55; }
+.ans .body ul { margin: 0; padding-left: 18px; }
+.danger { border-color: #f3d4d4; }
+@media (max-width: 760px) {
+  .tiles { grid-template-columns: repeat(2, 1fr); }
+  .tiles .tile:last-child { grid-column: span 2; }
+  .tt th:nth-child(3), .tt td:nth-child(3) { display: none; }
+  .meter { min-width: 0; }
+  .ans .body { padding-left: 0; }
+  .ans summary { flex-wrap: wrap; }
+  .ans .qt { flex: 1 1 60%; }
+  .ans .meta { flex-basis: 100%; padding-left: 64px; white-space: normal; }
+}
+
+[hidden] { display: none !important; }
+body { margin: 0; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar">
+    <div class="wrap">
+      <nav class="cats" aria-label="On this page">
+        <a href="./">Home</a>
+        <a href="careers.html">Careers</a>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="pg">
+  <div class="ip-crumbs"><a href="./">Home</a> › <a href="interview.html">Interview Prep</a> › My progress</div>
+  <h1>My progress</h1>
+  <p class="dek">Your scores, strong and weak topics, and every answer you have practised.</p>
+
+  <section class="card" id="out" hidden>
+    <h2>Sign in to see your progress</h2>
+    <p class="muted" style="margin-bottom:14px">Your answers are saved when you practise while signed in with Google.</p>
+    <div id="gsiBtn"></div>
+    <p class="err" id="outErr" hidden></p>
+  </section>
+
+  <div class="loading" id="loading"><div class="spin"></div>Loading your progress…</div>
+  <p class="err" id="err" hidden></p>
+
+  <div id="in" hidden>
+    <div class="who">
+      <img id="pic" alt="" referrerpolicy="no-referrer">
+      <div><b id="name"></b><span class="muted" id="email"></span></div>
+      <span class="spacer"></span>
+      <a class="btn btn-gold" href="interview.html?ref=progress">Practise now →</a>
+    </div>
+
+    <div class="tiles">
+      <div class="tile"><b id="tAnswers">0</b><span>answers practised</span></div>
+      <div class="tile"><b id="tUnique">0</b><span id="tUniqueOf">different questions</span></div>
+      <div class="tile"><b id="tAvg">–</b><span>average score / 10</span></div>
+      <div class="tile"><b id="tStreak">0</b><span>day streak</span></div>
+      <div class="tile"><b id="tToday">0</b><span id="tTodayOf">answers left today</span></div>
+    </div>
+
+    <section class="card" id="topicsCard">
+      <h2>Your topics <span class="muted" style="font-size:14px;font-weight:400">weakest first</span></h2>
+      <table class="tt" id="topicTable">
+        <thead><tr><th>Topic</th><th>Average score</th><th class="n">Answers</th><th></th></tr></thead>
+        <tbody id="topicRows"></tbody>
+      </table>
+      <p class="tip" id="tip"></p>
+      <div id="untriedWrap" hidden><h3 class="h3">Not tried yet</h3><div class="chips" id="untried"></div></div>
+    </section>
+
+    <section class="card">
+      <h2>Recent answers</h2>
+      <p class="muted" id="noRecent" hidden>No answers yet. <a href="interview.html" style="color:var(--accent)">Start practising →</a></p>
+      <div id="recent"></div>
+    </section>
+
+    <section class="card danger">
+      <h2>Your data</h2>
+      <p class="muted">We save your name, email, answers and scores only to show you this page and to improve the questions. You can delete everything at any time.</p>
+      <div class="actions">
+        <button class="btn btn-ghost" id="delBtn" type="button">Delete my data</button>
+        <span id="delConfirm" hidden>Delete all your answers and sign out? This cannot be undone.
+          <button class="btn btn-danger" id="delYes" type="button">Yes, delete</button>
+          <button class="btn btn-ghost" id="delNo" type="button">Cancel</button></span>
+        <span class="spacer"></span>
+        <button class="btn btn-ghost" id="signOut" type="button">Sign out</button>
+      </div>
+    </section>
+  </div>
+</div>
+</main>
+
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+    </div>
+  </div>
+</footer>
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+</script>
+<script src="config.js"></script>
+<script src="sw.js"></script>
+<script src="sw-auth.js"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const show = (id, on) => { $(id).hidden = !on; };
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+  function when(t) {
+    const d = new Date(t);
+    return d.toLocaleDateString("en-IN", { day: "numeric", month: "short" }) + ", " + d.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" });
+  }
+
+  async function load() {
+    const u = SWAuth.user();
+    show("in", false); show("err", false);
+    if (!u) {
+      show("loading", false); show("out", true);
+      if (!SWAuth.enabled) { $("outErr").textContent = "Sign-in is not set up yet."; show("outErr", true); }
+      else SWAuth.renderButton($("gsiBtn"));
+      return;
+    }
+    show("out", false); show("loading", true);
+    try {
+      const d = await SWAuth.api("/me");
+      render(d);
+    } catch (e) {
+      if (e.status === 401) return load();
+      $("err").textContent = e.message; show("err", true);
+    } finally { show("loading", false); }
+  }
+
+  function render(d) {
+    $("name").textContent = d.user.name || d.user.email;
+    $("email").textContent = d.user.name ? d.user.email : "";
+    if (d.user.picture) $("pic").src = d.user.picture; else $("pic").hidden = true;
+    $("tAnswers").textContent = d.totals.answers || 0;
+    $("tUnique").textContent = d.totals.uniqueQuestions || 0;
+    $("tUniqueOf").textContent = "of " + (d.totals.bankSize || 0) + " questions tried";
+    $("tAvg").textContent = d.totals.average == null ? "–" : d.totals.average;
+    $("tStreak").textContent = d.streak || 0;
+    $("tToday").textContent = Math.max(0, d.limit - d.usedToday);
+    $("tTodayOf").textContent = "of " + d.limit + " answers left today";
+
+    const rows = $("topicRows"); rows.replaceChildren();
+    d.topics.forEach(t => {
+      const tr = el("tr");
+      tr.appendChild(el("td", null, t.topic));
+      const m = el("td"); const mt = el("div", "meter"); const bar = el("div", "bar"); const fill = el("i");
+      fill.style.width = (t.average * 10) + "%"; bar.appendChild(fill);
+      mt.appendChild(el("b", null, t.average.toFixed(1))); mt.appendChild(bar); m.appendChild(mt); tr.appendChild(m);
+      tr.appendChild(el("td", "n", String(t.answers)));
+      const g = el("td", "n"); const a = el("a", "go", "Practise →");
+      a.href = "interview.html?ref=progress&mode=drill&topic=" + encodeURIComponent(t.topic); g.appendChild(a); tr.appendChild(g);
+      rows.appendChild(tr);
+    });
+    show("topicTable", d.topics.length > 0);
+    const weak = d.topics[0];
+    $("tip").textContent = !d.topics.length ? "Answer a few questions to see your strong and weak topics."
+      : weak.average < 6 ? `Focus next on ${weak.topic}: your average there is ${weak.average.toFixed(1)}/10. Open "Practise" and read the model answers for the points you missed.`
+      : "All your topics average 6 or more. Try the Hard level next.";
+    const un = $("untried"); un.replaceChildren();
+    (d.untried || []).forEach(t => { const a = el("a", null, t); a.href = "interview.html?ref=progress&mode=drill&topic=" + encodeURIComponent(t); un.appendChild(a); });
+    show("untriedWrap", (d.untried || []).length > 0);
+
+    const rec = $("recent"); rec.replaceChildren();
+    d.recent.forEach(r => {
+      const det = el("details", "ans");
+      const sum = el("summary");
+      sum.appendChild(el("span", "sc", r.score + "/10"));
+      sum.appendChild(el("span", "qt", r.question));
+      sum.appendChild(el("span", "meta", r.topic + " · " + when(r.at)));
+      det.appendChild(sum);
+      const b = el("div", "body");
+      if (r.verdict) { b.appendChild(el("h4", null, "Feedback")); b.appendChild(el("p", null, r.verdict)); }
+      if (r.missed && r.missed.length) {
+        b.appendChild(el("h4", null, "You missed"));
+        const ul = el("ul"); r.missed.forEach(m => ul.appendChild(el("li", null, m))); b.appendChild(ul);
+      }
+      b.appendChild(el("h4", null, "Your answer")); b.appendChild(el("pre", null, r.answer));
+      if (r.model_answer) { b.appendChild(el("h4", null, "Strong answer")); b.appendChild(el("pre", null, r.model_answer)); }
+      det.appendChild(b); rec.appendChild(det);
+    });
+    show("noRecent", d.recent.length === 0);
+    show("in", true);
+  }
+
+  $("delBtn").addEventListener("click", () => { show("delConfirm", true); $("delBtn").hidden = true; });
+  $("delNo").addEventListener("click", () => { show("delConfirm", false); $("delBtn").hidden = false; });
+  $("delYes").addEventListener("click", async () => {
+    try { await SWAuth.api("/me/delete", {}); SWAuth.signOut(); }
+    catch (e) { $("err").textContent = e.message; show("err", true); }
+  });
+  $("signOut").addEventListener("click", () => SWAuth.signOut());
+  window.addEventListener("swauth-error", e => { $("outErr").textContent = e.detail; show("outErr", true); });
+  SWAuth.onChange(load);
+  load();
+})();
+</script>
+<script src="promo.js" defer></script>
+</body>
+</html>

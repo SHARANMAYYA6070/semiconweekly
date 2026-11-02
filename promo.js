@@ -17,7 +17,7 @@
   if (C.PROMO_ON === false) return;
 
   const page = (location.pathname.split("/").pop() || "index.html").toLowerCase();
-  const onBot = page === "interview.html";
+  const onBot = ["interview.html", "progress.html", "admin.html"].includes(page);
   const BOT = "interview.html";
   const QCOUNT = 141;                 // shown in the pop-up
   const TOPICS = "Verilog, SystemVerilog, SVA, UVM and RTL design";

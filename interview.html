@@ -114,6 +114,21 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
 .how ol { padding-left: 20px; }
 .how li { margin: 4px 0; }
 
+.acct { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; border: 1px solid var(--rule); border-radius: 10px; padding: 14px 18px; margin-top: 22px; background: var(--paper-2); }
+.acct p { flex: 1; min-width: 220px; font-size: 15px; color: var(--ink-2); }
+.acct p b { color: var(--ink); }
+.acct img { width: 38px; height: 38px; border-radius: 50%; }
+.acct a.lnk, .acct button.lnk { color: var(--brand); font-weight: 600; font-size: 15px; background: none; border: 0; cursor: pointer; padding: 6px 4px; font-family: inherit; }
+.acct a.lnk:hover, .acct button.lnk:hover { text-decoration: underline; }
+.acct .gbtn { min-height: 44px; }
+.signin-nudge { margin-top: 12px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.fb { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 14px; }
+.fb .q { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 15px; color: var(--ink-2); }
+.fb button.vote { border: 1px solid #b9c2cf; background: #fff; border-radius: 99px; padding: 6px 14px; font-size: 15px; cursor: pointer; }
+.fb button.vote[aria-pressed="true"] { background: var(--brand); color: #fff; border-color: var(--brand); }
+.fb textarea { min-height: 70px; margin-top: 10px; font-size: 15px; }
+.fb .thanks { color: var(--good); font-weight: 600; font-size: 14px; }
+.err .btn { margin-top: 10px; display: inline-block; font-size: 15px; padding: 8px 16px; }
 @media (max-width: 640px) {
   .modes, .row, .cols { grid-template-columns: 1fr; }
   .card { padding: 16px; }
@@ -167,6 +182,19 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
   <div class="ip-crumbs"><a href="./">Home</a> › Interview Prep</div>
   <h1>VLSI Interview Prep <span class="beta">Beta</span></h1>
   <p class="dek">Answer real interview questions in your own words. Get a score, what you missed, and how a strong candidate would answer.</p>
+
+  <!-- 0. Account -->
+  <div class="acct" id="acctOut" hidden>
+    <p><b>Sign in with Google</b> to get 5 free answers a day (instead of 2) and save your progress, scores and weak topics.</p>
+    <div class="gbtn" id="gsiBtn"></div>
+  </div>
+  <div class="acct" id="acctIn" hidden>
+    <img id="acctPic" alt="" referrerpolicy="no-referrer">
+    <p>Signed in as <b id="acctName"></b></p>
+    <a class="lnk" href="progress.html">My progress →</a>
+    <a class="lnk" href="admin.html" id="acctAdmin" hidden>Admin</a>
+    <button class="lnk" id="signOutBtn" type="button">Sign out</button>
+  </div>
 
   <!-- 1. Setup -->
   <section class="card" id="setup">
@@ -222,7 +250,8 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
         <span class="muted">Tip: Ctrl + Enter submits</span>
       </div>
     </div>
-    <div class="err" id="qErr" hidden></div>
+    <div class="err" id="qErr" hidden><span id="qErrMsg"></span><br><button class="btn btn-main" id="retryBtn" type="button" hidden>Retry</button></div>
+    <div class="signin-nudge" id="nudge" hidden><span class="muted">Sign in to keep practising today:</span><div id="gsiBtn2"></div></div>
   </section>
 
   <!-- 3. Result -->
@@ -244,6 +273,17 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
       <details class="model" open><summary>How a strong candidate would answer</summary><div id="rModel"></div></details>
       <div class="next-q" id="rFollowWrap"><h3>The interviewer would ask next</h3><p id="rFollow"></p></div>
       <details class="yours"><summary>Show your answer</summary><pre id="rYours"></pre></details>
+      <div class="fb" id="fb">
+        <div class="q">Was this feedback fair?
+          <button class="vote" type="button" data-v="1" aria-pressed="false">👍 Yes</button>
+          <button class="vote" type="button" data-v="-1" aria-pressed="false">👎 No</button>
+          <span class="thanks" id="fbThanks" hidden>Thanks! This helps us fix the questions.</span>
+        </div>
+        <div id="fbMore" hidden>
+          <textarea id="fbText" maxlength="1000" placeholder="What was wrong? For example: my answer was correct but scored low, or the model answer has a mistake."></textarea>
+          <div class="actions" style="margin-top:8px"><button class="btn btn-ghost" id="fbSend" type="button">Send</button></div>
+        </div>
+      </div>
       <div class="actions">
         <button class="btn btn-gold" id="nextBtn">Next question</button>
         <button class="btn btn-ghost" id="stopBtn">Change topic</button>
@@ -277,7 +317,7 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
       <li>Type your answer the way you would speak it in the interview.</li>
       <li>You get a score out of 10, the points you covered and missed, and a model answer.</li>
     </ol>
-    <p class="muted" style="margin-top:8px">Free during beta, with a daily limit per visitor. Feedback is generated by AI and checked against our own answer notes, so treat it as practice, not a final verdict. Your answers are used only to give you feedback.</p>
+    <p class="muted" style="margin-top:8px">Free during beta: 2 answers a day as a guest, 5 a day when you sign in with Google. Feedback is generated by AI and checked against our own answer notes, so treat it as practice, not a final verdict. If you sign in, your answers and scores are saved so you can see your progress; you can delete them any time from <a href="progress.html" style="color:var(--accent)">My progress</a>. See our <a href="privacy.html" style="color:var(--accent)">Privacy</a> page.</p>
   </div>
 </div>
 </main>
@@ -311,6 +351,7 @@ menuBtn.addEventListener('click', () => {
 </script>
 <script src="config.js"></script>
 <script src="sw.js"></script>
+<script src="sw-auth.js"></script>
 <script>
 (function () {
   const API = ((window.SW_CONFIG && window.SW_CONFIG.INTERVIEW_API_URL) || "").replace(/\/$/, "");
@@ -324,7 +365,12 @@ menuBtn.addEventListener('click', () => {
   let state = { mode: "mock", topic: "any", level: "any", q: null, n: 0, results: [] };
 
   function show(id, on) { $(id).hidden = !on; }
-  function err(id, msg) { $(id).textContent = msg || ""; show(id, !!msg); }
+  function err(id, msg, retry) {
+    const box = $(id);
+    if (id === "qErr") { $("qErrMsg").textContent = msg || ""; show("retryBtn", !!retry); }
+    else box.textContent = msg || "";
+    show(id, !!msg);
+  }
   function setQuota(rem) {
     if (typeof rem !== "number") return;
     const t = rem === 1 ? "1 answer left today" : rem + " answers left today";
@@ -336,19 +382,7 @@ menuBtn.addEventListener('click', () => {
   }
   function scoreColor(s) { return s >= 7 ? "var(--good)" : s >= 4 ? "var(--warn)" : "var(--bad)"; }
 
-  async function api(path, body) {
-    if (!API) throw new Error("The interview service is not connected yet. (Add INTERVIEW_API_URL in config.js.)");
-    const res = await fetch(API + path, body ? {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
-    } : {});
-    let data = {};
-    try { data = await res.json(); } catch {}
-    if (!res.ok) {
-      const e = new Error(data.message || data.error || "Could not reach the interview service. Check your internet and try again.");
-      e.data = data; e.status = res.status; throw e;
-    }
-    return data;
-  }
+  function api(path, body) { return SWAuth.api(path, body); }
 
   async function loadTopics() {
     try {
@@ -386,14 +420,16 @@ menuBtn.addEventListener('click', () => {
   async function submit() {
     const answer = $("answer").value.trim();
     if (answer.length < 3) { err("qErr", "Please type an answer first. If you don't know it, press Skip."); return; }
-    err("qErr", "");
+    err("qErr", ""); show("nudge", false);
     $("submitBtn").disabled = true; $("skipBtn").disabled = true;
     show("rCard", true); show("rLoading", true); show("rBody", false); err("rErr", "");
     $("rCard").scrollIntoView({ behavior: "smooth", block: "start" });
     try {
-      const { result, remaining } = await api("/grade", { id: state.q.id, answer });
+      const { result, remaining, attemptId } = await api("/grade", { id: state.q.id, answer });
       setQuota(remaining);
+      state.attemptId = attemptId;
       renderResult(result, answer);
+      resetFeedback();
       state.results.push({ id: state.q.id, question: state.q.question, topic: state.q.topic, score: result.score });
       const seen = store.get("ip_seen", []); seen.push(state.q.id); store.set("ip_seen", seen.slice(-300));
       const hist = store.get("ip_history", []); hist.push({ id: state.q.id, topic: state.q.topic, score: result.score, at: Date.now() }); store.set("ip_history", hist.slice(-500));
@@ -403,8 +439,11 @@ menuBtn.addEventListener('click', () => {
       $("nextBtn").textContent = done ? "See my summary" : "Next question";
     } catch (e) {
       show("rCard", false);
-      if (e.data && e.data.error === "limit") setQuota(0);
-      err("qErr", e.message);
+      if (e.data && e.data.error === "limit") {
+        setQuota(0);
+        if (e.data.needSignIn && SWAuth.enabled) { show("nudge", true); SWAuth.renderButton($("gsiBtn2"), { text: "continue_with" }); }
+      }
+      err("qErr", e.message, !!(e.data && e.data.retry));
     } finally { $("submitBtn").disabled = false; $("skipBtn").disabled = false; }
   }
 
@@ -473,6 +512,42 @@ menuBtn.addEventListener('click', () => {
   $("answer").setAttribute("maxlength", "4000");
   $("answer").addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) submit(); });
   $("codeFont").addEventListener("change", e => $("answer").classList.toggle("code", e.target.checked));
+
+  // ---- feedback (thumbs) ----
+  function resetFeedback() {
+    document.querySelectorAll("#fb .vote").forEach(b => b.setAttribute("aria-pressed", "false"));
+    show("fbMore", false); show("fbThanks", false); $("fbText").value = "";
+    show("fb", !!state.attemptId);
+  }
+  async function sendFeedback(vote, comment) {
+    try { await api("/feedback", { attemptId: state.attemptId, vote, comment: comment || "" }); show("fbThanks", true); }
+    catch (e) { $("fbThanks").textContent = "Could not send. Please try again."; show("fbThanks", true); }
+  }
+  document.querySelectorAll("#fb .vote").forEach(b => b.addEventListener("click", () => {
+    const v = parseInt(b.dataset.v, 10);
+    document.querySelectorAll("#fb .vote").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    $("fbThanks").textContent = "Thanks! This helps us fix the questions.";
+    if (v === 1) { show("fbMore", false); sendFeedback(1); }
+    else { show("fbThanks", false); show("fbMore", true); $("fbText").focus(); sendFeedback(-1); }
+  }));
+  $("fbSend").addEventListener("click", () => { sendFeedback(-1, $("fbText").value.trim()); show("fbMore", false); });
+  $("retryBtn").addEventListener("click", submit);
+
+  // ---- account ----
+  function paintAccount(u) {
+    show("acctOut", SWAuth.enabled && !u); show("acctIn", !!u);
+    if (u) {
+      $("acctName").textContent = u.name || u.email;
+      if (u.picture) { $("acctPic").src = u.picture; show("acctPic", true); } else show("acctPic", false);
+      show("acctAdmin", !!u.admin); show("nudge", false);
+      if ($("qErrMsg").textContent && /guest answers/.test($("qErrMsg").textContent)) err("qErr", "");
+      api("/question", { topic: "any", level: "any" }).then(d => setQuota(d.remaining)).catch(() => {});
+    } else if (SWAuth.enabled) SWAuth.renderButton($("gsiBtn"));
+  }
+  SWAuth.onChange(paintAccount);
+  window.addEventListener("swauth-error", e => err("setupErr", e.detail));
+  $("signOutBtn").addEventListener("click", () => SWAuth.signOut());
+  paintAccount(SWAuth.user());
 
   loadTopics().then(() => {
     // links from the promotion can pre-select a topic and mode, e.g. interview.html?topic=UVM&mode=drill
