@@ -28,7 +28,17 @@ Takes about 30 minutes. Do the steps in order.
 
 When you edit the sheet later, the bot picks up changes within about 10 minutes.
 
-## Step 2 – Get a Claude API key
+## Step 2 – Get an AI key (pick ONE)
+
+### Option A – Google Gemini (free, no card) – easiest for the beta
+1. Go to **aistudio.google.com** and sign in with your Google account.
+2. Click **Get API key** → **Create API key** → copy it.
+3. In Step 4b, add it as a Secret named `GEMINI_API_KEY` (instead of `ANTHROPIC_API_KEY`).
+4. Optional: add a Text variable `GEMINI_MODEL` if you want a different model. Leave it out to use `gemini-2.5-flash`. If the bot shows an error mentioning the model, open AI Studio, check which Flash model is listed as free, and put that exact name in `GEMINI_MODEL`.
+5. Free tier limits: a fixed number of requests per minute and per day, enough for 10–20 testers. Google may use free-tier prompts to improve its products, so mention "answers are processed by Google Gemini" on the page before a public launch.
+
+### Option B – Claude API (paid, better grading)
+If card payment fails: open your bank app and turn ON **international / online transactions** for the card, then try again.
 
 1. Go to **console.anthropic.com** and sign in (or sign up).
 2. **Billing**: add a card and buy a small amount of credit to start (e.g. $5).
@@ -58,7 +68,7 @@ Worker → **Settings** → **Variables and Secrets** → **Add**:
 
 | Type   | Name               | Value |
 |--------|--------------------|-------|
-| Secret | `ANTHROPIC_API_KEY` | your key from Step 2 |
+| Secret | `GEMINI_API_KEY` **or** `ANTHROPIC_API_KEY` | your key from Step 2 (only one of them) |
 | Text   | `QUESTIONS_CSV_URL` | the CSV link from Step 1 |
 | Text   | `ALLOWED_ORIGINS`   | `https://semiconweekly.in,https://www.semiconweekly.in` |
 | Text   | `DAILY_LIMIT`       | `10` |

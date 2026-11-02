@@ -60,10 +60,34 @@ export default {
         await addUsage(request, env, ctx, used + 1);
         return json({ result, remaining: Math.max(0, limit(env) - used - 1) }, 200, cors);
       }
+      // Diagnostic: lists Gemini model names this key can use, and times a tiny call to each model you pass (?try=a,b).
+      if (url.pathname === "/models" && request.method === "GET" && env.GEMINI_API_KEY) {
+        const r = await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=200", { headers: { "x-goog-api-key": env.GEMINI_API_KEY } });
+        const d = await r.json().catch(() => ({}));
+        const models = (d.models || [])
+          .filter(m => (m.supportedGenerationMethods || []).includes("generateContent"))
+          .map(m => m.name.replace("models/", ""));
+        const tries = {};
+        for (const m of (url.searchParams.get("try") || "").split(",").filter(Boolean).slice(0, 4)) {
+          const t0 = Date.now();
+          const c = new AbortController(); const tm = setTimeout(() => c.abort(), 25000);
+          try {
+            const x = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(m)}:generateContent`, {
+              method: "POST", signal: c.signal, headers: { "content-type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
+              body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: "Reply with the word OK." }] }] }),
+            });
+            tries[m] = { status: x.status, secs: (Date.now() - t0) / 1000, text: (await x.text()).slice(0, 160) };
+          } catch { tries[m] = { status: "timeout", secs: (Date.now() - t0) / 1000 }; }
+          finally { clearTimeout(tm); }
+        }
+        return json({ status: r.status, current: env.GEMINI_MODEL || "(default)", models, tries }, 200, cors);
+      }
       return json({ error: "Not found" }, 404, cors);
     } catch (err) {
       console.log("error", err && err.stack || err);
-      return json({ error: "Something went wrong on our side. Please try again in a minute." }, 500, cors);
+      // "detail" holds the provider's error text (never the key) so problems can be diagnosed from the browser.
+      const detail = String((err && err.message) || err).replace(/AIza[0-9A-Za-z_\-]{20,}/g, "[key]").slice(0, 400);
+      return json({ error: "Something went wrong on our side. Please try again in a minute.", detail }, 500, cors);
     }
   },
 };
@@ -143,6 +167,18 @@ const GRADE_TOOL = {
     required: ["score", "verdict", "covered", "missed", "mistakes", "model_answer", "follow_up"],
   },
 };
+// Same shape in the simpler schema format Gemini accepts.
+GRADE_TOOL.input_schema_gemini = {
+  type: "OBJECT",
+  properties: {
+    score: { type: "INTEGER" }, verdict: { type: "STRING" },
+    covered: { type: "ARRAY", items: { type: "STRING" } },
+    missed: { type: "ARRAY", items: { type: "STRING" } },
+    mistakes: { type: "ARRAY", items: { type: "STRING" } },
+    model_answer: { type: "STRING" }, follow_up: { type: "STRING" },
+  },
+  required: ["score", "verdict", "covered", "missed", "mistakes", "model_answer", "follow_up"],
+};
 
 function gradingPrompt(q, answer) {
   return `You are a senior VLSI design/verification engineer taking a technical interview for a fresher role in India.
@@ -174,7 +210,8 @@ ${answer}
 }
 
 async function gradeWithClaude(q, answer, env) {
-  if (!env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY is not set");
+  if (env.GEMINI_API_KEY && !env.ANTHROPIC_API_KEY) return gradeWithGemini(q, answer, env);
+  if (!env.ANTHROPIC_API_KEY) throw new Error("No AI key set: add ANTHROPIC_API_KEY or GEMINI_API_KEY");
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -194,7 +231,72 @@ async function gradeWithClaude(q, answer, env) {
   const data = await res.json();
   const block = (data.content || []).find(b => b.type === "tool_use");
   if (!block) throw new Error("No grade returned");
-  const g = block.input || {};
+  return cleanGrade(block.input || {}, q);
+}
+
+// Google Gemini (free tier, no card needed). Used when only GEMINI_API_KEY is set.
+async function gradeWithGemini(q, answer, env) {
+  const model = env.GEMINI_MODEL || "gemini-3.8-flash";
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+  const prompt = gradingPrompt(q, answer) +
+    "\n\nReply with ONLY a JSON object with these keys: score (integer 0-10), verdict (string), covered (array of strings), " +
+    "missed (array of strings), mistakes (array of strings), model_answer (string), follow_up (string). No markdown.";
+
+  // Try the strictest JSON format first; if Gemini rejects that option (400), retry with simpler ones.
+  // Thinking is switched to the lowest level: grading needs no long reasoning, and long thinking made
+  // requests take over 100 seconds. Options an older/newer model rejects (400) are dropped one by one.
+  const schema = { responseMimeType: "application/json", responseSchema: GRADE_TOOL.input_schema_gemini };
+  const formats = [
+    { ...schema, thinkingConfig: { thinkingLevel: "minimal" } },
+    { ...schema, thinkingConfig: { thinkingLevel: "low" } },
+    { ...schema, thinkingConfig: { thinkingBudget: 0 } },
+    { responseMimeType: "application/json", thinkingConfig: { thinkingLevel: "low" } },
+    { responseMimeType: "application/json" },
+    {},
+  ];
+  let lastErr = "";
+  for (const fmt of formats) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 55000);
+    let res;
+    try {
+      res = await fetch(url, {
+        method: "POST",
+        signal: ctrl.signal,
+        headers: { "content-type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.2, maxOutputTokens: 2048, ...fmt },
+        }),
+      });
+    } catch (e) {
+      throw new Error("Gemini took too long to answer (over 55 s). Try again, or set GEMINI_MODEL to a faster 'lite' model.");
+    } finally { clearTimeout(timer); }
+    if (!res.ok) {
+      lastErr = "Gemini API " + res.status + ": " + (await res.text()).slice(0, 400);
+      console.log("error", lastErr);
+      if (res.status === 400) continue; // option not supported, try a simpler format
+      throw new Error(lastErr);
+    }
+    const data = await res.json();
+    const cand = (data.candidates || [])[0] || {};
+    const text = ((cand.content || {}).parts || []).filter(p => !p.thought).map(p => p.text || "").join("");
+    const g = extractJson(text);
+    if (g) return cleanGrade(g, q);
+    lastErr = "Gemini returned no JSON (finish: " + (cand.finishReason || "?") + "): " + text.slice(0, 200);
+    console.log("error", lastErr);
+  }
+  throw new Error(lastErr || "Gemini gave no answer");
+}
+
+function extractJson(text) {
+  if (!text) return null;
+  const s = text.indexOf("{"), e = text.lastIndexOf("}");
+  if (s < 0 || e <= s) return null;
+  try { return JSON.parse(text.slice(s, e + 1)); } catch { return null; }
+}
+
+function cleanGrade(g, q) {
   return {
     score: clamp(parseInt(g.score, 10) || 0, 0, 10),
     verdict: String(g.verdict || ""),
