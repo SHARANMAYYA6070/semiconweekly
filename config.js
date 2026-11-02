@@ -15,6 +15,9 @@ window.SW_CONFIG = {
   // Visitor counter: your GoatCounter code, e.g. "semiconweekly" (from semiconweekly.goatcounter.com)
   GOATCOUNTER_CODE: "semiconweekly",
 
+  // Interview Prep bot: your Cloudflare Worker link, e.g. "https://sw-interview.yourname.workers.dev"
+  INTERVIEW_API_URL: "https://sw-interview.sharanmayya929.workers.dev",
+
   // Contact
   CONTACT_EMAIL: "semiconweekly.team@gmail.com",      // e.g. "hello@semiconweekly.in"
   CONTACT_FORM_URL: "",   // a Google Form link for messages (optional)

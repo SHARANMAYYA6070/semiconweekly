@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interview Prep · Semicon Weekly</title>
+<meta name="description" content="Practise VLSI interview questions on Verilog, SystemVerilog, assertions and UVM. Type your answer and get a score, what you missed, and a model answer.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://semiconweekly.in/interview.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Semicon Weekly">
+<meta property="og:title" content="VLSI Interview Prep | Semicon Weekly">
+<meta property="og:description" content="Practise Verilog, SystemVerilog and UVM interview questions and get instant feedback.">
+<meta property="og:url" content="https://semiconweekly.in/interview.html">
+<meta property="og:image" content="https://semiconweekly.in/img/og.jpg">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b2447">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Roboto+Slab:wght@400;500;600&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="search.js" defer></script>
+<style>
+:root { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); --good:#059669; --bad:#dc2626; --warn:#d97706; --mono:"Roboto Mono", Consolas, monospace; }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+.ip { max-width: 860px; margin: 0 auto; padding: 28px 0 56px; }
+.ip-crumbs { font-size: 14px; color: var(--ink-3); margin-bottom: 10px; }
+.ip-crumbs a { color: var(--accent); }
+.ip h1 { font-family: var(--serif); font-size: clamp(30px, 5vw, 44px); line-height: 1.1; }
+.ip .dek { font-family: var(--slab); color: var(--ink-2); font-size: 18px; margin-top: 10px; }
+.beta { display: inline-block; background: var(--gold); color: #1a1300; font: 600 12px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; padding: 5px 8px; border-radius: 4px; vertical-align: middle; margin-left: 8px; }
+
+.card { border: 1px solid var(--rule); border-radius: 10px; background: #fff; padding: 22px; margin-top: 22px; }
+.card h2 { font-family: var(--slab); font-size: 20px; font-weight: 600; margin-bottom: 14px; }
+
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mode { border: 2px solid var(--rule); border-radius: 10px; padding: 14px 16px; cursor: pointer; display: block; }
+.mode input { position: absolute; opacity: 0; pointer-events: none; }
+.mode b { display: block; font-family: var(--slab); font-size: 17px; }
+.mode span { font-size: 14px; color: var(--ink-2); }
+.mode:has(input:checked) { border-color: var(--brand); background: #eef3fb; }
+.mode:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+label.f { display: block; font-size: 14px; font-weight: 500; color: var(--ink-2); }
+select, textarea { width: 100%; font: inherit; color: var(--ink); border: 1px solid #b9c2cf; border-radius: 8px; background: #fff; }
+select { padding: 10px 12px; margin-top: 6px; }
+textarea { padding: 12px 14px; min-height: 170px; resize: vertical; line-height: 1.5; }
+textarea.code { font-family: var(--mono); font-size: 14px; }
+
+.btn { font-family: var(--slab); font-weight: 600; font-size: 17px; padding: 11px 20px; border-radius: 8px; border: 0; cursor: pointer; }
+.btn-main { background: var(--brand); color: #fff; }
+.btn-main:hover { background: #12366b; }
+.btn-gold { background: var(--gold); color: #1a1300; }
+.btn-ghost { background: none; border: 1px solid #b9c2cf; color: var(--ink); }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px; }
+.muted { color: var(--ink-3); font-size: 14px; }
+.spacer { flex: 1; }
+
+.qmeta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.tag { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; background: var(--paper-2); color: var(--ink-2); }
+.tag.easy { background: #dcfce7; color: #166534; }
+.tag.medium { background: #fef3c7; color: #92400e; }
+.tag.hard { background: #fee2e2; color: #991b1b; }
+.progress { margin-left: auto; font-size: 14px; color: var(--ink-3); }
+.qtext { font-family: var(--slab); font-size: 21px; line-height: 1.4; white-space: pre-wrap; margin-bottom: 16px; }
+.tools { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--ink-3); margin-top: 6px; }
+.tools label { cursor: pointer; }
+
+.score { display: flex; align-items: center; gap: 18px; }
+.score-num { font-family: var(--serif); font-size: 52px; font-weight: 800; line-height: 1; min-width: 92px; }
+.score-num small { font-size: 22px; color: var(--ink-3); }
+.bar { height: 10px; background: var(--paper-2); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+.bar i { display: block; height: 100%; border-radius: 99px; }
+.verdict { font-family: var(--slab); font-size: 18px; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+.list h3, .block h3 { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+.list ul { margin: 0; padding-left: 0; list-style: none; }
+.list li { padding: 6px 0 6px 26px; position: relative; border-bottom: 1px solid #eef0f4; font-size: 15px; }
+.list li::before { position: absolute; left: 2px; top: 6px; font-weight: 700; }
+.list.ok h3 { color: var(--good); } .list.ok li::before { content: "✓"; color: var(--good); }
+.list.no h3 { color: var(--bad); }  .list.no li::before { content: "✗"; color: var(--bad); }
+.block { margin-top: 18px; }
+.block.warn { background: #fff7ed; border-left: 4px solid var(--warn); padding: 12px 14px; border-radius: 0 8px 8px 0; }
+.block.warn h3 { color: var(--warn); }
+.block.warn ul { margin: 0; padding-left: 18px; }
+details.model { margin-top: 18px; border: 1px solid var(--rule); border-radius: 8px; }
+details.model summary { cursor: pointer; padding: 12px 14px; font-family: var(--slab); font-weight: 600; }
+details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.6; }
+.next-q { margin-top: 18px; background: var(--brand); color: #fff; border-radius: 8px; padding: 14px 16px; }
+.next-q h3 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.next-q p { font-family: var(--slab); font-size: 17px; }
+.yours { margin-top: 18px; }
+.yours summary { cursor: pointer; font-size: 14px; color: var(--ink-3); }
+.yours pre { white-space: pre-wrap; font-family: inherit; background: var(--paper-2); padding: 12px; border-radius: 8px; margin: 8px 0 0; }
+
+.loading { display: flex; align-items: center; gap: 12px; color: var(--ink-2); padding: 18px 0; }
+.spin { width: 22px; height: 22px; border: 3px solid var(--rule); border-top-color: var(--accent); border-radius: 50%; animation: s 0.8s linear infinite; }
+@keyframes s { to { transform: rotate(360deg); } }
+.err { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; border-radius: 8px; padding: 12px 14px; margin-top: 14px; }
+
+.sum-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.sum-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 15px; }
+.sum-table th, .sum-table td { text-align: left; padding: 9px 8px; border-bottom: 1px solid #eef0f4; vertical-align: top; }
+.sum-table th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+.sum-table td.n { text-align: right; font-weight: 700; white-space: nowrap; }
+
+.how { margin-top: 26px; font-size: 15px; color: var(--ink-2); }
+.how ol { padding-left: 20px; }
+.how li { margin: 4px 0; }
+
+@media (max-width: 640px) {
+  .modes, .row, .cols { grid-template-columns: 1fr; }
+  .card { padding: 16px; }
+  .qtext { font-size: 18px; }
+  .score-num { font-size: 42px; min-width: 72px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar">
+    <div class="wrap">
+      <nav class="cats" aria-label="On this page">
+        <a href="./">Home</a>
+        <a href="careers.html">Careers</a>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="ip">
+  <div class="ip-crumbs"><a href="./">Home</a> › Interview Prep</div>
+  <h1>VLSI Interview Prep <span class="beta">Beta</span></h1>
+  <p class="dek">Answer real interview questions in your own words. Get a score, what you missed, and how a strong candidate would answer.</p>
+
+  <!-- 1. Setup -->
+  <section class="card" id="setup">
+    <h2>Choose how you want to practise</h2>
+    <div class="modes" role="radiogroup" aria-label="Mode">
+      <label class="mode"><input type="radio" name="mode" value="mock" checked>
+        <b>Mock interview</b><span>5 questions in a row, then a summary of your strong and weak topics.</span></label>
+      <label class="mode"><input type="radio" name="mode" value="drill">
+        <b>Topic practice</b><span>One question at a time on the topic you pick. Stop whenever you like.</span></label>
+    </div>
+    <div class="row">
+      <label class="f">Topic
+        <select id="topic"><option value="any">All topics</option></select>
+      </label>
+      <label class="f">Level
+        <select id="level">
+          <option value="any">Any level</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </label>
+    </div>
+    <div class="actions">
+      <button class="btn btn-main" id="startBtn">Start</button>
+      <span class="spacer"></span>
+      <span class="muted" id="quota"></span>
+    </div>
+    <div class="err" id="setupErr" hidden></div>
+  </section>
+
+  <!-- 2. Question -->
+  <section class="card" id="qCard" hidden aria-live="polite">
+    <div class="qmeta">
+      <span class="tag" id="qTopic"></span>
+      <span class="tag" id="qLevel"></span>
+      <span class="tag" id="qType"></span>
+      <span class="progress" id="qProgress"></span>
+    </div>
+    <div class="loading" id="qLoading"><div class="spin"></div>Getting your question…</div>
+    <div id="qBody" hidden>
+      <p class="qtext" id="qText"></p>
+      <label class="f" for="answer">Your answer</label>
+      <textarea id="answer" placeholder="Answer as you would in the interview. Explain in your own words. For code questions, write the Verilog/SystemVerilog."></textarea>
+      <div class="tools">
+        <label><input type="checkbox" id="codeFont"> Code font</label>
+        <span id="count">0 / 4000</span>
+      </div>
+      <div class="actions">
+        <button class="btn btn-main" id="submitBtn">Submit answer</button>
+        <button class="btn btn-ghost" id="skipBtn">Skip</button>
+        <span class="spacer"></span>
+        <span class="muted">Tip: Ctrl + Enter submits</span>
+      </div>
+    </div>
+    <div class="err" id="qErr" hidden></div>
+  </section>
+
+  <!-- 3. Result -->
+  <section class="card" id="rCard" hidden aria-live="polite">
+    <div class="loading" id="rLoading"><div class="spin"></div>The interviewer is checking your answer…</div>
+    <div id="rBody" hidden>
+      <div class="score">
+        <div class="score-num"><span id="rScore">0</span><small>/10</small></div>
+        <div style="flex:1">
+          <p class="verdict" id="rVerdict"></p>
+          <div class="bar"><i id="rBar"></i></div>
+        </div>
+      </div>
+      <div class="cols">
+        <div class="list ok"><h3>You covered</h3><ul id="rCovered"></ul></div>
+        <div class="list no"><h3>You missed</h3><ul id="rMissed"></ul></div>
+      </div>
+      <div class="block warn" id="rMistakesWrap" hidden><h3>Fix these</h3><ul id="rMistakes"></ul></div>
+      <details class="model" open><summary>How a strong candidate would answer</summary><div id="rModel"></div></details>
+      <div class="next-q" id="rFollowWrap"><h3>The interviewer would ask next</h3><p id="rFollow"></p></div>
+      <details class="yours"><summary>Show your answer</summary><pre id="rYours"></pre></details>
+      <div class="actions">
+        <button class="btn btn-gold" id="nextBtn">Next question</button>
+        <button class="btn btn-ghost" id="stopBtn">Change topic</button>
+        <span class="spacer"></span>
+        <span class="muted" id="quota2"></span>
+      </div>
+    </div>
+    <div class="err" id="rErr" hidden></div>
+  </section>
+
+  <!-- 4. Summary -->
+  <section class="card" id="sCard" hidden>
+    <div class="sum-head">
+      <h2 style="margin:0">Your mock interview</h2>
+      <span class="score-num" style="font-size:40px"><span id="sAvg">0</span><small>/10 average</small></span>
+    </div>
+    <p id="sNote" style="margin-top:10px"></p>
+    <table class="sum-table">
+      <thead><tr><th>Question</th><th>Topic</th><th style="text-align:right">Score</th></tr></thead>
+      <tbody id="sRows"></tbody>
+    </table>
+    <div class="actions">
+      <button class="btn btn-main" id="againBtn">Start another</button>
+    </div>
+  </section>
+
+  <div class="how">
+    <h2 style="font-family:var(--slab);font-size:18px;margin-bottom:6px">How it works</h2>
+    <ol>
+      <li>Pick a mode, topic and level, then press Start.</li>
+      <li>Type your answer the way you would speak it in the interview.</li>
+      <li>You get a score out of 10, the points you covered and missed, and a model answer.</li>
+    </ol>
+    <p class="muted" style="margin-top:8px">Free during beta, with a daily limit per visitor. Feedback is generated by AI and checked against our own answer notes, so treat it as practice, not a final verdict. Your answers are used only to give you feedback.</p>
+  </div>
+</div>
+</main>
+
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+    </div>
+  </div>
+</footer>
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+</script>
+<script src="config.js"></script>
+<script src="sw.js"></script>
+<script>
+(function () {
+  const API = ((window.SW_CONFIG && window.SW_CONFIG.INTERVIEW_API_URL) || "").replace(/\/$/, "");
+  const MOCK_LEN = 5;
+  const $ = id => document.getElementById(id);
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  };
+
+  let state = { mode: "mock", topic: "any", level: "any", q: null, n: 0, results: [] };
+
+  function show(id, on) { $(id).hidden = !on; }
+  function err(id, msg) { $(id).textContent = msg || ""; show(id, !!msg); }
+  function setQuota(rem) {
+    if (typeof rem !== "number") return;
+    const t = rem === 1 ? "1 answer left today" : rem + " answers left today";
+    $("quota").textContent = t; $("quota2").textContent = t;
+  }
+  function fillList(ul, items, empty) {
+    ul.replaceChildren();
+    (items.length ? items : [empty]).forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+  }
+  function scoreColor(s) { return s >= 7 ? "var(--good)" : s >= 4 ? "var(--warn)" : "var(--bad)"; }
+
+  async function api(path, body) {
+    if (!API) throw new Error("The interview service is not connected yet. (Add INTERVIEW_API_URL in config.js.)");
+    const res = await fetch(API + path, body ? {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+    } : {});
+    let data = {};
+    try { data = await res.json(); } catch {}
+    if (!res.ok) {
+      const e = new Error(data.message || data.error || "Could not reach the interview service. Check your internet and try again.");
+      e.data = data; e.status = res.status; throw e;
+    }
+    return data;
+  }
+
+  async function loadTopics() {
+    try {
+      const { topics } = await api("/topics");
+      const sel = $("topic");
+      topics.forEach(t => {
+        const o = document.createElement("option");
+        o.value = t.name; o.textContent = `${t.name} (${t.count})`;
+        sel.appendChild(o);
+      });
+    } catch (e) { err("setupErr", e.message); }
+  }
+
+  async function nextQuestion() {
+    show("rCard", false); show("sCard", false); show("setup", false);
+    show("qCard", true); show("qLoading", true); show("qBody", false); err("qErr", "");
+    $("qProgress").textContent = state.mode === "mock" ? `Question ${state.n + 1} of ${MOCK_LEN}` : `Question ${state.n + 1}`;
+    try {
+      const seen = store.get("ip_seen", []);
+      const data = await api("/question", { topic: state.topic, level: state.level, exclude: seen });
+      state.q = data.question; setQuota(data.remaining);
+      $("qTopic").textContent = state.q.subtopic ? `${state.q.topic} · ${state.q.subtopic}` : state.q.topic;
+      $("qLevel").textContent = state.q.level; $("qLevel").className = "tag " + state.q.level;
+      $("qType").textContent = state.q.type;
+      $("qText").textContent = state.q.question;
+      $("answer").value = ""; updateCount();
+      const isCode = state.q.type === "code";
+      $("codeFont").checked = isCode; $("answer").classList.toggle("code", isCode);
+      show("qLoading", false); show("qBody", true);
+      $("answer").focus({ preventScroll: true });
+      $("qCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (e) { show("qLoading", false); err("qErr", e.message); show("setup", true); }
+  }
+
+  async function submit() {
+    const answer = $("answer").value.trim();
+    if (answer.length < 3) { err("qErr", "Please type an answer first. If you don't know it, press Skip."); return; }
+    err("qErr", "");
+    $("submitBtn").disabled = true; $("skipBtn").disabled = true;
+    show("rCard", true); show("rLoading", true); show("rBody", false); err("rErr", "");
+    $("rCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    try {
+      const { result, remaining } = await api("/grade", { id: state.q.id, answer });
+      setQuota(remaining);
+      renderResult(result, answer);
+      state.results.push({ id: state.q.id, question: state.q.question, topic: state.q.topic, score: result.score });
+      const seen = store.get("ip_seen", []); seen.push(state.q.id); store.set("ip_seen", seen.slice(-300));
+      const hist = store.get("ip_history", []); hist.push({ id: state.q.id, topic: state.q.topic, score: result.score, at: Date.now() }); store.set("ip_history", hist.slice(-500));
+      state.n++;
+      show("qCard", false);
+      const done = state.mode === "mock" && state.n >= MOCK_LEN;
+      $("nextBtn").textContent = done ? "See my summary" : "Next question";
+    } catch (e) {
+      show("rCard", false);
+      if (e.data && e.data.error === "limit") setQuota(0);
+      err("qErr", e.message);
+    } finally { $("submitBtn").disabled = false; $("skipBtn").disabled = false; }
+  }
+
+  function renderResult(r, answer) {
+    $("rScore").textContent = r.score;
+    $("rScore").style.color = scoreColor(r.score);
+    $("rBar").style.width = (r.score * 10) + "%";
+    $("rBar").style.background = scoreColor(r.score);
+    $("rVerdict").textContent = r.verdict;
+    fillList($("rCovered"), r.covered, "Nothing from the key points yet.");
+    fillList($("rMissed"), r.missed, "Nothing important. Well done.");
+    show("rMistakesWrap", r.mistakes.length > 0);
+    fillList($("rMistakes"), r.mistakes, "");
+    $("rModel").textContent = r.model_answer;
+    $("rFollow").textContent = r.follow_up; show("rFollowWrap", !!r.follow_up);
+    $("rYours").textContent = answer;
+    show("rLoading", false); show("rBody", true);
+  }
+
+  function summary() {
+    show("rCard", false); show("qCard", false); show("sCard", true);
+    const r = state.results.slice(-MOCK_LEN);
+    const avg = r.reduce((a, b) => a + b.score, 0) / (r.length || 1);
+    $("sAvg").textContent = avg.toFixed(1);
+    const byTopic = {};
+    r.forEach(x => { (byTopic[x.topic] = byTopic[x.topic] || []).push(x.score); });
+    const weak = Object.entries(byTopic).map(([t, s]) => [t, s.reduce((a, b) => a + b, 0) / s.length]).sort((a, b) => a[1] - b[1]);
+    $("sNote").textContent = weak.length && weak[0][1] < 6
+      ? `Spend your next practice on ${weak[0][0]}. That is where you lost the most marks.`
+      : "Good work. Try the Hard level next.";
+    const tb = $("sRows"); tb.replaceChildren();
+    r.forEach(x => {
+      const tr = document.createElement("tr");
+      const a = document.createElement("td"); a.textContent = x.question;
+      const b = document.createElement("td"); b.textContent = x.topic;
+      const c = document.createElement("td"); c.className = "n"; c.textContent = x.score + "/10"; c.style.color = scoreColor(x.score);
+      tr.append(a, b, c); tb.appendChild(tr);
+    });
+    $("sCard").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function reset() {
+    state.n = 0; state.results = [];
+    show("qCard", false); show("rCard", false); show("sCard", false); show("setup", true);
+    $("setup").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function updateCount() { $("count").textContent = $("answer").value.length + " / 4000"; }
+
+  $("startBtn").addEventListener("click", () => {
+    state.mode = document.querySelector("input[name=mode]:checked").value;
+    state.topic = $("topic").value; state.level = $("level").value;
+    state.n = 0; state.results = [];
+    err("setupErr", "");
+    nextQuestion();
+  });
+  $("submitBtn").addEventListener("click", submit);
+  $("skipBtn").addEventListener("click", () => {
+    if (state.q) { const seen = store.get("ip_seen", []); seen.push(state.q.id); store.set("ip_seen", seen.slice(-300)); }
+    nextQuestion();
+  });
+  $("nextBtn").addEventListener("click", () => (state.mode === "mock" && state.n >= MOCK_LEN) ? summary() : nextQuestion());
+  $("stopBtn").addEventListener("click", reset);
+  $("againBtn").addEventListener("click", reset);
+  $("answer").addEventListener("input", updateCount);
+  $("answer").setAttribute("maxlength", "4000");
+  $("answer").addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) submit(); });
+  $("codeFont").addEventListener("change", e => $("answer").classList.toggle("code", e.target.checked));
+
+  loadTopics();
+})();
+</script>
+</body>
+</html>
