@@ -18,6 +18,9 @@ window.SW_CONFIG = {
   // Interview Prep bot: your Cloudflare Worker link, e.g. "https://sw-interview.yourname.workers.dev"
   INTERVIEW_API_URL: "https://sw-interview.sharanmayya929.workers.dev",
 
+  // Interview Prep launch promotion (top bar, pop-up, floating button). Set to false to hide it all.
+  PROMO_ON: true,
+
   // Contact
   CONTACT_EMAIL: "semiconweekly.team@gmail.com",      // e.g. "hello@semiconweekly.in"
   CONTACT_FORM_URL: "",   // a Google Form link for messages (optional)

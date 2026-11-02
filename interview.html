@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Interview Prep · Semicon Weekly</title>
 <meta name="description" content="Practise VLSI interview questions on Verilog, SystemVerilog, assertions and UVM. Type your answer and get a score, what you missed, and a model answer.">
-<meta name="robots" content="noindex">
 <link rel="canonical" href="https://semiconweekly.in/interview.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Semicon Weekly">
@@ -475,8 +474,15 @@ menuBtn.addEventListener('click', () => {
   $("answer").addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) submit(); });
   $("codeFont").addEventListener("change", e => $("answer").classList.toggle("code", e.target.checked));
 
-  loadTopics();
+  loadTopics().then(() => {
+    // links from the promotion can pre-select a topic and mode, e.g. interview.html?topic=UVM&mode=drill
+    const u = new URLSearchParams(location.search);
+    const t = u.get("topic"), m = u.get("mode");
+    if (t && [...$("topic").options].some(o => o.value === t)) $("topic").value = t;
+    if (m === "drill" || m === "mock") { const r = document.querySelector('input[name=mode][value="' + m + '"]'); if (r) r.checked = true; }
+  });
 })();
 </script>
+<script src="promo.js" defer></script>
 </body>
 </html>
