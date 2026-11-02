@@ -148,7 +148,7 @@ body { margin: 0; }
     <div class="tiles">
       <div class="tile"><b id="kUsers">0</b><span>signed-in users</span></div>
       <div class="tile"><b id="kNew">0</b><span>new today</span></div>
-      <div class="tile"><b id="kAnswers">0</b><span>answers graded</span></div>
+      <div class="tile"><b id="kAnswers">0</b><span id="kAnswersOf">answers</span></div>
       <div class="tile"><b id="kAvg">–</b><span>average score / 10</span></div>
       <div class="tile"><b id="kFair">–</b><span id="kFairOf">said feedback was fair</span></div>
     </div>
@@ -253,6 +253,7 @@ menuBtn.addEventListener('click', () => {
     $("kUsers").textContent = t.users || 0;
     $("kNew").textContent = t.newToday || 0;
     $("kAnswers").textContent = t.answers || 0;
+    $("kAnswersOf").textContent = `answers (${(t.answers || 0) - (t.mcq || 0) - (t.voice || 0)} typed · ${t.voice || 0} spoken · ${t.mcq || 0} quiz)`;
     $("kAvg").textContent = t.average == null ? "–" : t.average;
     const votes = (t.thumbsUp || 0) + (t.thumbsDown || 0);
     $("kFair").textContent = votes ? Math.round(100 * t.thumbsUp / votes) + "%" : "–";

@@ -122,6 +122,45 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
 .acct a.lnk:hover, .acct button.lnk:hover { text-decoration: underline; }
 .acct .gbtn { min-height: 44px; }
 .signin-nudge { margin-top: 12px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.ansmodes { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 14px; }
+.ansmodes button { border: 1px solid #b9c2cf; background: #fff; border-radius: 99px; padding: 8px 14px; font: 500 15px var(--sans); cursor: pointer; color: var(--ink); }
+.ansmodes button[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+.ansmodes button:disabled { opacity: .45; cursor: not-allowed; }
+.ansmodes .hint { font-size: 13px; color: var(--ink-3); align-self: center; }
+.qline { display: flex; gap: 12px; align-items: flex-start; }
+.qline .qtext { flex: 1; }
+.speak-q { flex: none; border: 1px solid #b9c2cf; background: #fff; border-radius: 99px; padding: 6px 12px; font-size: 14px; cursor: pointer; color: var(--ink-2); }
+.speak-q[aria-pressed="true"] { background: #eef3fb; border-color: var(--brand); color: var(--brand); }
+.mic { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; background: #eef3fb; border: 1px dashed #9db3d6; border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+.mic button { width: 58px; height: 58px; border-radius: 50%; border: 0; background: var(--brand); color: #fff; font-size: 26px; cursor: pointer; flex: none; position: relative; }
+.mic button:disabled { opacity: .45; cursor: not-allowed; }
+.mic button.on { background: var(--bad); }
+.mic button.on::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 3px solid var(--bad); animation: micPulse 1.2s infinite; }
+@keyframes micPulse { from { transform: scale(1); opacity: .8; } to { transform: scale(1.35); opacity: 0; } }
+.mic p { flex: 1; min-width: 200px; font-size: 15px; color: var(--ink-2); margin: 0; }
+.mic p b { color: var(--ink); }
+#mcqStem::before, #rMcqStem::before { content: "Quick check: "; font-weight: 700; color: var(--brand); }
+.opts { display: grid; gap: 10px; margin: 6px 0 4px; }
+.opt { display: flex; gap: 12px; align-items: flex-start; border: 2px solid var(--rule); border-radius: 10px; padding: 12px 14px; cursor: pointer; font-size: 16px; line-height: 1.45; background: #fff; position: relative; }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt .l { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 2px solid #b9c2cf; display: grid; place-items: center; font-weight: 700; font-size: 14px; color: var(--ink-2); }
+.opt:has(input:checked) { border-color: var(--brand); background: #eef3fb; }
+.opt:has(input:checked) .l { background: var(--brand); border-color: var(--brand); color: #fff; }
+.opt:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.opt .t { white-space: pre-wrap; padding-top: 2px; }
+.mcq-res .head { display: flex; align-items: center; gap: 12px; font-family: var(--serif); font-weight: 800; font-size: 30px; }
+.mcq-res .head .ic { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 24px; }
+.mcq-res .ok { color: var(--good); } .mcq-res .ok .ic { background: var(--good); }
+.mcq-res .no { color: var(--bad); } .mcq-res .no .ic { background: var(--bad); }
+.mcq-res .opt { cursor: default; }
+.mcq-res .opt.right { border-color: var(--good); background: #ecfdf5; }
+.mcq-res .opt.right .l { background: var(--good); border-color: var(--good); color: #fff; }
+.mcq-res .opt.wrong { border-color: var(--bad); background: #fef2f2; }
+.mcq-res .opt.wrong .l { background: var(--bad); border-color: var(--bad); color: #fff; }
+.mcq-res .tag2 { margin-left: auto; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; padding-top: 4px; }
+.mcq-res .why { margin-top: 14px; background: var(--paper-2); border-radius: 8px; padding: 12px 14px; font-size: 15.5px; line-height: 1.55; }
+.mcq-res .deeper { margin-top: 14px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 15px; color: var(--ink-2); }
+@media (max-width: 640px) { .qline { flex-direction: column; gap: 6px; } .mcq-res .tag2 { display: none; } }
 .fb { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 14px; }
 .fb .q { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 15px; color: var(--ink-2); }
 .fb button.vote { border: 1px solid #b9c2cf; background: #fff; border-radius: 99px; padding: 6px 14px; font-size: 15px; cursor: pointer; }
@@ -205,6 +244,13 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
       <label class="mode"><input type="radio" name="mode" value="drill">
         <b>Topic practice</b><span>One question at a time on the topic you pick. Stop whenever you like.</span></label>
     </div>
+    <div class="f" style="margin-top:16px">How do you want to answer?</div>
+    <div class="ansmodes" id="setupModes" role="group" aria-label="Answer style">
+      <button type="button" data-am="type" aria-pressed="true">✍️ Type</button>
+      <button type="button" data-am="voice" aria-pressed="false">🎤 Speak</button>
+      <button type="button" data-am="mcq" aria-pressed="false">🔘 4 options</button>
+      <span class="hint" id="setupHint">Write your answer. Scored by AI out of 10.</span>
+    </div>
     <div class="row">
       <label class="f">Topic
         <select id="topic"><option value="any">All topics</option></select>
@@ -236,18 +282,36 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
     </div>
     <div class="loading" id="qLoading"><div class="spin"></div>Getting your question…</div>
     <div id="qBody" hidden>
-      <p class="qtext" id="qText"></p>
-      <label class="f" for="answer">Your answer</label>
-      <textarea id="answer" placeholder="Answer as you would in the interview. Explain in your own words. For code questions, write the Verilog/SystemVerilog."></textarea>
-      <div class="tools">
-        <label><input type="checkbox" id="codeFont"> Code font</label>
-        <span id="count">0 / 4000</span>
+      <div class="qline">
+        <p class="qtext" id="qText"></p>
+        <button class="speak-q" id="readBtn" type="button" aria-pressed="false" title="Read the question aloud">🔊 Read aloud</button>
+      </div>
+      <div class="ansmodes" id="qModes" role="group" aria-label="Answer style">
+        <button type="button" data-am="type" aria-pressed="true">✍️ Type</button>
+        <button type="button" data-am="voice" aria-pressed="false">🎤 Speak</button>
+        <button type="button" data-am="mcq" aria-pressed="false">🔘 4 options</button>
+      </div>
+      <div id="writeWrap">
+        <div class="mic" id="micBox" hidden>
+          <button type="button" id="micBtn" aria-label="Start speaking">🎤</button>
+          <p id="micMsg"><b>Tap the mic and speak your answer.</b> Your words appear below; fix any mistakes, then submit. Speak in English, like in the interview.</p>
+        </div>
+        <label class="f" for="answer">Your answer</label>
+        <textarea id="answer" placeholder="Answer as you would in the interview. Explain in your own words. For code questions, write the Verilog/SystemVerilog."></textarea>
+        <div class="tools">
+          <label><input type="checkbox" id="codeFont"> Code font</label>
+          <span id="count">0 / 4000</span>
+        </div>
+      </div>
+      <div id="mcqWrap" hidden>
+        <p class="f" id="mcqStem" style="font-size:16px;color:var(--ink);margin-bottom:6px"></p>
+        <div class="opts" id="mcqOpts" role="radiogroup" aria-labelledby="mcqStem"></div>
       </div>
       <div class="actions">
         <button class="btn btn-main" id="submitBtn">Submit answer</button>
         <button class="btn btn-ghost" id="skipBtn">Skip</button>
         <span class="spacer"></span>
-        <span class="muted">Tip: Ctrl + Enter submits</span>
+        <span class="muted" id="submitTip">Tip: Ctrl + Enter submits</span>
       </div>
     </div>
     <div class="err" id="qErr" hidden><span id="qErrMsg"></span><br><button class="btn btn-main" id="retryBtn" type="button" hidden>Retry</button></div>
@@ -258,6 +322,15 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
   <section class="card" id="rCard" hidden aria-live="polite">
     <div class="loading" id="rLoading"><div class="spin"></div>The interviewer is checking your answer…</div>
     <div id="rBody" hidden>
+      <div class="mcq-res" id="rMcq" hidden>
+        <div class="head" id="rMcqHead"><span class="ic" id="rMcqIc"></span><span id="rMcqTitle"></span></div>
+        <p class="f" id="rMcqStem" style="font-size:16px;color:var(--ink);margin:14px 0 8px"></p>
+        <div class="opts" id="rMcqOpts"></div>
+        <div class="why" id="rMcqWhy"></div>
+        <div class="deeper"><span>Interviewers want the explanation, not just the letter.</span>
+          <button class="btn btn-ghost" id="deeperBtn" type="button">Explain it in your words for AI feedback →</button></div>
+      </div>
+      <div id="rAi">
       <div class="score">
         <div class="score-num"><span id="rScore">0</span><small>/10</small></div>
         <div style="flex:1">
@@ -273,6 +346,7 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
       <details class="model" open><summary>How a strong candidate would answer</summary><div id="rModel"></div></details>
       <div class="next-q" id="rFollowWrap"><h3>The interviewer would ask next</h3><p id="rFollow"></p></div>
       <details class="yours"><summary>Show your answer</summary><pre id="rYours"></pre></details>
+      </div>
       <div class="fb" id="fb">
         <div class="q">Was this feedback fair?
           <button class="vote" type="button" data-v="1" aria-pressed="false">👍 Yes</button>
@@ -314,10 +388,10 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
     <h2 style="font-family:var(--slab);font-size:18px;margin-bottom:6px">How it works</h2>
     <ol>
       <li>Pick a mode, topic and level, then press Start.</li>
-      <li>Type your answer the way you would speak it in the interview.</li>
-      <li>You get a score out of 10, the points you covered and missed, and a model answer.</li>
+      <li>Answer your way: <b>type</b> it, <b>speak</b> it (the mic writes it for you), or pick from <b>4 options</b> for a quick check.</li>
+      <li>Typed and spoken answers get an AI score out of 10, the points you covered and missed, and a model answer. Option answers show the right choice and why.</li>
     </ol>
-    <p class="muted" style="margin-top:8px">Free during beta: 2 answers a day as a guest, 5 a day when you sign in with Google. Feedback is generated by AI and checked against our own answer notes, so treat it as practice, not a final verdict. If you sign in, your answers and scores are saved so you can see your progress; you can delete them any time from <a href="progress.html" style="color:var(--accent)">My progress</a>. See our <a href="privacy.html" style="color:var(--accent)">Privacy</a> page.</p>
+    <p class="muted" style="margin-top:8px">Free during beta: 2 AI-scored answers a day as a guest, 5 a day when you sign in with Google. The 4-option quiz is unlimited. Voice typing uses your browser&rsquo;s speech service and works best in Chrome or Edge. Feedback is generated by AI and checked against our own answer notes, so treat it as practice, not a final verdict. If you sign in, your answers and scores are saved so you can see your progress; you can delete them any time from <a href="progress.html" style="color:var(--accent)">My progress</a>. See our <a href="privacy.html" style="color:var(--accent)">Privacy</a> page.</p>
   </div>
 </div>
 </main>
@@ -362,7 +436,7 @@ menuBtn.addEventListener('click', () => {
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
   };
 
-  let state = { mode: "mock", topic: "any", level: "any", q: null, n: 0, results: [] };
+  let state = { mode: "mock", topic: "any", level: "any", q: null, n: 0, results: [], answerMode: store.get("ip_answer_mode", "type"), usedVoice: false };
 
   function show(id, on) { $(id).hidden = !on; }
   function err(id, msg, retry) {
@@ -408,16 +482,19 @@ menuBtn.addEventListener('click', () => {
       $("qLevel").textContent = state.q.level; $("qLevel").className = "tag " + state.q.level;
       $("qType").textContent = state.q.type;
       $("qText").textContent = state.q.question;
-      $("answer").value = ""; updateCount();
+      $("answer").value = ""; updateCount(); state.usedVoice = false;
       const isCode = state.q.type === "code";
       $("codeFont").checked = isCode; $("answer").classList.toggle("code", isCode);
+      renderMcqOptions();
       show("qLoading", false); show("qBody", true);
-      $("answer").focus({ preventScroll: true });
+      setAnswerMode(state.answerMode, "question");
       $("qCard").scrollIntoView({ behavior: "smooth", block: "start" });
     } catch (e) { show("qLoading", false); err("qErr", e.message); show("setup", true); }
   }
 
   async function submit() {
+    stopListening(); stopReading();
+    if (state.answerMode === "mcq" && state.q && state.q.mcq) return submitMcq();
     const answer = $("answer").value.trim();
     if (answer.length < 3) { err("qErr", "Please type an answer first. If you don't know it, press Skip."); return; }
     err("qErr", ""); show("nudge", false);
@@ -425,7 +502,7 @@ menuBtn.addEventListener('click', () => {
     show("rCard", true); show("rLoading", true); show("rBody", false); err("rErr", "");
     $("rCard").scrollIntoView({ behavior: "smooth", block: "start" });
     try {
-      const { result, remaining, attemptId } = await api("/grade", { id: state.q.id, answer });
+      const { result, remaining, attemptId } = await api("/grade", { id: state.q.id, answer, mode: state.usedVoice ? "voice" : "type" });
       setQuota(remaining);
       state.attemptId = attemptId;
       renderResult(result, answer);
@@ -460,8 +537,186 @@ menuBtn.addEventListener('click', () => {
     $("rModel").textContent = r.model_answer;
     $("rFollow").textContent = r.follow_up; show("rFollowWrap", !!r.follow_up);
     $("rYours").textContent = answer;
+    show("rMcq", false); show("rAi", true);
     show("rLoading", false); show("rBody", true);
   }
+
+  // ---------- answer style: type / speak / 4 options ----------
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const HINTS = {
+    type: "Write your answer. Scored by AI out of 10.",
+    voice: "Speak your answer; it is written for you, then scored by AI.",
+    mcq: "Pick 1 of 4 options. Instant result, unlimited, no daily limit.",
+  };
+  // where: "setup" (setup buttons), "question" (new question loaded), or "click" (buttons on the question card)
+  function setAnswerMode(m, where) {
+    const noOptions = !!(state.q && !state.q.mcq);
+    if (m === "mcq" && noOptions && where !== "setup") m = "type"; // this question has no options yet
+    state.answerMode = m;
+    if (where !== "question" || !noOptions) store.set("ip_answer_mode", m);
+    if (m !== "mcq") store.set("ip_last_write_mode", m);
+    ["setupModes", "qModes"].forEach(id => $(id).querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.am === m))));
+    $("setupHint").textContent = HINTS[m];
+    $("qModes").querySelector('[data-am="mcq"]').disabled = noOptions;
+    show("writeWrap", m !== "mcq"); show("mcqWrap", m === "mcq");
+    show("micBox", m === "voice");
+    if (m !== "voice") stopListening();
+    if (m === "voice" && !SR) {
+      $("micBtn").disabled = true;
+      $("micMsg").innerHTML = "<b>Voice typing is not supported in this browser.</b> Open this page in Chrome or Edge, or use the 🎤 key on your phone keyboard to dictate into the box below.";
+    }
+    $("submitBtn").textContent = m === "mcq" ? "Check answer" : "Submit answer";
+    show("submitTip", m !== "mcq");
+    if (where !== "setup" && m === "type") $("answer").focus({ preventScroll: true });
+  }
+  document.querySelectorAll("#setupModes button, #qModes button").forEach(b =>
+    b.addEventListener("click", () => setAnswerMode(b.dataset.am, b.closest("#setupModes") ? "setup" : "click")));
+
+  // ----- voice typing (browser speech recognition, Indian English) -----
+  let rec = null, listening = false, baseText = "";
+  function micUI(on, msg) {
+    $("micBtn").classList.toggle("on", on);
+    $("micBtn").setAttribute("aria-label", on ? "Stop speaking" : "Start speaking");
+    $("micBtn").textContent = on ? "■" : "🎤";
+    if (msg) $("micMsg").innerHTML = msg;
+  }
+  function startListening() {
+    if (!SR) return;
+    stopReading();
+    rec = new SR();
+    rec.lang = "en-IN"; rec.continuous = true; rec.interimResults = true;
+    baseText = $("answer").value ? $("answer").value.replace(/\s*$/, " ") : "";
+    rec.onresult = e => {
+      let text = "";
+      for (let i = 0; i < e.results.length; i++) text += e.results[i][0].transcript;
+      $("answer").value = baseText + text; updateCount(); state.usedVoice = true;
+    };
+    rec.onerror = e => {
+      if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+        listening = false;
+        micUI(false, "<b>Microphone is blocked.</b> Click the 🔒 icon next to the website address, allow the microphone, then tap the mic again.");
+      } else if (e.error === "network") {
+        listening = false;
+        micUI(false, "<b>Voice typing needs internet.</b> Check your connection and tap the mic again, or type your answer.");
+      } else if (e.error === "audio-capture") {
+        listening = false;
+        micUI(false, "<b>No microphone found.</b> Connect a microphone or use your phone, or type your answer.");
+      } // "no-speech" (silence) is ignored: listening continues
+    };
+    rec.onend = () => {
+      if (listening) { // browsers stop after a pause; keep going until the student taps stop
+        baseText = $("answer").value ? $("answer").value.replace(/\s*$/, " ") : "";
+        try { rec.start(); } catch { listening = false; micUI(false); }
+      } else micUI(false);
+    };
+    try {
+      rec.start(); listening = true;
+      micUI(true, "<b>Listening…</b> Speak clearly. Tap ■ when you finish, then check the text and submit.");
+    } catch { listening = false; micUI(false); }
+  }
+  function stopListening() {
+    if (!listening) return;
+    listening = false;
+    try { rec && rec.stop(); } catch {}
+    micUI(false, "<b>Done.</b> Fix any wrong words below, then press Submit. Tap the mic to add more.");
+  }
+  $("micBtn").addEventListener("click", () => listening ? stopListening() : startListening());
+
+  // ----- read the question aloud -----
+  function stopReading() {
+    try { speechSynthesis.cancel(); } catch {}
+    $("readBtn").setAttribute("aria-pressed", "false"); $("readBtn").textContent = "🔊 Read aloud";
+  }
+  if (!("speechSynthesis" in window)) $("readBtn").hidden = true;
+  $("readBtn").addEventListener("click", () => {
+    if (speechSynthesis.speaking) return stopReading();
+    const text = state.answerMode === "mcq" && state.q.mcq
+      ? state.q.mcq.question + ". " + state.q.mcq.options.map((o, i) => "Option " + "ABCD"[i] + ": " + o).join(". ")
+      : state.q.question;
+    const u = new SpeechSynthesisUtterance(text.replace(/[<>=|#`]/g, " "));
+    const voices = speechSynthesis.getVoices();
+    const v = voices.find(x => /en[-_]IN/i.test(x.lang)) || voices.find(x => /^en/i.test(x.lang));
+    if (v) u.voice = v;
+    u.lang = v ? v.lang : "en-IN"; u.rate = 0.95;
+    u.onend = stopReading;
+    $("readBtn").setAttribute("aria-pressed", "true"); $("readBtn").textContent = "■ Stop";
+    speechSynthesis.speak(u);
+  });
+
+  // ----- 4 options -----
+  function renderMcqOptions() {
+    const box = $("mcqOpts"); box.replaceChildren();
+    if (!state.q.mcq) return;
+    $("mcqStem").textContent = state.q.mcq.question;
+    state.q.mcq.options.forEach((o, i) => {
+      const L = "ABCD"[i];
+      const lab = document.createElement("label"); lab.className = "opt";
+      const inp = document.createElement("input"); inp.type = "radio"; inp.name = "mcq"; inp.value = L;
+      const l = document.createElement("span"); l.className = "l"; l.textContent = L;
+      const t = document.createElement("span"); t.className = "t"; t.textContent = o;
+      lab.append(inp, l, t); box.appendChild(lab);
+    });
+  }
+  async function submitMcq() {
+    const pick = document.querySelector('input[name="mcq"]:checked');
+    if (!pick) { err("qErr", "Pick one of the 4 options first. If you don't know it, press Skip."); return; }
+    err("qErr", ""); show("nudge", false);
+    $("submitBtn").disabled = true; $("skipBtn").disabled = true;
+    try {
+      const { result, attemptId } = await api("/mcq-check", { id: state.q.id, choice: pick.value });
+      state.attemptId = attemptId;
+      renderMcqResult(result);
+      resetFeedback();
+      const score = result.correct ? 10 : 0;
+      state.results.push({ id: state.q.id, question: state.q.mcq.question, topic: state.q.topic, score, mcq: true });
+      const seen = store.get("ip_seen", []); seen.push(state.q.id); store.set("ip_seen", seen.slice(-300));
+      const hist = store.get("ip_history", []); hist.push({ id: state.q.id, topic: state.q.topic, score, mcq: true, at: Date.now() }); store.set("ip_history", hist.slice(-500));
+      state.n++;
+      show("qCard", false); show("rCard", true);
+      const done = state.mode === "mock" && state.n >= MOCK_LEN;
+      $("nextBtn").textContent = done ? "See my summary" : "Next question";
+      $("rCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (e) {
+      err("qErr", e.message, !!(e.data && e.data.retry));
+    } finally { $("submitBtn").disabled = false; $("skipBtn").disabled = false; }
+  }
+  function renderMcqResult(r) {
+    $("rMcqHead").className = "head " + (r.correct ? "ok" : "no");
+    $("rMcqIc").textContent = r.correct ? "✓" : "✗";
+    $("rMcqTitle").textContent = r.correct ? "Correct!" : "Not quite";
+    $("rMcqStem").textContent = state.q.mcq.question;
+    const box = $("rMcqOpts"); box.replaceChildren();
+    state.q.mcq.options.forEach((o, i) => {
+      const L = "ABCD"[i];
+      const d = document.createElement("div");
+      d.className = "opt" + (L === r.answer ? " right" : (L === r.choice ? " wrong" : ""));
+      const l = document.createElement("span"); l.className = "l"; l.textContent = L;
+      const t = document.createElement("span"); t.className = "t"; t.textContent = o;
+      d.append(l, t);
+      if (L === r.answer || L === r.choice) {
+        const g = document.createElement("span"); g.className = "tag2";
+        g.style.color = L === r.answer ? "var(--good)" : "var(--bad)";
+        g.textContent = L === r.answer ? "Correct answer" : "Your pick";
+        d.appendChild(g);
+      }
+      box.appendChild(d);
+    });
+    $("rMcqWhy").textContent = r.explanation || "";
+    show("rMcqWhy", !!r.explanation);
+    show("rAi", false); show("rMcq", true);
+    show("rLoading", false); show("rBody", true);
+  }
+  $("deeperBtn").addEventListener("click", () => {
+    // same question again, answered in words for full AI feedback
+    show("rCard", false); show("qCard", true); err("qErr", "");
+    $("answer").value = ""; updateCount(); state.usedVoice = false;
+    state.n = Math.max(0, state.n - 1); state.results.pop();
+    $("qProgress").textContent = state.mode === "mock" ? `Question ${state.n + 1} of ${MOCK_LEN}` : `Question ${state.n + 1}`;
+    setAnswerMode(store.get("ip_last_write_mode", "type"), "click");
+    $("qCard").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  setAnswerMode(state.answerMode, "setup");
+
 
   function summary() {
     show("rCard", false); show("qCard", false); show("sCard", true);
@@ -479,7 +734,7 @@ menuBtn.addEventListener('click', () => {
       const tr = document.createElement("tr");
       const a = document.createElement("td"); a.textContent = x.question;
       const b = document.createElement("td"); b.textContent = x.topic;
-      const c = document.createElement("td"); c.className = "n"; c.textContent = x.score + "/10"; c.style.color = scoreColor(x.score);
+      const c = document.createElement("td"); c.className = "n"; c.textContent = x.mcq ? (x.score ? "✓ correct" : "✗ wrong") : x.score + "/10"; c.style.color = scoreColor(x.score);
       tr.append(a, b, c); tb.appendChild(tr);
     });
     $("sCard").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -502,6 +757,7 @@ menuBtn.addEventListener('click', () => {
   });
   $("submitBtn").addEventListener("click", submit);
   $("skipBtn").addEventListener("click", () => {
+    stopListening(); stopReading();
     if (state.q) { const seen = store.get("ip_seen", []); seen.push(state.q.id); store.set("ip_seen", seen.slice(-300)); }
     nextQuestion();
   });

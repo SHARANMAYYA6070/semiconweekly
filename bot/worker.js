@@ -1,5 +1,5 @@
 // =====================================================================
-//  Semicon Weekly – Interview Prep bot (Phase 2A)
+//  Semicon Weekly – Interview Prep bot (Phase 2A + voice + options)
 //  Cloudflare Worker. Paste this whole file into the Worker editor.
 //
 //  Settings (Cloudflare → sw-interview → Settings):
@@ -18,7 +18,8 @@
 //  Routes:
 //    GET  /topics            topic list
 //    POST /question          one question (answer key is never sent)
-//    POST /grade             grade an answer
+//    POST /grade             grade a typed or spoken answer (AI)
+//    POST /mcq-check         check a 4-option answer (instant, no AI, not counted in the limit)
 //    POST /auth/google       exchange a Google sign-in for a session
 //    GET  /me                progress for the signed-in user
 //    POST /me/delete         delete the signed-in user's data
@@ -103,17 +104,43 @@ export default {
         }
 
         const result = await gradeWithClaude(q, answer, env);
+        const mode = body.mode === "voice" ? "voice" : "type";
         let attemptId = null;
         if (env.DB) {
           const r = await env.DB.prepare(
-            `INSERT INTO attempts (user_id, guest_key, question_id, topic, level, score, answer, result_json, day, created_at)
-             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)`
+            `INSERT INTO attempts (user_id, guest_key, question_id, topic, level, score, answer, result_json, day, created_at, mode)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)`
           ).bind(user ? user.sub : null, user ? null : await guestKey(request), q.id, q.topic, q.level,
-                 result.score, answer, JSON.stringify(result), indiaDay(), Date.now()).run();
+                 result.score, answer, JSON.stringify(result), indiaDay(), Date.now(), mode).run();
           attemptId = r.meta && r.meta.last_row_id;
         }
         if (!user) await addGuestUsage(request, env, ctx, used + 1);
         return json({ result, attemptId, remaining: Math.max(0, lim - used - 1) }, 200, cors);
+      }
+
+      // 4-option answer: checked instantly from the sheet, no AI call, not counted in the daily limit.
+      if (path === "/mcq-check" && request.method === "POST") {
+        const body = await readJson(request);
+        const choice = String(body.choice || "").trim().toUpperCase();
+        if (!body.id || !/^[ABCD]$/.test(choice)) return json({ error: "Please pick one option." }, 400, cors);
+        const bank = await loadBank(env);
+        const q = bank.find(r => r.id === body.id);
+        if (!q || !hasMcq(q)) return json({ error: "That question has no options. Load a new one." }, 404, cors);
+        const answer = String(q.mcq_answer).trim().toUpperCase();
+        const correct = choice === answer;
+        const result = { correct, choice, answer, answerText: q["mcq_" + answer.toLowerCase()], explanation: q.mcq_explain || "" };
+        let attemptId = null;
+        if (env.DB) {
+          const r = await env.DB.prepare(
+            `INSERT INTO attempts (user_id, guest_key, question_id, topic, level, score, answer, result_json, day, created_at, mode)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, 'mcq')`
+          ).bind(user ? user.sub : null, user ? null : await guestKey(request), q.id, q.topic, q.level,
+                 correct ? 10 : 0, choice + ") " + (q["mcq_" + choice.toLowerCase()] || ""),
+                 JSON.stringify({ verdict: correct ? "Correct" : "Not quite", model_answer: result.explanation, missed: correct ? [] : ["Correct option: " + answer + ") " + result.answerText] }),
+                 indiaDay(), Date.now()).run();
+          attemptId = r.meta && r.meta.last_row_id;
+        }
+        return json({ result, attemptId }, 200, cors);
       }
 
       if (path === "/feedback" && request.method === "POST") {
@@ -228,7 +255,12 @@ function pickQuestion(bank, { topic, level, exclude } = {}) {
 }
 
 function publicView(q) {
-  return { id: q.id, topic: q.topic, subtopic: q.subtopic, level: q.level, type: q.type, question: q.question };
+  const v = { id: q.id, topic: q.topic, subtopic: q.subtopic, level: q.level, type: q.type, question: q.question };
+  if (hasMcq(q)) v.mcq = { question: q.mcq_question || q.question, options: [q.mcq_a, q.mcq_b, q.mcq_c, q.mcq_d] };
+  return v;
+}
+function hasMcq(q) {
+  return !!(q.mcq_a && q.mcq_b && q.mcq_c && q.mcq_d && /^[ABCD]$/i.test(String(q.mcq_answer || "").trim()));
 }
 
 // ---------------- grading ----------------
@@ -422,6 +454,7 @@ async function ensureTables(env) {
     `CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT, path TEXT, detail TEXT, busy INTEGER, created_at INTEGER)`,
   ];
   await env.DB.batch(stmts.map(s => env.DB.prepare(s)));
+  try { await env.DB.prepare("ALTER TABLE attempts ADD COLUMN mode TEXT DEFAULT 'type'").run(); } catch {} // already added
   tablesReady = true;
 }
 
@@ -506,7 +539,7 @@ async function guestKey(request) {
 async function usedToday(request, env, user) {
   if (user) {
     if (!env.DB) return 0;
-    const r = await env.DB.prepare("SELECT COUNT(*) AS n FROM attempts WHERE user_id = ?1 AND day = ?2").bind(user.sub, indiaDay()).first();
+    const r = await env.DB.prepare("SELECT COUNT(*) AS n FROM attempts WHERE user_id = ?1 AND day = ?2 AND COALESCE(mode, 'type') != 'mcq'").bind(user.sub, indiaDay()).first();
     return (r && r.n) || 0;
   }
   if (!env.USAGE) return 0;
@@ -528,26 +561,35 @@ async function progressFor(user, request, env) {
   if (!env.DB) return out;
   const uid = user.sub;
   const [tot, topics, recent, days] = await env.DB.batch([
-    env.DB.prepare("SELECT COUNT(*) AS answers, COUNT(DISTINCT question_id) AS unique_q, AVG(score) AS avg, COUNT(DISTINCT day) AS active_days FROM attempts WHERE user_id = ?1").bind(uid),
-    env.DB.prepare("SELECT topic, COUNT(*) AS n, AVG(score) AS avg, MAX(score) AS best FROM attempts WHERE user_id = ?1 GROUP BY topic ORDER BY avg ASC").bind(uid),
-    env.DB.prepare("SELECT id, question_id, topic, level, score, answer, result_json, created_at FROM attempts WHERE user_id = ?1 ORDER BY id DESC LIMIT 20").bind(uid),
-    env.DB.prepare("SELECT day, COUNT(*) AS n, AVG(score) AS avg FROM attempts WHERE user_id = ?1 GROUP BY day ORDER BY day DESC LIMIT 60").bind(uid),
+    env.DB.prepare(`SELECT COUNT(*) AS answers, COUNT(DISTINCT question_id) AS unique_q, COUNT(DISTINCT day) AS active_days,
+                      AVG(CASE WHEN COALESCE(mode,'type') != 'mcq' THEN score END) AS avg,
+                      SUM(CASE WHEN mode = 'mcq' THEN 1 ELSE 0 END) AS mcq_n, SUM(CASE WHEN mode = 'mcq' AND score = 10 THEN 1 ELSE 0 END) AS mcq_ok
+                    FROM attempts WHERE user_id = ?1`).bind(uid),
+    env.DB.prepare(`SELECT topic, SUM(CASE WHEN COALESCE(mode,'type') != 'mcq' THEN 1 ELSE 0 END) AS n,
+                      AVG(CASE WHEN COALESCE(mode,'type') != 'mcq' THEN score END) AS avg, MAX(CASE WHEN COALESCE(mode,'type') != 'mcq' THEN score END) AS best,
+                      SUM(CASE WHEN mode = 'mcq' THEN 1 ELSE 0 END) AS mcq_n, SUM(CASE WHEN mode = 'mcq' AND score = 10 THEN 1 ELSE 0 END) AS mcq_ok
+                    FROM attempts WHERE user_id = ?1 GROUP BY topic`).bind(uid),
+    env.DB.prepare("SELECT id, question_id, topic, level, score, answer, result_json, created_at, mode FROM attempts WHERE user_id = ?1 ORDER BY id DESC LIMIT 20").bind(uid),
+    env.DB.prepare("SELECT day, COUNT(*) AS n, AVG(score) AS avg, SUM(CASE WHEN COALESCE(mode,'type') != 'mcq' THEN 1 ELSE 0 END) AS ai_n FROM attempts WHERE user_id = ?1 GROUP BY day ORDER BY day DESC LIMIT 60").bind(uid),
   ]);
   const t = (tot.results || [])[0] || {};
   const topicTotals = new Map();
   bank.forEach(q => topicTotals.set(q.topic, (topicTotals.get(q.topic) || 0) + 1));
-  out.totals = { answers: t.answers || 0, uniqueQuestions: t.unique_q || 0, bankSize: bank.length, average: t.avg == null ? null : +(+t.avg).toFixed(1), activeDays: t.active_days || 0 };
-  out.topics = (topics.results || []).map(r => ({ topic: r.topic, answers: r.n, average: +(+r.avg).toFixed(1), best: r.best, inBank: topicTotals.get(r.topic) || 0 }));
+  out.totals = { answers: t.answers || 0, uniqueQuestions: t.unique_q || 0, bankSize: bank.length, average: t.avg == null ? null : +(+t.avg).toFixed(1),
+                 activeDays: t.active_days || 0, mcqAnswered: t.mcq_n || 0, mcqCorrect: t.mcq_ok || 0 };
+  out.topics = (topics.results || []).map(r => ({ topic: r.topic, answers: r.n || 0, average: r.avg == null ? null : +(+r.avg).toFixed(1), best: r.best,
+    mcqAnswered: r.mcq_n || 0, mcqCorrect: r.mcq_ok || 0, inBank: topicTotals.get(r.topic) || 0 }))
+    .sort((a, b) => (a.average == null ? 99 : a.average) - (b.average == null ? 99 : b.average));
   out.untried = [...topicTotals.keys()].filter(k => !out.topics.some(x => x.topic === k));
   out.recent = (recent.results || []).map(r => {
     let res = {}; try { res = JSON.parse(r.result_json || "{}"); } catch {}
     const q = byId.get(r.question_id);
-    return { attemptId: r.id, id: r.question_id, question: q ? q.question : r.question_id, topic: r.topic, level: r.level, score: r.score,
+    return { attemptId: r.id, id: r.question_id, mode: r.mode || "type", question: q ? (r.mode === "mcq" ? (q.mcq_question || q.question) : q.question) : r.question_id, topic: r.topic, level: r.level, score: r.score,
              answer: r.answer, verdict: res.verdict || "", missed: res.missed || [], model_answer: res.model_answer || "", at: r.created_at };
   });
   out.days = (days.results || []).map(r => ({ day: r.day, answers: r.n, average: +(+r.avg).toFixed(1) }));
   out.streak = streak(out.days.map(d => d.day));
-  out.usedToday = (out.days.find(d => d.day === indiaDay()) || {}).answers || 0;
+  out.usedToday = ((days.results || []).find(d => d.day === indiaDay()) || {}).ai_n || 0;
   return out;
 }
 
@@ -567,7 +609,7 @@ async function adminStats(env) {
   const byId = new Map(bank.map(q => [q.id, q]));
   const today = indiaDay(), since = indiaDay(Date.now() - 13 * 86400000);
   const [a, b, c, d, e, f, g] = await env.DB.batch([
-    env.DB.prepare("SELECT (SELECT COUNT(*) FROM users) AS users, (SELECT COUNT(*) FROM attempts) AS answers, (SELECT AVG(score) FROM attempts) AS avg, (SELECT COUNT(*) FROM feedback WHERE vote = 1) AS up, (SELECT COUNT(*) FROM feedback WHERE vote = -1) AS down"),
+    env.DB.prepare("SELECT (SELECT COUNT(*) FROM users) AS users, (SELECT COUNT(*) FROM attempts) AS answers, (SELECT AVG(score) FROM attempts WHERE COALESCE(mode,'type') != 'mcq') AS avg, (SELECT COUNT(*) FROM feedback WHERE vote = 1) AS up, (SELECT COUNT(*) FROM feedback WHERE vote = -1) AS down, (SELECT COUNT(*) FROM attempts WHERE mode = 'mcq') AS mcq, (SELECT COUNT(*) FROM attempts WHERE mode = 'voice') AS voice"),
     env.DB.prepare(`SELECT day, COUNT(*) AS answers, COUNT(DISTINCT user_id) AS users, COUNT(DISTINCT guest_key) AS guests, AVG(score) AS avg
                     FROM attempts WHERE day >= ?1 GROUP BY day ORDER BY day DESC`).bind(since),
     env.DB.prepare("SELECT COUNT(*) AS n FROM users WHERE created_at >= ?1").bind(Date.parse(today + "T00:00:00+05:30")),
@@ -583,7 +625,7 @@ async function adminStats(env) {
   const t = (a.results || [])[0] || {};
   return {
     totals: { users: t.users || 0, newToday: ((c.results || [])[0] || {}).n || 0, answers: t.answers || 0,
-              average: t.avg == null ? null : +(+t.avg).toFixed(1), thumbsUp: t.up || 0, thumbsDown: t.down || 0 },
+              average: t.avg == null ? null : +(+t.avg).toFixed(1), thumbsUp: t.up || 0, thumbsDown: t.down || 0, mcq: t.mcq || 0, voice: t.voice || 0 },
     days: (b.results || []).map(r => ({ ...r, avg: r.avg == null ? null : +(+r.avg).toFixed(1) })),
     questions: (d.results || []).map(r => ({ ...r, avg: +(+r.avg).toFixed(1), question: (byId.get(r.id) || {}).question || "(removed)" })),
     thumbsDown: (e.results || []).map(r => {
@@ -597,7 +639,7 @@ async function adminStats(env) {
 
 async function adminExport(type, env, cors) {
   const q = {
-    attempts: "SELECT a.id, a.day, datetime(a.created_at/1000,'unixepoch') AS utc_time, COALESCE(u.email,'guest') AS user, a.question_id, a.topic, a.level, a.score, a.answer FROM attempts a LEFT JOIN users u ON u.id = a.user_id ORDER BY a.id DESC LIMIT 5000",
+    attempts: "SELECT a.id, a.day, datetime(a.created_at/1000,'unixepoch') AS utc_time, COALESCE(u.email,'guest') AS user, a.mode, a.question_id, a.topic, a.level, a.score, a.answer FROM attempts a LEFT JOIN users u ON u.id = a.user_id ORDER BY a.id DESC LIMIT 5000",
     feedback: "SELECT f.id, datetime(f.created_at/1000,'unixepoch') AS utc_time, COALESCE(u.email,'guest') AS user, f.question_id, f.vote, f.comment FROM feedback f LEFT JOIN users u ON u.id = f.user_id ORDER BY f.id DESC LIMIT 5000",
     users: "SELECT email, name, plan, datetime(created_at/1000,'unixepoch') AS joined_utc, datetime(last_seen/1000,'unixepoch') AS last_seen_utc, (SELECT COUNT(*) FROM attempts a WHERE a.user_id = users.id) AS answers FROM users ORDER BY created_at DESC",
     errors: "SELECT id, datetime(created_at/1000,'unixepoch') AS utc_time, path, busy, detail FROM errors ORDER BY id DESC LIMIT 2000",

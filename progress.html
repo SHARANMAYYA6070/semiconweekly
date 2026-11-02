@@ -41,7 +41,7 @@
 .who { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
 .who img { width: 52px; height: 52px; border-radius: 50%; }
 .who b { display: block; font-family: var(--slab); font-size: 19px; }
-.tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 18px; }
+.tiles { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 18px; }
 .tile { border: 1px solid var(--rule); border-radius: 10px; padding: 14px; background: var(--paper-2); }
 .tile b { display: block; font-family: var(--serif); font-size: 32px; line-height: 1.1; color: var(--brand); }
 .tile span { font-size: 13px; color: var(--ink-2); }
@@ -71,10 +71,10 @@
 .ans .body p, .ans .body pre { white-space: pre-wrap; font-family: inherit; margin: 0; line-height: 1.55; }
 .ans .body ul { margin: 0; padding-left: 18px; }
 .danger { border-color: #f3d4d4; }
+@media (max-width: 900px) { .tiles { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 760px) {
   .tiles { grid-template-columns: repeat(2, 1fr); }
-  .tiles .tile:last-child { grid-column: span 2; }
-  .tt th:nth-child(3), .tt td:nth-child(3) { display: none; }
+  .tt th:nth-child(3), .tt td:nth-child(3), .tt th:nth-child(4), .tt td:nth-child(4) { display: none; }
   .meter { min-width: 0; }
   .ans .body { padding-left: 0; }
   .ans summary { flex-wrap: wrap; }
@@ -153,15 +153,16 @@ body { margin: 0; }
     <div class="tiles">
       <div class="tile"><b id="tAnswers">0</b><span>answers practised</span></div>
       <div class="tile"><b id="tUnique">0</b><span id="tUniqueOf">different questions</span></div>
-      <div class="tile"><b id="tAvg">–</b><span>average score / 10</span></div>
+      <div class="tile"><b id="tAvg">–</b><span>AI score / 10 (typed + spoken)</span></div>
       <div class="tile"><b id="tStreak">0</b><span>day streak</span></div>
+      <div class="tile"><b id="tQuiz">–</b><span id="tQuizOf">4-option quiz correct</span></div>
       <div class="tile"><b id="tToday">0</b><span id="tTodayOf">answers left today</span></div>
     </div>
 
     <section class="card" id="topicsCard">
       <h2>Your topics <span class="muted" style="font-size:14px;font-weight:400">weakest first</span></h2>
       <table class="tt" id="topicTable">
-        <thead><tr><th>Topic</th><th>Average score</th><th class="n">Answers</th><th></th></tr></thead>
+        <thead><tr><th>Topic</th><th>AI score</th><th class="n">Answers</th><th class="n">Quiz</th><th></th></tr></thead>
         <tbody id="topicRows"></tbody>
       </table>
       <p class="tip" id="tip"></p>
@@ -260,6 +261,9 @@ menuBtn.addEventListener('click', () => {
     $("tAvg").textContent = d.totals.average == null ? "–" : d.totals.average;
     $("tStreak").textContent = d.streak || 0;
     $("tToday").textContent = Math.max(0, d.limit - d.usedToday);
+    const qa = d.totals.mcqAnswered || 0;
+    $("tQuiz").textContent = qa ? Math.round(100 * (d.totals.mcqCorrect || 0) / qa) + "%" : "–";
+    $("tQuizOf").textContent = qa ? `quiz correct (${d.totals.mcqCorrect} of ${qa})` : "4-option quiz: not tried yet";
     $("tTodayOf").textContent = "of " + d.limit + " answers left today";
 
     const rows = $("topicRows"); rows.replaceChildren();
@@ -267,16 +271,18 @@ menuBtn.addEventListener('click', () => {
       const tr = el("tr");
       tr.appendChild(el("td", null, t.topic));
       const m = el("td"); const mt = el("div", "meter"); const bar = el("div", "bar"); const fill = el("i");
-      fill.style.width = (t.average * 10) + "%"; bar.appendChild(fill);
-      mt.appendChild(el("b", null, t.average.toFixed(1))); mt.appendChild(bar); m.appendChild(mt); tr.appendChild(m);
+      fill.style.width = ((t.average || 0) * 10) + "%"; bar.appendChild(fill);
+      mt.appendChild(el("b", null, t.average == null ? "–" : t.average.toFixed(1))); mt.appendChild(bar); m.appendChild(mt); tr.appendChild(m);
       tr.appendChild(el("td", "n", String(t.answers)));
+      tr.appendChild(el("td", "n", t.mcqAnswered ? `${t.mcqCorrect}/${t.mcqAnswered}` : "–"));
       const g = el("td", "n"); const a = el("a", "go", "Practise →");
       a.href = "interview.html?ref=progress&mode=drill&topic=" + encodeURIComponent(t.topic); g.appendChild(a); tr.appendChild(g);
       rows.appendChild(tr);
     });
     show("topicTable", d.topics.length > 0);
-    const weak = d.topics[0];
+    const weak = d.topics.find(t => t.average != null);
     $("tip").textContent = !d.topics.length ? "Answer a few questions to see your strong and weak topics."
+      : !weak ? "You have only used the 4-option quiz so far. Try typing or speaking an answer to get a full AI score and see your weak points."
       : weak.average < 6 ? `Focus next on ${weak.topic}: your average there is ${weak.average.toFixed(1)}/10. Open "Practise" and read the model answers for the points you missed.`
       : "All your topics average 6 or more. Try the Hard level next.";
     const un = $("untried"); un.replaceChildren();
@@ -287,9 +293,10 @@ menuBtn.addEventListener('click', () => {
     d.recent.forEach(r => {
       const det = el("details", "ans");
       const sum = el("summary");
-      sum.appendChild(el("span", "sc", r.score + "/10"));
+      sum.appendChild(el("span", "sc", r.mode === "mcq" ? (r.score ? "✓" : "✗") : r.score + "/10"));
       sum.appendChild(el("span", "qt", r.question));
-      sum.appendChild(el("span", "meta", r.topic + " · " + when(r.at)));
+      const how = r.mode === "mcq" ? "Quiz" : r.mode === "voice" ? "Spoken" : "Typed";
+      sum.appendChild(el("span", "meta", how + " · " + r.topic + " · " + when(r.at)));
       det.appendChild(sum);
       const b = el("div", "body");
       if (r.verdict) { b.appendChild(el("h4", null, "Feedback")); b.appendChild(el("p", null, r.verdict)); }
@@ -297,8 +304,8 @@ menuBtn.addEventListener('click', () => {
         b.appendChild(el("h4", null, "You missed"));
         const ul = el("ul"); r.missed.forEach(m => ul.appendChild(el("li", null, m))); b.appendChild(ul);
       }
-      b.appendChild(el("h4", null, "Your answer")); b.appendChild(el("pre", null, r.answer));
-      if (r.model_answer) { b.appendChild(el("h4", null, "Strong answer")); b.appendChild(el("pre", null, r.model_answer)); }
+      b.appendChild(el("h4", null, r.mode === "mcq" ? "Your pick" : "Your answer")); b.appendChild(el("pre", null, r.answer));
+      if (r.model_answer) { b.appendChild(el("h4", null, r.mode === "mcq" ? "Why" : "Strong answer")); b.appendChild(el("pre", null, r.model_answer)); }
       det.appendChild(b); rec.appendChild(det);
     });
     show("noRecent", d.recent.length === 0);
