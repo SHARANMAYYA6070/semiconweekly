@@ -131,7 +131,12 @@
   if (isUrl(C.NEWS_CSV_URL)) {
     getCSV(C.NEWS_CSV_URL).then(rows => {
       if (!hasCols(rows, "title", "summary")) return; // wrong tab: keep stories on the page
-      const items = rows.filter(r => r.title && active(r)).reverse().slice(0, 6);
+      // newest first: sort by the date column, then by row order (lower rows are newer)
+      const MON = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+      const toDay = s => { const m = /(\d{1,2})\s+([a-z]{3})[a-z]*\s+(\d{4})/i.exec(s || ""); return m && MON[m[2].toLowerCase()] != null ? Date.UTC(+m[3], MON[m[2].toLowerCase()], +m[1]) : 0; };
+      const all = rows.map((r, i) => ({ r, i, t: toDay(r.date) })).filter(x => x.r.title && active(x.r))
+        .sort((a, b) => (b.t - a.t) || (b.i - a.i)).map(x => Object.assign(x.r, { _t: x.t }));
+      const items = all.slice(0, 8);
       const box = $("#daily-view");
       if (!box || !items.length) return;
       box.textContent = "";
@@ -152,6 +157,45 @@
         art.appendChild(body);
         box.appendChild(art);
       });
+
+      // ----- Weekly tab: every story, grouped by week (Mon–Sun), newest week first -----
+      const wbox = $("#weekly-view");
+      if (wbox) {
+        wbox.textContent = "";
+        const MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], fmt = t => { const d = new Date(t); return d.getUTCDate() + " " + MN[d.getUTCMonth()]; };
+        const groups = new Map();
+        all.forEach(n => {
+          let key = "Older stories", label = "Older stories";
+          if (n._t) {
+            const d = new Date(n._t), mon = n._t - ((d.getUTCDay() + 6) % 7) * 864e5, sun = mon + 6 * 864e5;
+            const th = new Date(mon + 3 * 864e5), wk = Math.ceil(((th - Date.UTC(th.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7);
+            key = String(mon); label = "Week " + wk + " · " + fmt(mon) + " – " + fmt(sun) + " " + new Date(sun).getUTCFullYear();
+          }
+          if (!groups.has(key)) groups.set(key, { label, list: [] });
+          groups.get(key).list.push(n);
+        });
+        groups.forEach(g => {
+          const sec = el("article", "short"); sec.style.gridTemplateColumns = "minmax(0,1fr)";
+          const inner = el("div");
+          const k = el("span", "kicker k-design", g.label + " · " + g.list.length + (g.list.length > 1 ? " stories" : " story")); inner.appendChild(k);
+          const ul = el("ul"); ul.style.cssText = "list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px";
+          g.list.forEach(n => {
+            const target = n.story_link || n.source_link || "#in-short";
+            const li = el("li"); li.style.cssText = "display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center";
+            if (isUrl(n.image_link) || /^img\/[\w.-]+$/.test(n.image_link || "")) {
+              const a = link(target, ""); const img = el("img"); img.src = n.image_link; img.alt = ""; img.loading = "lazy";
+              img.style.cssText = "width:96px;height:60px;object-fit:cover;border-radius:6px;display:block"; a.appendChild(img); li.appendChild(a);
+            } else {
+              const a = link(target, "", "art a-design"); a.style.cssText = "width:96px;height:60px;min-height:0;border-radius:6px"; li.appendChild(a);
+            }
+            const t = el("div");
+            t.appendChild(el("span", "kicker k-" + ({ policy: "policy", companies: "company", company: "company", fabs: "fab", fab: "fab", jobs: "jobs", events: "event" }[(n.category || "").toLowerCase()] || "design"), (n.category || "News") + (n.date ? " · " + n.date : "")));
+            const h = el("div"); h.style.cssText = "font-weight:700;line-height:1.35;margin-top:2px"; h.appendChild(link(target, n.title)); t.appendChild(h);
+            li.appendChild(t); ul.appendChild(li);
+          });
+          inner.appendChild(ul); sec.appendChild(inner); wbox.appendChild(sec);
+        });
+      }
 
       // ----- Top News: newest story as the lead, next two as side stories -----
       const KIND = { policy: "policy", company: "company", companies: "company", fab: "fab", fabs: "fab", "fabs and factories": "fab", "chip design": "design", design: "design", explainer: "design", jobs: "jobs", events: "event", event: "event" };
