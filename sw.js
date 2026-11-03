@@ -98,11 +98,46 @@
   const active = r => !/^(no|closed|n)$/i.test(r.active || "yes");
 
   // ---------- Jobs from the Google Sheet ----------
+  // deadline: "deadline" column (2026-12-15 or 15 Dec 2026), else "Apply before 15 Dec 2026" in the description
+  const MON3 = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+  const MNAME = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function dayOf(str) {
+    const s = String(str || "").trim(); let m;
+    if ((m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(s))) return Date.UTC(+m[1], +m[2] - 1, +m[3]);
+    if ((m = /(\d{1,2})\s+([a-z]{3})[a-z]*\.?,?\s+(\d{4})/i.exec(s)) && MON3[m[2].toLowerCase()] != null) return Date.UTC(+m[3], MON3[m[2].toLowerCase()], +m[1]);
+    return null;
+  }
+  const todayIST = (() => { const n = new Date(Date.now() + 5.5 * 36e5); return Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate()); })();
+  function deadlineOf(j) {
+    if (j.deadline) return dayOf(j.deadline);
+    const m = /(?:apply\s+(?:before|by)|last\s+date[:\s]*|closes?\s+(?:on\s+)?)\s*(\d{1,2}\s+[a-z]{3,}\.?,?\s+\d{4})/i.exec(j.description || "");
+    return m ? dayOf(m[1]) : null;
+  }
+  const daysLeft = j => { const d = deadlineOf(j); return d == null ? null : Math.round((d - todayIST) / 864e5); };
+  const isFeatured = j => /^(yes|y|true|1)$/i.test(j.featured || "");
+  function deadlineBadge(j) {
+    const n = daysLeft(j); if (n == null || n < 0) return null;
+    const d = new Date(deadlineOf(j));
+    const txt = n === 0 ? "⏰ Closes today" : n === 1 ? "⏰ Closes tomorrow" : n <= 7 ? "⏰ Closes in " + n + " days" : "Apply by " + d.getUTCDate() + " " + MNAME[d.getUTCMonth()];
+    return el("span", "chip " + (n <= 7 ? "due-soon" : "due"), txt);
+  }
+  const jobOpen = j => { const n = daysLeft(j); return n == null || n >= 0; };
+  const jobSort = list => list.map((j, i) => ({ j, i })).sort((a, b) => (isFeatured(b.j) - isFeatured(a.j)) || (a.i - b.i)).map(x => x.j);
+  if (!document.getElementById("sw-job-badges")) {
+    const st = document.createElement("style"); st.id = "sw-job-badges";
+    st.textContent = ".chip.due{background:#e0f2fe;color:#075985}.chip.due-soon{background:#fee2e2;color:#b91c1c;font-weight:600}" +
+      ".chip.feat{background:linear-gradient(160deg,#ffd666,#f5a524);color:#1a1300;font-weight:700}" +
+      ".jcard.featured{border-color:#f5b82e;box-shadow:0 0 0 1px #f5b82e,0 10px 26px -16px rgba(245,165,36,.8)}" +
+      ".job.featured{background:#fffaeb;border-radius:8px;padding:8px 10px}";
+    document.head.appendChild(st);
+  }
   function jobCard(j) {
-    const card = el("article", "jcard");
+    const card = el("article", "jcard" + (isFeatured(j) ? " featured" : ""));
     const h = el("h3"); h.appendChild(isUrl(j.link) ? link(j.link, j.title) : el("span", null, j.title)); card.appendChild(h);
     card.appendChild(el("div", "co", [j.company, j.location].filter(Boolean).join(" · ")));
     const row = el("div", "row"); row.style.cssText = "display:flex;flex-wrap:wrap;gap:6px;margin-top:8px";
+    if (isFeatured(j)) row.appendChild(el("span", "chip feat", "★ Featured"));
+    const dbg = deadlineBadge(j); if (dbg) row.appendChild(dbg);
     if (j.experience) row.appendChild(el("span", "chip hot", j.experience));
     (j.skills || "").split(/[,;]/).map(s => s.trim()).filter(Boolean).slice(0, 4).forEach(s => row.appendChild(el("span", "chip", s)));
     card.appendChild(row);
@@ -114,10 +149,11 @@
     return card;
   }
   function jobMini(j) {
-    const d = el("div", "job");
+    const d = el("div", "job" + (isFeatured(j) ? " featured" : ""));
     const b = el("b"); b.appendChild(isUrl(j.link) ? link(j.link, j.title) : el("span", null, j.title)); d.appendChild(b);
     d.appendChild(el("span", "co", [j.company, j.location].filter(Boolean).join(" · ")));
     const row = el("div", "row");
+    const dbm = deadlineBadge(j); if (dbm && /due-soon/.test(dbm.className)) row.appendChild(dbm);
     if (j.experience) row.appendChild(el("span", "chip hot", j.experience));
     (j.skills || "").split(/[,;]/).map(s => s.trim()).filter(Boolean).slice(0, 2).forEach(s => row.appendChild(el("span", "chip", s)));
     d.appendChild(row);
@@ -127,7 +163,21 @@
   if (isUrl(C.JOBS_CSV_URL)) {
     getCSV(C.JOBS_CSV_URL).then(rows => {
       if (!hasCols(rows, "type", "title", "link")) return; // wrong tab: keep jobs on the page
-      const jobs = rows.filter(r => r.title && active(r));
+      const jobs = jobSort(rows.filter(r => r.title && active(r) && jobOpen(r)));
+      window.SW_JOBS = jobs;
+      // company pages: <section id="company-jobs" data-match="qualcomm|qcom">
+      const cbox = $("#company-jobs");
+      if (cbox) {
+        const re = new RegExp(cbox.dataset.match || "^$", "i");
+        const mine = jobs.filter(j => re.test(j.company || ""));
+        if (mine.length) { cbox.textContent = ""; mine.forEach(j => cbox.appendChild(jobCard(j))); }
+        else { cbox.textContent = ""; const p = el("p", "note-box"); p.appendChild(document.createTextNode("No open roles from this company on our list right now. ")); p.appendChild(link("careers.html#freshers", "See all fresher jobs →")); cbox.appendChild(p); }
+        const cc = $("#company-count"); if (cc) cc.textContent = mine.length ? mine.length + (mine.length > 1 ? " open roles" : " open role") : "No open roles today";
+      }
+      document.querySelectorAll("[data-co-count]").forEach(b => {
+        const re = new RegExp(b.dataset.coCount, "i"), n = jobs.filter(j => re.test(j.company || "")).length;
+        b.textContent = n ? n + (n > 1 ? " open roles" : " open role") : "No roles today"; b.classList.toggle("zero", !n);
+      });
       const fresh = jobs.filter(j => /fresh|intern|trainee/i.test(j.type));
       const exp = jobs.filter(j => !/fresh|intern|trainee/i.test(j.type));
       const fill = (sel, list, make, max) => { const t = $(sel); if (!t || !list.length) return; t.textContent = ""; list.slice(0, max).forEach(j => t.appendChild(make(j))); };
@@ -154,7 +204,38 @@
         .sort((a, b) => (b.t - a.t) || (b.i - a.i)).map(x => Object.assign(x.r, { _t: x.t }));
       const items = all.slice(0, 8);
       const box = $("#daily-view");
-      if (!box || !items.length) return;
+      if (!items.length) return;
+      // ----- News archive page: last 7 days, grouped by day -----
+      const arch = $("#news-archive");
+      if (arch) {
+        const DN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const recent = all.filter(n => n._t && n._t >= todayIST - 6 * 864e5 && n._t <= todayIST + 864e5);
+        arch.textContent = "";
+        if (!recent.length) arch.appendChild(el("p", "note-box", "No new stories in the last 7 days. Check back soon."));
+        const days = new Map();
+        recent.forEach(n => { if (!days.has(n._t)) days.set(n._t, []); days.get(n._t).push(n); });
+        days.forEach((list, t) => {
+          const d = new Date(t), diff = Math.round((todayIST - t) / 864e5);
+          const sec = el("section", "arch-day");
+          const h = el("h2", null, (diff === 0 ? "Today" : diff === 1 ? "Yesterday" : DN[d.getUTCDay()]) + " · " + d.getUTCDate() + " " + MNAME[d.getUTCMonth()]);
+          h.appendChild(el("small", null, list.length + (list.length > 1 ? " stories" : " story"))); sec.appendChild(h);
+          list.forEach(n => {
+            const target = n.story_link || n.source_link || "#";
+            const a = el("article", "arch-item");
+            if (isUrl(n.image_link) || /^img\/[\w.-]+$/.test(n.image_link || "")) { const pic = link(target, "", "arch-pic"); const img = el("img"); img.src = n.image_link; img.alt = ""; img.loading = "lazy"; pic.appendChild(img); a.appendChild(pic); }
+            else a.appendChild(link(target, "", "arch-pic art a-design"));
+            const b = el("div");
+            b.appendChild(el("span", "kicker k-design", n.category || "News"));
+            const h3 = el("h3"); h3.appendChild(link(target, n.title)); b.appendChild(h3);
+            b.appendChild(el("p", null, n.summary || ""));
+            if (isUrl(n.source_link)) { const s2 = el("span", "src", "Source: "); s2.appendChild(link(n.source_link, n.source_name || "read more")); b.appendChild(s2); }
+            a.appendChild(b); sec.appendChild(a);
+          });
+          arch.appendChild(sec);
+        });
+        const ac = $("#archive-count"); if (ac) ac.textContent = recent.length + " stories this week";
+      }
+      if (!box) return;
       box.textContent = "";
       items.forEach(n => {
         const art = el("article", "short");

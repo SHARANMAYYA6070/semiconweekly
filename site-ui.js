@@ -188,10 +188,11 @@
       '<div class="swf-pop" role="dialog" aria-label="Follow Semicon Weekly" hidden>' +
       '<h3>Get chip news and jobs</h3><p class="sub">Pick what suits you. All free, no spam.</p>' +
       (ok(C.WHATSAPP_URL) ? `<a class="swf-row" data-k="whatsapp" href="${C.WHATSAPP_URL}" target="_blank" rel="noopener"><span class="swf-ic" style="background:#e7f8ee">💬</span><span><b>WhatsApp channel</b><small>New fresher jobs as soon as we post them</small></span></a>` : "") +
+      (ok(C.TELEGRAM_URL) ? `<a class="swf-row" data-k="telegram" href="${C.TELEGRAM_URL}" target="_blank" rel="noopener"><span class="swf-ic" style="background:#e3f2fd">✈️</span><span><b>Telegram channel</b><small>Jobs, news and deadlines in one place</small></span></a>` : "") +
       `<div class="swf-row swf-mail"><div style="display:flex;gap:12px;align-items:center"><span class="swf-ic" style="background:#eef3ff">✉️</span><span><b>Weekly email</b><small>Top stories, events and jobs every Sunday</small></span></div>` +
       '<form novalidate><input type="email" placeholder="Your email" aria-label="Your email" autocomplete="email" required><button type="submit">Sign up</button></form><div class="swf-msg" role="status"></div></div>' +
       (ok(C.LINKEDIN_URL) ? `<a class="swf-row" data-k="linkedin" href="${C.LINKEDIN_URL}" target="_blank" rel="noopener"><span class="swf-ic" style="background:#e8f1fb">in</span><span><b>LinkedIn</b><small>Daily posts on India's chip industry</small></span></a>` : "") +
-      '<p class="swf-foot">Hiring or running a VLSI course? <a data-k="advertise" href="contact.html">Advertise with us →</a></p></div>';
+      '<p class="swf-foot">Hiring or running a VLSI course? <a data-k="advertise" href="advertise.html">Advertise with us →</a></p></div>';
     old.replaceWith(wrap);
 
     const btn = wrap.querySelector(".swf-btn"), pop = wrap.querySelector(".swf-pop");
@@ -268,6 +269,66 @@
         form.innerHTML = '<div class="swn-done"><div class="tick">✓</div><b>You\'re in!</b><p>Your first Sunday Brief arrives this Sunday. If you don\'t see it, check the Promotions tab.</p></div>';
       }
     }).observe(msg, { childList: true, characterData: true, subtree: true });
+  })();
+
+  // ---- dark mode (button in the header; choice remembered on this device) ----
+  (function darkMode() {
+    const root = document.documentElement;
+    let saved = null; try { saved = localStorage.getItem("sw-theme"); } catch {}
+    if (saved === "dark") root.setAttribute("data-theme", "dark");
+    const dcss = `
+    html[data-theme="dark"] { --paper: #0e1626; --paper-2: #17223a; --ink: #e7ecf5; --ink-2: #b7c2d6; --ink-3: #8d9ab0; --rule: #2a3854;
+      --brand: #08162e; --accent: #38c6e0; --c-policy: #60a5fa; --c-company: #34d399; --c-fab: #a78bfa; --c-design: #38c6e0; --c-jobs: #fb923c; --c-event: #f472b6; color-scheme: dark; }
+    html[data-theme="dark"] body { background: var(--paper); color: var(--ink); }
+    html[data-theme="dark"] .swui-bg { background: radial-gradient(900px 520px at 0% 0%, rgba(56,198,224,.08), transparent 70%), radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1.4px) 0 0 / 22px 22px, linear-gradient(180deg, #0c1322, #0e1626); }
+    html[data-theme="dark"] .card, html[data-theme="dark"] .iq, html[data-theme="dark"] .tcard, html[data-theme="dark"] .toc, html[data-theme="dark"] .prep,
+    html[data-theme="dark"] .jcard, html[data-theme="dark"] .use, html[data-theme="dark"] details.faq, html[data-theme="dark"] .tbl { background: var(--paper-2) !important; border-color: var(--rule) !important; }
+    html[data-theme="dark"] .tbl th { background: #1e2b45; }
+    html[data-theme="dark"] select, html[data-theme="dark"] textarea, html[data-theme="dark"] input:not([type=checkbox]):not([type=radio]),
+    html[data-theme="dark"] .ansmodes button:not([aria-pressed="true"]), html[data-theme="dark"] .speak-q:not([aria-pressed="true"]), html[data-theme="dark"] .fb button.vote { background: #0b1220 !important; color: var(--ink) !important; border-color: #33425f !important; }
+    html[data-theme="dark"] .ansmodes button[aria-pressed="true"] { background: #38c6e0 !important; border-color: #38c6e0 !important; color: #04202a !important; }
+    html[data-theme="dark"] .mode:has(input:checked), html[data-theme="dark"] .speak-q[aria-pressed="true"], html[data-theme="dark"] .mic { background: rgba(56,198,224,.12) !important; border-color: #38c6e0 !important; color: var(--ink) !important; }
+    html[data-theme="dark"] .list li, html[data-theme="dark"] .sum-table th, html[data-theme="dark"] .sum-table td { border-bottom-color: var(--rule); }
+    html[data-theme="dark"] .btn-main { background: #38c6e0 !important; color: #04202a !important; }
+    html[data-theme="dark"] footer .swn-card input[type=email] { background: #f6f8fb !important; color: #1d2433 !important; border-color: #cfd6e0 !important; }
+    html[data-theme="dark"] .swf-pop input { background: #fff !important; color: #1d2433 !important; border-color: #cfd6e0 !important; }
+    html[data-theme="dark"] .note-box, html[data-theme="dark"] .safe, html[data-theme="dark"] .block.warn, html[data-theme="dark"] .iq-note.mis { background: rgba(251,146,60,.13) !important; color: #fed7aa !important; }
+    html[data-theme="dark"] .notice { background: #2a2210; color: #fcd34d; border-color: #4a3b12; }
+    html[data-theme="dark"] .w-fresh, html[data-theme="dark"] .jtab[aria-selected="true"] { background: rgba(251,146,60,.12); }
+    html[data-theme="dark"] .chip.hot { background: rgba(251,146,60,.18); color: #fdba74; }
+    html[data-theme="dark"] .chip.due { background: rgba(56,189,248,.16); color: #7dd3fc; }
+    html[data-theme="dark"] .chip.due-soon, html[data-theme="dark"] .err, html[data-theme="dark"] .mcq-res .opt.wrong, html[data-theme="dark"] .tag.hard, html[data-theme="dark"] .iq-meta .hard { background: rgba(248,113,113,.16) !important; color: #fca5a5 !important; }
+    html[data-theme="dark"] .tag.medium, html[data-theme="dark"] .iq-meta .medium { background: rgba(251,191,36,.16); color: #fcd34d; }
+    html[data-theme="dark"] .iq-meta .easy { background: rgba(52,211,153,.16); color: #6ee7b7; }
+    html[data-theme="dark"] .iq-code { background: #0b1220; color: #d7e3f4; }
+    html[data-theme="dark"] .iq details { border-top-color: var(--rule); }
+    html[data-theme="dark"] .iq summary, html[data-theme="dark"] .pk .price, html[data-theme="dark"] .bigs b { color: #8fd8ea; }
+    html[data-theme="dark"] .cnt { background: rgba(52,211,153,.16); color: #6ee7b7; }
+    html[data-theme="dark"] .job.featured { background: rgba(245,184,46,.1); }
+    html[data-theme="dark"] .bigs div { background: var(--paper-2); }
+    html[data-theme="dark"] img { filter: brightness(.92); }
+    .swd-btn { color: #fff; background: none; border: 0; cursor: pointer; padding: 4px; display: grid; place-items: center; border-radius: 6px; }
+    .swd-btn:hover { background: rgba(255,255,255,.1); }
+    .swd-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }`;
+    const st4 = document.createElement("style"); st4.textContent = dcss; document.head.appendChild(st4);
+    const tools = document.querySelector(".brand-tools");
+    if (!tools) return;
+    const MOON = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+    const SUN = '<circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+    const b = document.createElement("button"); b.type = "button"; b.className = "swd-btn";
+    const paint = () => { const dark = root.getAttribute("data-theme") === "dark";
+      b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${dark ? SUN : MOON}</svg>`;
+      b.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode"); b.title = dark ? "Light mode" : "Dark mode";
+      const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = dark ? "#08162e" : "#0b2447"; };
+    b.addEventListener("click", () => {
+      const dark = root.getAttribute("data-theme") !== "dark";
+      if (dark) root.setAttribute("data-theme", "dark"); else root.removeAttribute("data-theme");
+      try { localStorage.setItem("sw-theme", dark ? "dark" : "light"); } catch {}
+      paint();
+      try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "theme-" + (dark ? "dark" : "light"), title: "Theme switch", event: true }); } catch {}
+    });
+    paint();
+    tools.insertBefore(b, tools.firstChild);
   })();
 
   // ---- background ----

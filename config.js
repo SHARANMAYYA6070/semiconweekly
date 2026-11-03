@@ -33,7 +33,7 @@ window.SW_CONFIG = {
 
   // Social media (optional)
   LINKEDIN_URL: "https://www.linkedin.com/in/semiconweekly",
-  TELEGRAM_URL: "",
+  TELEGRAM_URL: "https://t.me/semiconweekly",
   WHATSAPP_URL: "https://whatsapp.com/channel/0029VbEFK7JFnSzC6rOW862g",
   YOUTUBE_URL: "",
   INSTAGRAM_URL: "",
