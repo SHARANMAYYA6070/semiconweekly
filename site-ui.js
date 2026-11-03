@@ -147,6 +147,73 @@
   }
   hotFreshers(); setTimeout(hotFreshers, 0);
 
+  // ---- header "Follow" menu (replaces the loud yellow Subscribe button) ----
+  (function followMenu() {
+    const old = document.querySelector('.brand-tools a.sub-btn[href="#subscribe"]');
+    if (!old) return;
+    const C = window.SW_CONFIG || {};
+    const ok = u => typeof u === "string" && /^https?:\/\//.test(u);
+    const fcss = `
+    .swf { position: relative; }
+    .swf-btn { display: inline-flex; align-items: center; gap: 7px; background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.4);
+      font: 600 15px/1 var(--slab, Georgia, serif); padding: 9px 14px; border-radius: 6px; cursor: pointer; transition: background .15s, border-color .15s; }
+    .swf-btn:hover, .swf-btn[aria-expanded="true"] { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.75); }
+    .swf-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+    .swf-pop { position: absolute; right: 0; top: calc(100% + 10px); z-index: 80; width: 320px; max-width: calc(100vw - 24px); background: #fff; color: #1d2433;
+      border-radius: 12px; box-shadow: 0 18px 50px -12px rgba(6,17,36,.45), 0 0 0 1px rgba(11,36,71,.08); padding: 16px; text-align: left; }
+    .swf-pop h3 { font: 700 16px/1.3 var(--slab, Georgia, serif); color: #0b2447; }
+    .swf-pop .sub { font-size: 13.5px; color: #5b6475; margin-top: 3px; }
+    .swf-row { display: flex; align-items: center; gap: 12px; padding: 10px; margin-top: 8px; border-radius: 9px; border: 1px solid #e6eaf0; color: #1d2433; text-decoration: none; }
+    a.swf-row:hover { border-color: #0aa5c2; background: #f5fbfd; }
+    .swf-ic { flex: none; width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; font-size: 17px; }
+    .swf-row b { display: block; font: 600 14.5px var(--sans, Roboto, sans-serif); }
+    .swf-row small { display: block; font-size: 12.5px; color: #5b6475; margin-top: 1px; }
+    .swf-mail { display: block; }
+    .swf-mail form { display: flex; gap: 6px; margin-top: 8px; }
+    .swf-mail input { flex: 1; min-width: 0; font: 14px var(--sans, Roboto, sans-serif); padding: 8px 10px; border: 1px solid #cfd6e0; border-radius: 7px; background: #fff; color: #1d2433; }
+    .swf-mail input:focus { outline: 2px solid #0aa5c2; outline-offset: 0; border-color: #0aa5c2; }
+    .swf-mail button { font: 600 14px var(--sans, Roboto, sans-serif); background: #0b2447; color: #fff; border: 0; border-radius: 7px; padding: 0 12px; cursor: pointer; }
+    .swf-msg { font-size: 12.5px; color: #0a7a52; margin-top: 6px; min-height: 0; }
+    .swf-foot { margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef0f4; font-size: 13px; color: #5b6475; }
+    .swf-foot a { color: #0a86a0; font-weight: 600; }
+    @media (max-width: 900px) { .swf-btn { padding: 8px 10px; font-size: 14px; } }
+    @media (max-width: 480px) { .swf-btn span { display: none; } .swf-btn { padding: 8px; }
+      .swf-pop { position: fixed; left: 12px; right: 12px; top: 64px; width: auto; max-width: none; } }`;
+    const s2 = document.createElement("style"); s2.textContent = fcss; document.head.appendChild(s2);
+
+    const wrap = document.createElement("div"); wrap.className = "swf";
+    wrap.innerHTML =
+      '<button class="swf-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Follow Semicon Weekly">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><span>Follow</span></button>' +
+      '<div class="swf-pop" role="dialog" aria-label="Follow Semicon Weekly" hidden>' +
+      '<h3>Get chip news and jobs</h3><p class="sub">Pick what suits you. All free, no spam.</p>' +
+      (ok(C.WHATSAPP_URL) ? `<a class="swf-row" data-k="whatsapp" href="${C.WHATSAPP_URL}" target="_blank" rel="noopener"><span class="swf-ic" style="background:#e7f8ee">💬</span><span><b>WhatsApp channel</b><small>New fresher jobs as soon as we post them</small></span></a>` : "") +
+      `<div class="swf-row swf-mail"><div style="display:flex;gap:12px;align-items:center"><span class="swf-ic" style="background:#eef3ff">✉️</span><span><b>Weekly email</b><small>Top stories, events and jobs every Sunday</small></span></div>` +
+      '<form novalidate><input type="email" placeholder="Your email" aria-label="Your email" autocomplete="email" required><button type="submit">Sign up</button></form><div class="swf-msg" role="status"></div></div>' +
+      (ok(C.LINKEDIN_URL) ? `<a class="swf-row" data-k="linkedin" href="${C.LINKEDIN_URL}" target="_blank" rel="noopener"><span class="swf-ic" style="background:#e8f1fb">in</span><span><b>LinkedIn</b><small>Daily posts on India's chip industry</small></span></a>` : "") +
+      '<p class="swf-foot">Hiring or running a VLSI course? <a data-k="advertise" href="contact.html">Advertise with us →</a></p></div>';
+    old.replaceWith(wrap);
+
+    const btn = wrap.querySelector(".swf-btn"), pop = wrap.querySelector(".swf-pop");
+    const count = k => { try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "follow-" + k, title: "Follow menu: " + k, event: true }); } catch {} };
+    function setOpen(open) { pop.hidden = !open;
+      if (open && matchMedia("(max-width: 480px)").matches) pop.style.top = Math.round(btn.getBoundingClientRect().bottom + 8) + "px"; else pop.style.top = ""; btn.setAttribute("aria-expanded", String(open)); if (open) count("open"); }
+    btn.addEventListener("click", e => { e.stopPropagation(); setOpen(pop.hidden); });
+    document.addEventListener("click", e => { if (!pop.hidden && !wrap.contains(e.target)) setOpen(false); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && !pop.hidden) { setOpen(false); btn.focus(); } });
+    pop.addEventListener("click", e => { const a = e.target.closest("a[data-k]"); if (a) count(a.dataset.k); });
+    const form = pop.querySelector("form"), msg = pop.querySelector(".swf-msg");
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const email = form.querySelector("input").value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.style.color = "#b42318"; msg.textContent = "Please enter a valid email."; return; }
+      if (!ok(C.SUBSTACK_URL)) { msg.style.color = "#5b6475"; msg.textContent = "Email sign-ups open very soon."; return; }
+      count("email");
+      window.open(C.SUBSTACK_URL.replace(/\/+$/, "") + "/subscribe?email=" + encodeURIComponent(email), "_blank", "noopener");
+      msg.style.color = "#0a7a52"; msg.textContent = "Almost done: confirm on the Substack page that just opened.";
+    });
+  })();
+
   // ---- background ----
   const bg = document.createElement("div");
   bg.className = "swui-bg";
