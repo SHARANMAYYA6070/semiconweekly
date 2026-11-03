@@ -16,13 +16,15 @@
     jobs: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/>',
     bot: '<rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 3v4"/><circle cx="9" cy="13" r="1.4"/><circle cx="15" cy="13" r="1.4"/><path d="M9.5 16.5h5"/>',
     events: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    refer: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>',
   };
   const ITEMS = [
     { key: "home", label: "Home", href: "./", match: p => p === "index.html" },
     { key: "fresh", label: "Fresher Jobs", short: "Freshers", href: "careers.html#freshers", hot: true, match: (p, h) => p === "careers.html" && h !== "#experienced" },
     { key: "jobs", label: "Experienced Jobs", short: "Experienced", href: "careers.html#experienced", match: (p, h) => p === "careers.html" && h === "#experienced" },
     { key: "bot", label: "Interview Bot", short: "Bot", href: "interview.html", badge: "NEW", match: p => ["interview.html", "progress.html", "admin.html"].includes(p) },
-    { key: "events", label: "Events", href: "events.html", match: p => p === "events.html" },
+    { key: "refer", label: "Get Referred", short: "Referral", href: "referral.html", badge: "FREE", match: p => p === "referral.html" },
+    { key: "events", label: "Events", href: "events.html", match: p => p === "events.html", desktopOnly: true },
   ];
   const svg = k => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
 
@@ -60,6 +62,7 @@
       box-shadow: 0 -4px 16px rgba(0,0,0,.2); overflow: visible; }
     .swui-toggle, .swui-label, .swui-tip, .swui-scrim { display: none !important; }
     .swui-short { display: block; }
+    .swui-deskonly { display: none !important; }
     .swui-item { flex: 1; flex-direction: column; justify-content: center; gap: 3px; height: 54px; padding: 0 2px; font-size: 11px; }
     .swui-item svg { width: 22px; height: 22px; }
     .swui-badge, .swui-rail.open .swui-badge { position: absolute; top: 2px; left: auto; right: 6px; margin: 0; font-size: 8px; padding: 2px 3px; }
@@ -88,7 +91,7 @@
   let html = `<button class="swui-toggle" type="button" aria-expanded="false" aria-label="Open menu">${svg("menu")}<span class="swui-label">Menu</span></button>`;
   ITEMS.forEach(it => {
     const cur = it.match(page, location.hash);
-    html += `<a class="swui-item${it.hot ? " hot" : ""}" href="${it.href}" data-k="${it.key}" data-label="${it.label}"${cur ? ' aria-current="page"' : ""}>` +
+    html += `<a class="swui-item${it.hot ? " hot" : ""}${it.desktopOnly ? " swui-deskonly" : ""}" href="${it.href}" data-k="${it.key}" data-label="${it.label}"${cur ? ' aria-current="page"' : ""}>` +
       svg(it.key) + `<span class="swui-label">${it.label}</span><span class="swui-short">${it.short || it.label}</span>` +
       (it.hot ? '<span class="swui-badge">HOT</span>' : it.badge ? `<span class="swui-badge">${it.badge}</span>` : "") + "</a>";
   });
@@ -192,7 +195,7 @@
       `<div class="swf-row swf-mail"><div style="display:flex;gap:12px;align-items:center"><span class="swf-ic" style="background:#eef3ff">✉️</span><span><b>Weekly email</b><small>Top stories, events and jobs every Sunday</small></span></div>` +
       '<form novalidate><input type="email" placeholder="Your email" aria-label="Your email" autocomplete="email" required><button type="submit">Sign up</button></form><div class="swf-msg" role="status"></div></div>' +
       (ok(C.LINKEDIN_URL) ? `<a class="swf-row" data-k="linkedin" href="${C.LINKEDIN_URL}" target="_blank" rel="noopener"><span class="swf-ic" style="background:#e8f1fb">in</span><span><b>LinkedIn</b><small>Daily posts on India's chip industry</small></span></a>` : "") +
-      '<p class="swf-foot">Hiring or running a VLSI course? <a data-k="advertise" href="advertise.html">Advertise with us →</a></p></div>';
+      '<p class="swf-foot">Looking for a VLSI job? <a data-k="referral" href="referral.html?ref=follow">Get referred, free →</a></p></div>';
     old.replaceWith(wrap);
 
     const btn = wrap.querySelector(".swf-btn"), pop = wrap.querySelector(".swf-pop");

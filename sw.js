@@ -46,6 +46,17 @@
     });
   });
 
+  // ---------- Referral form buttons ----------
+  document.querySelectorAll("[data-referral-form]").forEach(a => {
+    if (isUrl(C.REFERRAL_FORM_URL)) {
+      a.href = C.REFERRAL_FORM_URL; a.target = "_blank"; a.rel = "noopener";
+      a.addEventListener("click", () => { try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "referral-form-open", title: "Referral form opened", event: true }); } catch {} });
+    } else {
+      a.textContent = "Form opens very soon"; a.classList.add("wait"); a.removeAttribute("target");
+      a.addEventListener("click", ev => ev.preventDefault());
+    }
+  });
+
   // ---------- Social links ----------
   const social = { "WhatsApp channel": C.WHATSAPP_URL, "LinkedIn": C.LINKEDIN_URL, "Telegram": C.TELEGRAM_URL, "YouTube": C.YOUTUBE_URL, "Instagram": C.INSTAGRAM_URL };
   const box = $(".social");
