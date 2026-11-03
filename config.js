@@ -36,7 +36,7 @@ window.SW_CONFIG = {
   TELEGRAM_URL: "https://t.me/semiconweekly",
 
   // Google Form for "Get referred" (paste the form's share link, starts with https://)
-  REFERRAL_FORM_URL: "",
+  REFERRAL_FORM_URL: "https://forms.gle/qiG7Z2oEr9Hw3Lpi7",
   WHATSAPP_URL: "https://whatsapp.com/channel/0029VbEFK7JFnSzC6rOW862g",
   YOUTUBE_URL: "",
   INSTAGRAM_URL: "",
