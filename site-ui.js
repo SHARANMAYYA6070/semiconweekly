@@ -203,15 +203,71 @@
     document.addEventListener("keydown", e => { if (e.key === "Escape" && !pop.hidden) { setOpen(false); btn.focus(); } });
     pop.addEventListener("click", e => { const a = e.target.closest("a[data-k]"); if (a) count(a.dataset.k); });
     const form = pop.querySelector("form"), msg = pop.querySelector(".swf-msg");
-    form.addEventListener("submit", e => {
+    form.addEventListener("submit", async e => {
       e.preventDefault();
-      const email = form.querySelector("input").value.trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.style.color = "#b42318"; msg.textContent = "Please enter a valid email."; return; }
-      if (!ok(C.SUBSTACK_URL)) { msg.style.color = "#5b6475"; msg.textContent = "Email sign-ups open very soon."; return; }
-      count("email");
-      window.open(C.SUBSTACK_URL.replace(/\/+$/, "") + "/subscribe?email=" + encodeURIComponent(email), "_blank", "noopener");
-      msg.style.color = "#0a7a52"; msg.textContent = "Almost done: confirm on the Substack page that just opened.";
+      if (!window.SWSubscribe) return;
+      const input = form.querySelector("input"), b = form.querySelector("button");
+      b.disabled = true; msg.style.color = "#5b6475"; msg.textContent = "Signing you up…";
+      const res = await window.SWSubscribe(input.value);
+      b.disabled = false; msg.style.color = res.ok ? "#0a7a52" : "#b42318"; msg.textContent = res.text;
+      if (res.ok) { input.value = ""; count("email"); }
     });
+  })();
+
+  // ---- footer email sign-up: richer card ----
+  (function footerSignup() {
+    const form = document.querySelector("footer form#signup");
+    const intro = form && form.closest(".fgrid") && form.closest(".fgrid").firstElementChild;
+    if (!form || !intro || intro === form || intro.querySelector(".swn-perks")) return;
+    const ncss = `
+    footer .fgrid { align-items: center; }
+    .swn-kicker { display: inline-flex; align-items: center; gap: 6px; font: 700 11.5px/1 var(--sans, Roboto, sans-serif); letter-spacing: .12em; text-transform: uppercase;
+      color: #ffd666; background: rgba(245,184,46,.12); border: 1px solid rgba(245,184,46,.35); padding: 6px 10px; border-radius: 99px; margin-bottom: 12px; }
+    .swn-perks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 16px; max-width: 560px; }
+    .swn-perk { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 10px; padding: 10px 12px; }
+    .swn-perk b { display: block; font: 600 14px var(--sans, Roboto, sans-serif); color: #fff; margin-top: 4px; }
+    .swn-perk span { font-size: 12.5px; color: #b9c8e4; }
+    .swn-perk i { font-style: normal; font-size: 18px; }
+    footer form#signup.swn-card { background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 20px 50px -20px rgba(0,0,0,.6); max-width: 420px; width: 100%; justify-self: end;
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+    .swn-card .swn-h { flex-basis: 100%; font: 700 17px/1.3 var(--slab, Georgia, serif); color: #0b2447; }
+    .swn-card .swn-h small { display: block; font: 400 13px var(--sans, Roboto, sans-serif); color: #5b6475; margin-top: 3px; }
+    footer .swn-card input[type=email] { flex: 1 1 180px; min-width: 0; background: #f6f8fb !important; color: #1d2433 !important; border: 1px solid #cfd6e0 !important; border-radius: 9px;
+      padding: 12px 14px; font: 15px var(--sans, Roboto, sans-serif); }
+    footer .swn-card input[type=email]:focus { outline: 2px solid #0aa5c2; border-color: #0aa5c2 !important; background: #fff !important; }
+    footer .swn-card button { flex: 0 0 auto; border-radius: 9px; padding: 12px 18px; font-size: 16px; }
+    footer .swn-card button:disabled { opacity: .7; cursor: wait; }
+    footer .swn-card .form-msg { flex-basis: 100%; margin: 0; font-size: 13.5px; color: #b42318; min-height: 0; }
+    footer .swn-card .form-msg:empty { display: none; }
+    .swn-trust { flex-basis: 100%; font-size: 12.5px; color: #5b6475; display: flex; gap: 14px; flex-wrap: wrap; }
+    .swn-done { flex-basis: 100%; text-align: center; padding: 6px 0; color: #1d2433; }
+    .swn-done .tick { width: 46px; height: 46px; border-radius: 50%; background: #dcfce7; color: #15803d; display: grid; place-items: center; font-size: 24px; margin: 0 auto 8px; }
+    .swn-done b { display: block; font: 700 18px var(--slab, Georgia, serif); color: #0b2447; }
+    .swn-done p { font-size: 14px; color: #5b6475; margin-top: 4px; }
+    @media (max-width: 760px) { .swn-perks { grid-template-columns: 1fr; } .swn-perk { display: flex; gap: 10px; align-items: center; } .swn-perk b { margin: 0; }
+      footer form#signup.swn-card { justify-self: stretch; max-width: none; margin-top: 18px; } footer .swn-card button { flex: 1 1 100%; } }`;
+    const st3 = document.createElement("style"); st3.textContent = ncss; document.head.appendChild(st3);
+
+    intro.insertAdjacentHTML("afterbegin", '<span class="swn-kicker">✉️ The Sunday Brief</span>');
+    intro.insertAdjacentHTML("beforeend",
+      '<div class="swn-perks">' +
+      '<div class="swn-perk"><i>📰</i><b>Top 5 chip stories</b><span>Explained in 2 minutes</span></div>' +
+      '<div class="swn-perk"><i>💼</i><b>New fresher jobs</b><span>RTL, DV, PD, embedded</span></div>' +
+      '<div class="swn-perk"><i>📅</i><b>Events &amp; deadlines</b><span>Hackathons, summits, exams</span></div></div>');
+
+    form.classList.add("swn-card");
+    form.insertAdjacentHTML("afterbegin", '<div class="swn-h">Join the Sunday Brief<small>Free · one email a week · read in 5 minutes</small></div>');
+    const btn = form.querySelector("button"); if (btn) btn.textContent = "Join free";
+    const input = form.querySelector("input[type=email]"); if (input) input.placeholder = "you@gmail.com";
+    form.insertAdjacentHTML("beforeend", '<div class="swn-trust"><span>🔒 No spam</span><span>↩️ Unsubscribe in 1 click</span></div>');
+
+    // swap to a success panel once the sign-up works (sw.js writes the message)
+    const msg = form.querySelector(".form-msg");
+    if (msg) new MutationObserver(() => {
+      if (/You're in/.test(msg.textContent)) {
+        form.innerHTML = '<div class="swn-done"><div class="tick">✓</div><b>You\'re in!</b><p>Your first Sunday Brief arrives this Sunday. If you don\'t see it, check the Promotions tab.</p></div>';
+      }
+    }).observe(msg, { childList: true, characterData: true, subtree: true });
   })();
 
   // ---- background ----

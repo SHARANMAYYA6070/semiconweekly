@@ -4,8 +4,11 @@
 //  Leave a line as "" until you have that link.
 // ============================================================
 window.SW_CONFIG = {
-  // Your Substack address, e.g. "https://semiconweekly.substack.com"
-  SUBSTACK_URL: "https://semiconweeklyindia.substack.com",
+  // MailerLite email sign-up (from your MailerLite form's embed code)
+  //   MAILERLITE_ACCOUNT_ID: the number after "/jsonp/"   e.g. "1234567"
+  //   MAILERLITE_FORM_ID:    the long number after "/forms/" e.g. "141234567890123456"
+  MAILERLITE_ACCOUNT_ID: "2765465",
+  MAILERLITE_FORM_ID: "203122218206496433",
 
   // Google Sheet links (File → Share → Publish to web → choose the tab → CSV → Publish → copy link)
   JOBS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRexjiEPlG01yQZXjOYErfxfOJEZoDax0qQ24cogSNsiD-C_Yh-dYQ-X3TAPeDHIUsiEPd98LPYuxZ3/pub?gid=0&single=true&output=csv",   // the "Jobs" tab

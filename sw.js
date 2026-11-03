@@ -1,4 +1,4 @@
-// Connects the site to Substack, the Google Sheet (jobs + news) and contact links set in config.js.
+// Connects the site to MailerLite (email sign-up), the Google Sheet (jobs + news) and contact links set in config.js.
 (function () {
   const C = window.SW_CONFIG || {};
   const isUrl = u => typeof u === "string" && /^https:\/\//.test(u.trim());
@@ -16,17 +16,33 @@
     dl.textContent = now.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).replace(/^(\w+),?/, "$1,") + " · Week " + week;
   }
 
-  // ---------- Email sign-up (Substack) ----------
+  // ---------- Email sign-up (MailerLite, stays on this page) ----------
+  // window.SWSubscribe(email) -> Promise<{ ok: boolean, text: string }>. Used by the footer form and the Follow menu.
+  window.SWSubscribe = async function (raw) {
+    const email = String(raw || "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return { ok: false, text: "Please enter a valid email, like name@gmail.com." };
+    const acc = String(C.MAILERLITE_ACCOUNT_ID || "").trim(), form = String(C.MAILERLITE_FORM_ID || "").trim();
+    if (!/^\d+$/.test(acc) || !/^\d+$/.test(form)) return { ok: false, text: "Email sign-ups open very soon. Follow our WhatsApp channel meanwhile." };
+    const body = new FormData();
+    body.append("fields[email]", email); body.append("ml-submit", "1"); body.append("anticsrf", "true");
+    try {
+      const r = await fetch("https://assets.mailerlite.com/jsonp/" + acc + "/forms/" + form + "/subscribe", { method: "POST", body });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.success !== false) {
+        try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "email-signup", title: "Email sign-up", event: true }); } catch {}
+        return { ok: true, text: "You're in ✓ Check your inbox (and Promotions tab) for our email." };
+      }
+      return { ok: false, text: "That didn't work. Please check the email and try again." };
+    } catch { return { ok: false, text: "Couldn't connect. Please try again in a minute." }; }
+  };
   document.querySelectorAll("form#signup").forEach(form => {
-    form.addEventListener("submit", e => {
+    form.addEventListener("submit", async e => {
       e.preventDefault();
-      const email = (form.querySelector("input[type=email]") || {}).value || "";
-      const msg = form.querySelector(".form-msg");
-      if (!/^\S+@\S+\.\S+$/.test(email.trim())) { msg.textContent = "Please enter a valid email, like name@gmail.com."; return; }
-      if (!isUrl(C.SUBSTACK_URL)) { msg.textContent = "Sign-ups open very soon. Please check back."; return; }
-      const url = C.SUBSTACK_URL.replace(/\/+$/, "") + "/subscribe?email=" + encodeURIComponent(email.trim());
-      const a = link(url, ""); document.body.appendChild(a); a.click(); a.remove();
-      msg.textContent = "Opening Substack. Confirm there to finish signing up.";
+      const input = form.querySelector("input[type=email]"), msg = form.querySelector(".form-msg"), btn = form.querySelector("button");
+      if (btn) btn.disabled = true; msg.textContent = "Signing you up…";
+      const res = await window.SWSubscribe(input ? input.value : "");
+      msg.textContent = res.text; if (btn) btn.disabled = false;
+      if (res.ok && input) input.value = "";
     });
   });
 
