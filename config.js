@@ -32,7 +32,7 @@ window.SW_CONFIG = {
   CONTACT_FORM_URL: "",   // a Google Form link for messages (optional)
 
   // Social media (optional)
-  LINKEDIN_URL: "https://www.linkedin.com/in/semiconweekly",
+  LINKEDIN_URL: "",   // paused – put the new LinkedIn link back here when ready: https://www.linkedin.com/in/semiconweekly
   TELEGRAM_URL: "https://t.me/semiconweekly",
 
   // Google Form for "Get referred" (paste the form's share link, starts with https://)
