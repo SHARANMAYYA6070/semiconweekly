@@ -108,6 +108,18 @@
   const hasCols = (rows, ...cols) => rows.length > 0 && cols.every(c => c in rows[0]);
   const active = r => !/^(no|closed|n)$/i.test(r.active || "yes");
 
+  // ---------- Live numbers strip (homepage #sw-stats) ----------
+  function setStat(key, n) {
+    const box = document.getElementById("sw-stats"); if (!box || !(n > 0)) return;
+    const t = box.querySelector('[data-stat="' + key + '"]'); if (!t) return;
+    t.querySelector("b").textContent = n.toLocaleString("en-IN"); t.hidden = false;
+    if (box.querySelectorAll(".st:not([hidden])").length >= 2) box.hidden = false;
+  }
+  if (document.getElementById("sw-stats") && isUrl(C.INTERVIEW_API_URL)) {
+    fetch(C.INTERVIEW_API_URL.replace(/\/+$/, "") + "/topics").then(r => r.json())
+      .then(d => setStat("questions", (d.topics || []).reduce((a, t) => a + (+t.count || 0), 0))).catch(() => {});
+  }
+
   // ---------- Jobs from the Google Sheet ----------
   // deadline: "deadline" column (2026-12-15 or 15 Dec 2026), else "Apply before 15 Dec 2026" in the description
   const MON3 = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
@@ -133,21 +145,65 @@
     return el("span", "chip " + (n <= 7 ? "due-soon" : "due"), txt);
   }
   const jobOpen = j => { const n = daysLeft(j); return n == null || n >= 0; };
+  // trust: last_verified column (else the posted date); older than 14 days = status unconfirmed
+  function checkedOn(j) { return dayOf(j.last_verified) || dayOf(j.posted); }
+  function trustBadge(j) {
+    const t = checkedOn(j);
+    if (t != null && todayIST - t <= 14 * 864e5) {
+      const d = new Date(t), b = el("span", "chip ver", "✓ " + (j.last_verified ? "Verified " : "Checked ") + d.getUTCDate() + " " + MNAME[d.getUTCMonth()]);
+      b.title = "Semicon Weekly checked this opening on the official page on this date."; return b;
+    }
+    const b = el("span", "chip unconf", "⚠ Status unconfirmed");
+    b.title = "Not checked in the last 14 days. Open the official link to confirm it is still open."; return b;
+  }
+  const isUnpaid = j => /^unpaid$/i.test(j.pay || "") || /\bunpaid\b/i.test([j.title, j.experience, j.description].join(" "));
+  // filters: role / city / type
+  const ROLES = [["rtl", "RTL / Digital design", /\brtl\b|digital (ic )?design|asic design|hardware design|soc design|chip design|silicon engineer|\bdesign engineer/i],
+    ["dv", "Verification (DV)", /verif|\buvm\b|\bdv\b/i],
+    ["pd", "Physical design", /physical design|implementation|\bpd\b|place.?and.?route|\bsta\b|innovus|openlane|openroad/i],
+    ["analog", "Analog / Layout", /analog|mixed.?signal|\blayout\b|\bams\b|rnm/i],
+    ["embedded", "Embedded / Firmware", /embedded|firmware|driver|\bsw\b|software|rtos|microcontroller|esp32|nrf/i],
+    ["mfg", "Manufacturing / Test / Packaging", /manufactur|packag|technician|apprentic|osat|yield|product engineer|test engineer|load board|assembly|silicon debug|bring.?up|bench/i]];
+  const CITIES = [["blr", "Bengaluru", /bengaluru|bangalore/i], ["hyd", "Hyderabad", /hyderabad/i], ["ncr", "Noida / NCR", /noida|gurugram|gurgaon|delhi/i],
+    ["che", "Chennai", /chennai/i], ["pune", "Pune", /pune/i], ["guj", "Gujarat", /gujarat|sanand|dholera|ahmedabad/i]];
+  const TYPES = [["intern", "Internship", j => /intern/i.test(j.title + " " + j.experience)],
+    ["trainee", "Trainee / Apprentice", j => /trainee|apprentic|grad(uate)? program/i.test(j.title + " " + j.experience + " " + j.description)],
+    ["full", "Full-time", () => true]];
+  function tagJob(j) {
+    const text = [j.title, j.skills, j.description].join(" ");
+    const role = ROLES.filter(r => r[2].test(text)).map(r => r[0]);
+    const city = CITIES.filter(c => c[2].test(j.location || "")).map(c => c[0]);
+    const type = TYPES.find(t => t[2](j))[0];
+    return { role: role.length ? role : ["other"], city: city.length ? city : ["other"], type };
+  }
   const jobSort = list => list.map((j, i) => ({ j, i })).sort((a, b) => (isFeatured(b.j) - isFeatured(a.j)) || (a.i - b.i)).map(x => x.j);
   if (!document.getElementById("sw-job-badges")) {
     const st = document.createElement("style"); st.id = "sw-job-badges";
     st.textContent = ".chip.due{background:#e0f2fe;color:#075985}.chip.due-soon{background:#fee2e2;color:#b91c1c;font-weight:600}" +
       ".chip.feat{background:linear-gradient(160deg,#ffd666,#f5a524);color:#1a1300;font-weight:700}" +
       ".jcard.featured{border-color:#f5b82e;box-shadow:0 0 0 1px #f5b82e,0 10px 26px -16px rgba(245,165,36,.8)}" +
-      ".job.featured{background:#fffaeb;border-radius:8px;padding:8px 10px}";
+      ".job.featured{background:#fffaeb;border-radius:8px;padding:8px 10px}" +
+      ".chip.ver{background:#dcfce7;color:#166534;font-weight:600}.chip.unconf{background:#f1f5f9;color:#475569;border:1px dashed #94a3b8}.chip.unpaid{background:#fee2e2;color:#991b1b;font-weight:700}" +
+      "html[data-theme=dark] .chip.ver{background:rgba(52,211,153,.16);color:#6ee7b7}html[data-theme=dark] .chip.unconf{background:transparent;color:#cbd5e1;border-color:#64748b}html[data-theme=dark] .chip.unpaid{background:rgba(248,113,113,.18);color:#fca5a5}" +
+      ".jf{margin-top:16px;border:1px solid var(--rule);border-radius:12px;padding:12px 14px;background:var(--paper)}.jf-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}.jf-row:first-child{margin-top:0}" +
+      ".jf-row>b{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);min-width:62px}" +
+      ".jf button{font:500 14px var(--sans);border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:99px;padding:7px 12px;cursor:pointer;min-height:36px}" +
+      ".jf button small{color:var(--ink-3);margin-left:4px}.jf button[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}.jf button[aria-pressed=true] small{color:#c9d6ee}" +
+      ".jf-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:13.5px;color:var(--ink-3)}.jf-foot button{border:0;background:none;color:var(--accent);padding:0;min-height:0;font-weight:600}" +
+      ".jf-empty{border:1px dashed var(--rule);border-radius:10px;padding:16px;text-align:center;color:var(--ink-2)}" +
+      "html[data-theme=dark] .jf button[aria-pressed=true]{background:#38c6e0;border-color:#38c6e0;color:#04202a}html[data-theme=dark] .jf button[aria-pressed=true] small{color:#04202a}" +
+      "@media(max-width:640px){.jf-row{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}.jf button{flex:none}.jf-row>b{flex:none}}";
     document.head.appendChild(st);
   }
   function jobCard(j) {
     const card = el("article", "jcard" + (isFeatured(j) ? " featured" : ""));
+    const tg = tagJob(j); card.dataset.role = tg.role.join(" "); card.dataset.city = tg.city.join(" "); card.dataset.type = tg.type;
     const h = el("h3"); h.appendChild(isUrl(j.link) ? link(j.link, j.title) : el("span", null, j.title)); card.appendChild(h);
     card.appendChild(el("div", "co", [j.company, j.location].filter(Boolean).join(" · ")));
     const row = el("div", "row"); row.style.cssText = "display:flex;flex-wrap:wrap;gap:6px;margin-top:8px";
     if (isFeatured(j)) row.appendChild(el("span", "chip feat", "★ Featured"));
+    row.appendChild(trustBadge(j));
+    if (isUnpaid(j)) { const u = el("span", "chip unpaid", "Unpaid"); u.title = "The posting says this role is unpaid."; row.appendChild(u); }
     const dbg = deadlineBadge(j); if (dbg) row.appendChild(dbg);
     if (j.experience) row.appendChild(el("span", "chip hot", j.experience));
     (j.skills || "").split(/[,;]/).map(s => s.trim()).filter(Boolean).slice(0, 4).forEach(s => row.appendChild(el("span", "chip", s)));
@@ -170,6 +226,55 @@
     d.appendChild(row);
     if (isUrl(j.link)) d.appendChild(link(j.link, "View and apply →", "apply"));
     return d;
+  }
+  function buildJobFilters(jobs) {
+    const lists = ["#freshers", "#experienced"].map(s => $(s)).filter(Boolean);
+    const tabs = $(".jtabs");
+    if (!lists.length || !tabs || $("#jfilters") || jobs.length < 4) return;
+    const tags = jobs.map(tagJob);
+    const count = (k, v) => tags.filter(t => k === "type" ? t.type === v : t[k].includes(v)).length;
+    const state = { role: "all", city: "all", type: "all" };
+    const box = el("div", "jf"); box.id = "jfilters"; box.setAttribute("aria-label", "Filter jobs");
+    const groups = [["role", "Role", ROLES.concat([["other", "Other"]])], ["city", "City", CITIES.concat([["other", "Other cities"]])], ["type", "Type", TYPES]];
+    groups.forEach(([key, label, opts]) => {
+      const row = el("div", "jf-row"); row.appendChild(el("b", null, label));
+      const mk = (v, text, n) => { const b = el("button", null, text); b.type = "button"; b.dataset.k = key; b.dataset.v = v; b.setAttribute("aria-pressed", String(v === "all"));
+        if (n != null) b.appendChild(el("small", null, String(n))); row.appendChild(b); };
+      mk("all", "All");
+      opts.forEach(o => { const n = count(key, o[0]); if (n) mk(o[0], o[1], n); });
+      box.appendChild(row);
+    });
+    const foot = el("div", "jf-foot"); const shown = el("span"); const reset = el("button", null, "Clear filters"); reset.type = "button"; reset.hidden = true;
+    foot.appendChild(shown); foot.appendChild(reset); box.appendChild(foot);
+    tabs.insertAdjacentElement("afterend", box);
+    function apply() {
+      let vis = 0, total = 0;
+      lists.forEach(list => {
+        let n = 0;
+        list.querySelectorAll(".jcard").forEach(c => {
+          total++;
+          const ok = (state.role === "all" || (c.dataset.role || "").split(" ").includes(state.role)) &&
+                     (state.city === "all" || (c.dataset.city || "").split(" ").includes(state.city)) &&
+                     (state.type === "all" || c.dataset.type === state.type);
+          c.hidden = !ok; if (ok) { n++; vis++; }
+        });
+        let empty = list.querySelector(".jf-empty");
+        if (!n) { if (!empty) { empty = el("p", "jf-empty", "No jobs match these filters in this tab. Try another tab or clear the filters."); list.appendChild(empty); } }
+        else if (empty) empty.remove();
+      });
+      const any = state.role !== "all" || state.city !== "all" || state.type !== "all";
+      shown.textContent = any ? "Showing " + vis + " of " + total + " jobs (both tabs)" : total + " jobs · pick a role, city or type to narrow down";
+      reset.hidden = !any;
+    }
+    box.addEventListener("click", e => {
+      const b = e.target.closest("button[data-k]"); if (!b) return;
+      state[b.dataset.k] = b.dataset.v;
+      box.querySelectorAll('button[data-k="' + b.dataset.k + '"]').forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      apply();
+      try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "jobfilter-" + b.dataset.k + "-" + b.dataset.v, title: "Job filter", event: true }); } catch {}
+    });
+    reset.addEventListener("click", () => { state.role = state.city = state.type = "all"; box.querySelectorAll("button[data-k]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.v === "all"))); apply(); });
+    apply();
   }
   if (isUrl(C.JOBS_CSV_URL)) {
     getCSV(C.JOBS_CSV_URL).then(rows => {
@@ -201,6 +306,8 @@
       if (te && exp.length) te.textContent = "1+ years · " + exp.length + " openings";
       const dl = $("#jobs-count");
       if (dl && jobs.length) dl.textContent = jobs.length + " real openings";
+      setStat("jobs", jobs.length);
+      buildJobFilters(jobs);
     }).catch(() => { /* keep the jobs already on the page */ });
   }
 
@@ -214,6 +321,7 @@
       const all = rows.map((r, i) => ({ r, i, t: toDay(r.date) })).filter(x => x.r.title && active(x.r))
         .sort((a, b) => (b.t - a.t) || (b.i - a.i)).map(x => Object.assign(x.r, { _t: x.t }));
       const items = all.slice(0, 8);
+      setStat("news", all.filter(n => n._t && n._t >= todayIST - 6 * 864e5 && n._t <= todayIST + 864e5).length);
       const box = $("#daily-view");
       if (!items.length) return;
       // ----- News archive page: last 7 days, grouped by day -----
@@ -388,6 +496,7 @@
       const startOf = r => (parseDay(r.start_date) || { t: Infinity }).t;
       const upcoming = evs.filter(r => endOf(r) >= today).sort((a, b) => startOf(a) - startOf(b));
       const past = evs.filter(r => endOf(r) < today).sort((a, b) => startOf(b) - startOf(a));
+      setStat("events", upcoming.length);
       const up = $("#ev-upcoming"), pa = $("#ev-past");
       if (up) { up.textContent = ""; upcoming.forEach(r => up.appendChild(eventCard(r, false))); }
       if (pa) { pa.textContent = ""; past.forEach(r => pa.appendChild(eventCard(r, true))); }

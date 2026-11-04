@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("sw-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How to Become a Design Verification (DV) Engineer – Roadmap for Freshers · Semicon Weekly</title>
+<meta name="description" content="Step-by-step roadmap to become a design verification engineer in India: digital basics, Verilog, SystemVerilog, UVM, protocols, tools, projects and interview topics.">
+<link rel="canonical" href="https://semiconweekly.in/roadmap-dv-engineer.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Semicon Weekly">
+<meta property="og:title" content="How to Become a Design Verification (DV) Engineer – Roadmap for Freshers">
+<meta property="og:description" content="Step-by-step roadmap to become a design verification engineer in India: digital basics, Verilog, SystemVerilog, UVM, protocols, tools, projects and interview topics.">
+<meta property="og:url" content="https://semiconweekly.in/roadmap-dv-engineer.html">
+<meta property="og:image" content="https://semiconweekly.in/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b2447">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Roboto+Slab:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="search.js" defer></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "HowTo", "name": "How to become a Design Verification (DV) engineer", "step": [{"@type": "HowToStep", "position": 1, "name": "Get the digital basics strong"}, {"@type": "HowToStep", "position": 2, "name": "Learn Verilog for verification"}, {"@type": "HowToStep", "position": 3, "name": "Learn SystemVerilog"}, {"@type": "HowToStep", "position": 4, "name": "Learn UVM"}, {"@type": "HowToStep", "position": 5, "name": "Learn a protocol or two"}, {"@type": "HowToStep", "position": 6, "name": "Build your portfolio and apply"}]}</script>
+<style>
+.pg { max-width: 920px; margin-inline: auto; padding-bottom: 40px; }
+.pg h1 { font-family: var(--serif); font-weight: 800; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.12; margin-top: 10px; }
+.pg .dek { font-family: var(--slab); font-size: 18px; color: var(--ink-2); margin-top: 12px; }
+.pg .byline { margin-top: 10px; font-size: 13px; }
+.pg h2 { font-family: var(--serif); font-size: 26px; font-weight: 700; margin-top: 36px; padding-bottom: 8px; border-bottom: 3px double var(--rule); }
+.pg p, .pg li { font-size: 16.5px; line-height: 1.7; }
+.pg p { margin-top: 12px; }
+.pg ul, .pg ol { padding-left: 20px; margin: 12px 0 0; }
+.pg li + li { margin-top: 6px; }
+.pg a.inl { color: var(--accent); font-weight: 600; }
+.pg a.inl:hover { text-decoration: underline; }
+.cta-band { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; background: linear-gradient(100deg, #0b2447, #12366b); color: #fff; border-radius: 12px; padding: 16px 20px; margin-top: 26px; }
+.cta-band p { flex: 1 1 300px; margin: 0; color: #dbe7ff; font-size: 15.5px; }
+.cta-band b { color: #ffd666; }
+.cta-band a { background: #f5b82e; color: #1a1300; font: 700 15px/1 var(--slab); padding: 12px 16px; border-radius: 8px; white-space: nowrap; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin-top: 16px; }
+.card { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; }
+a.card:hover { border-color: var(--accent); box-shadow: 0 10px 24px -16px rgba(11,36,71,.45); }
+.tbl { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 15px; background: var(--paper); border-radius: 10px; overflow: hidden; border: 1px solid var(--rule); }
+.tbl th, .tbl td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.tbl th { background: var(--paper-2); font-family: var(--slab); font-weight: 600; font-size: 14px; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl td b { white-space: nowrap; }
+.tblwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.small { font-size: 13.5px !important; color: var(--ink-3); }
+
+.rm-why { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 18px; }
+.rm-why div { background: var(--paper-2); border-radius: 12px; padding: 14px 16px; font-size: 15px; }
+.rm-why b { display: block; font: 600 12px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px; }
+.rm-steps { list-style: none; padding: 0 !important; margin-top: 18px !important; position: relative; }
+.rm-steps::before { content: ""; position: absolute; left: 19px; top: 8px; bottom: 8px; width: 3px; background: linear-gradient(var(--accent), var(--brand)); border-radius: 3px; }
+.rm-steps > li { position: relative; padding-left: 56px; margin: 0 0 18px !important; }
+.rm-steps > li > .n { position: absolute; left: 0; top: 0; width: 41px; height: 41px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font: 700 16px var(--sans); box-shadow: 0 0 0 4px var(--paper); }
+.rm-card { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 18px; }
+.rm-card h3 { font-family: var(--slab); font-size: 19px; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.rm-card h3 small { font: 600 12.5px var(--sans); color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+.rm-card ul { margin-top: 8px !important; }
+.rm-card li { font-size: 15.5px !important; line-height: 1.6 !important; }
+.rm-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
+.rm-tools div { border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; background: var(--paper); }
+.rm-tools b { font-family: var(--slab); font-size: 16px; }
+.rm-tools p { font-size: 14.5px !important; margin-top: 6px !important; color: var(--ink-2); line-height: 1.55 !important; }
+.rm-proj { counter-reset: p; list-style: none; padding: 0 !important; }
+.rm-proj li { counter-increment: p; border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px 12px 52px; position: relative; margin-top: 10px !important; background: var(--paper); }
+.rm-proj li::before { content: counter(p); position: absolute; left: 14px; top: 12px; width: 26px; height: 26px; border-radius: 6px; background: #f5b82e; color: #1a1300; display: grid; place-items: center; font: 700 13px var(--sans); }
+.rm-proj li b { font-family: var(--slab); }
+.rm-proj li span.lv { font: 600 11.5px var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-left: 6px; }
+.rm-switch { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 14px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="chip" viewBox="0 0 100 100">
+    <rect x="22" y="22" width="56" height="56" rx="6" fill="none" stroke="currentColor" stroke-width="4"/>
+    <rect x="36" y="36" width="28" height="28" rx="3" fill="currentColor" opacity=".55"/>
+    <g stroke="currentColor" stroke-width="4" stroke-linecap="round">
+      <path d="M32 22V8M44 22V8M56 22V8M68 22V8M32 78v14M44 78v14M56 78v14M68 78v14M22 32H8M22 44H8M22 56H8M22 68H8M78 32h14M78 44h14M78 56h14M78 68h14"/>
+    </g>
+  </symbol>
+</svg>
+
+
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar"><div class="wrap"><nav class="cats" aria-label="On this page"><a href="careers.html#freshers">Fresher jobs</a><a href="roadmap-rtl-design-engineer.html">RTL roadmap</a><a href="vlsi-interview-questions.html">Interview questions</a></nav></div></div>
+</header>
+<main class="wrap">
+<div class="pg">
+  <div class="crumbs"><a href="./">Home</a> › <a href="careers.html">Careers</a> › Career roadmap</div>
+  <h1>How to become a Design Verification (DV) engineer: a step-by-step roadmap for freshers</h1>
+  <p class="dek">What to learn, in what order, which tools and projects, and what interviewers ask: a clear 15-week path from ECE student to DV engineer.</p>
+  <div class="byline"><b>Semicon Weekly</b> · Updated 3 November 2026 · For ECE / EEE students and VLSI freshers</div>
+  <div class="rm-why"><div><b>What you do</b>Find bugs in a chip design before it is manufactured, by building smart testbenches.</div><div><b>Main skills</b>SystemVerilog, UVM, assertions, coverage, debugging, scripting.</div><div><b>Fresher pay</b>About ₹6–11 LPA in the middle of the market; more at top product companies.</div></div>
+
+  <h2>The roadmap</h2>
+  <ol class="rm-steps"><li><span class="n">1</span><div class="rm-card"><h3>Get the digital basics strong<small>Weeks 1–3</small></h3><ul><li>Number systems, Boolean algebra, K-maps, combinational vs sequential logic.</li><li>Flip-flops, latches, counters, shift registers, FSMs (Moore and Mealy).</li><li>Setup and hold time, metastability, and why clock domain crossing (CDC) is risky.</li><li>Write small circuits in Verilog: mux, decoder, counter, FSM. Simulate them.</li></ul></div></li><li><span class="n">2</span><div class="rm-card"><h3>Learn Verilog for verification<small>Weeks 3–5</small></h3><ul><li>Blocking vs non-blocking, event scheduling, <a class="inl" href="verilog-interview-questions.html">race conditions</a>.</li><li>Write simple testbenches: clock and reset generation, stimulus, self-checking with if/else.</li><li>Read waveforms comfortably. Debugging from waveforms is half the DV job.</li></ul></div></li><li><span class="n">3</span><div class="rm-card"><h3>Learn SystemVerilog<small>Weeks 5–9</small></h3><ul><li>Data types, dynamic and associative arrays, queues.</li><li>OOP: classes, inheritance, polymorphism, virtual methods.</li><li>Interfaces, modports and clocking blocks.</li><li>Constrained random: rand, constraints, <a class="inl" href="sv-constraints-interview-questions.html">solve-before and dist</a>.</li><li>Functional coverage (covergroups, bins, cross) and <a class="inl" href="sva-coverage-interview-questions.html">assertions (SVA)</a>.</li></ul></div></li><li><span class="n">4</span><div class="rm-card"><h3>Learn UVM<small>Weeks 9–13</small></h3><ul><li>Components: driver, monitor, sequencer, agent, scoreboard, environment, test.</li><li>Phases, the factory, config_db, sequences and objections.</li><li>TLM ports and analysis ports; how the monitor sends data to the scoreboard.</li><li>Build one full UVM testbench yourself, end to end. See <a class="inl" href="uvm-interview-questions.html">UVM interview questions</a>.</li></ul></div></li><li><span class="n">5</span><div class="rm-card"><h3>Learn a protocol or two<small>Weeks 13–15</small></h3><ul><li>APB first (simple), then AHB or AXI basics.</li><li>UART, SPI and I2C are also common in fresher interviews.</li><li>Know the handshake signals and draw the timing diagram from memory.</li></ul></div></li><li><span class="n">6</span><div class="rm-card"><h3>Build your portfolio and apply<small>Weeks 15+</small></h3><ul><li>GitHub: 2–3 finished verification projects with README, test plan and coverage report.</li><li>One-page resume: skills, projects with numbers (e.g. '95% functional coverage'), tools.</li><li>Practise answers out loud daily with the <a class="inl" href="interview.html?ref=roadmap-dv">AI Interview Bot</a>.</li><li>Apply to <a class="inl" href="careers.html#freshers">fresher jobs</a> and ask for <a class="inl" href="referral.html?ref=roadmap-dv">a referral</a>.</li></ul></div></li></ol>
+
+  <h2>Tools</h2>
+  <div class="rm-tools"><div><b>Free tools to practise at home</b><p><b>EDA Playground</b> (runs SystemVerilog and UVM simulators online, free sign-up), <b>Icarus Verilog</b> + <b>GTKWave</b> (simulate and see waveforms), <b>Verilator</b> (fast simulation and lint), <b>Yosys</b> (synthesis), <b>OpenLane</b> (full RTL-to-GDSII flow).</p></div><div><b>Industry tools (you will meet them at work)</b><p>Simulators: <b>Synopsys VCS</b>, <b>Cadence Xcelium</b>, <b>Siemens Questa</b>. Debug: <b>Verdi</b> or <b>SimVision</b>. Coverage and regression tools. You don't need them to start; companies train you.</p></div></div>
+
+  <h2>Projects to put on your resume</h2>
+  <p>Pick two or three and finish them well. A finished project you can explain beats five half-done ones. Put the code on GitHub with a short README and waveforms.</p>
+  <ol class="rm-proj"><li><b>Self-checking testbench for a synchronous FIFO</b><span class="lv">Beginner</span><br>Random push/pop, a reference queue model, checks for full, empty, overflow and underflow.</li><li><b>SystemVerilog class-based testbench for an ALU</b><span class="lv">Beginner</span><br>Transaction class, generator, driver, monitor and scoreboard with constrained-random opcodes and coverage.</li><li><b>UVM testbench for an APB slave (register block)</b><span class="lv">Intermediate</span><br>Agent, sequences for read/write, scoreboard, coverage on addresses and response, a few SVA checks.</li><li><b>UVM testbench for a UART or SPI controller</b><span class="lv">Intermediate</span><br>Verify baud rate or clock modes, framing and error cases; show the coverage report.</li><li><b>Asynchronous FIFO with CDC checks</b><span class="lv">Advanced</span><br>Gray-code pointers, assertions on full/empty, random clock ratios between the two domains.</li></ol>
+
+  <h2>Interview topics to prepare</h2>
+  <ul>
+  <li><b>Verilog:</b> blocking vs non-blocking, races, tasks vs functions — <a class="inl" href="verilog-interview-questions.html">35 questions</a></li>
+  <li><b>SystemVerilog:</b> OOP, arrays, interfaces, clocking blocks — <a class="inl" href="systemverilog-interview-questions.html">33 questions</a></li>
+  <li><b>Constraints:</b> write constraints live — <a class="inl" href="sv-constraints-interview-questions.html">10 questions</a></li>
+  <li><b>Assertions and coverage:</b> <a class="inl" href="sva-coverage-interview-questions.html">14 questions</a></li>
+  <li><b>UVM:</b> phases, factory, sequences, TLM — <a class="inl" href="uvm-interview-questions.html">28 questions</a></li>
+  <li><b>Digital design basics:</b> FSMs, setup/hold, CDC, FIFO depth — <a class="inl" href="rtl-design-interview-questions.html">21 questions</a></li>
+</ul>
+
+  <h2>Tips that make a difference</h2>
+  <ul><li>DV usually has more fresher openings than RTL design, because every design needs much more verification effort.</li><li>Learn to write a <b>test plan</b>: list features, how you will test each one, and how you will know it is covered.</li><li>Know your project inside out. Interviewers always ask: 'What bug did you find, and how?'</li><li>Basic Python or Perl scripting for running regressions is a big plus.</li><li>See what DV pays freshers in our <a class="inl" href="vlsi-fresher-salary-india.html">salary guide</a>.</li></ul>
+
+  <div class="cta-band"><p><b>Ready to practise?</b> Answer real DV interview questions and get an AI score out of 10 with the model answer.</p><a href="interview.html?ref=roadmap-dv">Start a mock interview →</a></div>
+
+  <h2>Other paths</h2>
+  <div class="rm-switch cards"><a class="card cocard" href="roadmap-rtl-design-engineer.html"><b>RTL Design Engineer</b><p>Design the logic inside chips in Verilog/SystemVerilog.</p><span class="cnt">See roadmap →</span></a><a class="card cocard" href="vlsi-fresher-salary-india.html"><b>Salary guide</b><p>What freshers earn in DV, RTL, PD and DFT.</p><span class="cnt">Read →</span></a><a class="card cocard" href="companies.html"><b>Jobs by company</b><p>Open roles at Qualcomm, Micron, TI, NVIDIA and more.</p><span class="cnt">See jobs →</span></a></div>
+</div>
+</main>
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="referral.html">Get referred</a><a href="privacy.html">Privacy</a></nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+</script>
+<script src="config.js?v=20261104a"></script>
+<script src="sw.js?v=20261104a"></script>
+<script src="promo.js?v=20261104a" defer></script>
+<script src="site-ui.js?v=20261104a" defer></script>
+</body>
+</html>
