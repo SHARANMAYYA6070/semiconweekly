@@ -71,7 +71,7 @@ img { max-width: 100%; }
   <div class="crumbs"><a href="./">Home</a> › Privacy</div>
   <h1>Privacy</h1>
   <p class="dek">We collect as little as possible. Here is exactly what happens when you visit or sign up.</p>
-  <div class="byline">Last updated 3 November 2026</div>
+  <div class="byline">Last updated 4 November 2026</div>
 
   <h2>Email sign-up</h2>
   <ul>
@@ -101,10 +101,38 @@ img { max-width: 100%; }
 
   <h2>Interview Prep bot</h2>
   <ul>
-    <li>Your typed answers are sent to our server and to Google's Gemini AI service to be scored. Please do not type personal details into your answers.</li>
-    <li>If you use the bot without signing in, we keep a daily count using a one-way code made from your internet address (not the address itself).</li>
-    <li>If you sign in with Google, we save your name, email, profile picture, answers, scores and any feedback you give. We use them to show your progress and to improve the questions. We never sell or share them.</li>
-    <li>You can delete all of it any time from the <a href="progress.html" style="color:var(--accent)">My progress</a> page.</li>
+    <li>Your typed or spoken answers are sent to our server and to Google's Gemini AI service to be scored. Please do not type personal details into your answers.</li>
+    <li>Spoken answers are turned into text by your own browser. We never receive or store audio.</li>
+    <li>If you use the bot without signing in, we keep a daily count using a one-way code made from your internet address (not the address itself). This count deletes itself after about 36 hours.</li>
+    <li>Answers and scores from guests are also saved with that one-way code, without any name or email, to help us improve the questions.</li>
+  </ul>
+
+  <h2>Google sign-in</h2>
+  <ul>
+    <li>When you sign in with Google, Google tells us your name, email address and profile picture. We never see your Google password.</li>
+    <li>We save your answers, scores, topics and any thumbs-up or thumbs-down feedback, so we can show your progress and improve the questions. We also keep short technical error notes to fix problems.</li>
+    <li>Your sign-in is remembered in your browser for up to 30 days. Press Sign out to end it sooner.</li>
+    <li>Other users can never see your progress. Our small team can see answers and scores to improve questions and fix problems. We never sell or share them.</li>
+  </ul>
+
+  <h2>Saved in your browser</h2>
+  <ul>
+    <li>Your browser keeps a few small settings on your device: your sign-in, dark or light mode, and whether you closed a pop-up. They never leave your device, and clearing your browser data removes them.</li>
+  </ul>
+
+  <h2>How long we keep data</h2>
+  <ul>
+    <li>Bot data from signed-in users is kept until you delete it or ask us to.</li>
+    <li>Referral form answers and resumes are kept until you ask us to delete them.</li>
+    <li>Email sign-ups are kept until you unsubscribe.</li>
+  </ul>
+
+  <h2>How to delete your data</h2>
+  <ul>
+    <li><b>Bot data:</b> open <a href="progress.html" style="color:var(--accent)">My progress</a> and press <b>Delete my data</b>. This removes your account, answers, scores, feedback and error notes from our database straight away.</li>
+    <li><b>Referral profile:</b> email semiconweekly.team@gmail.com with the subject "Delete my referral profile".</li>
+    <li><b>Weekly email:</b> use the unsubscribe link at the bottom of any email.</li>
+    <li>Anything else: use the <a href="contact.html" style="color:var(--accent)">contact form</a> and choose "Delete my data".</li>
   </ul>
 
   <h2>Questions</h2>
@@ -126,7 +154,7 @@ img { max-width: 100%; }
     </div>
     <div class="flinks">
       <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
-      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="editorial-policy.html">Editorial policy</a><a href="corrections.html">Corrections</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
     </div>
   </div>
 </footer>
@@ -138,9 +166,9 @@ menuBtn.addEventListener('click', () => {
   menuBtn.setAttribute('aria-expanded', String(open));
 });
 </script>
-<script src="config.js?v=20261104b"></script>
-<script src="sw.js?v=20261104b"></script>
-<script src="promo.js?v=20261104b" defer></script>
-<script src="site-ui.js?v=20261104b" defer></script>
+<script src="config.js?v=20261104c"></script>
+<script src="sw.js?v=20261104c"></script>
+<script src="promo.js?v=20261104c" defer></script>
+<script src="site-ui.js?v=20261104c" defer></script>
 </body>
 </html>

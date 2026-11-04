@@ -91,13 +91,74 @@ img { max-width: 100%; }
       <ul>
         <li>Share fresher or experienced openings. Listing jobs is free.</li>
         <li>Share event details and official links.</li>
-        <li>Ask about sponsoring a weekly issue.</li>
+        <li>Talk to us about a partnership or a hiring drive.</li>
       </ul>
     </div>
   </div>
 
   <h2>How to reach us</h2>
-  <div id="contact-box"><p>Our contact email and message form go live when the website is published on its own address.</p></div>
+  <div class="cbox">
+    <p><b>Email:</b> <a href="mailto:semiconweekly.team@gmail.com" style="color:var(--accent);font-weight:600">semiconweekly.team@gmail.com</a> <button type="button" class="tab" id="copyMail" style="margin-left:8px">Copy</button></p>
+    <p style="margin-top:6px">Or follow us for updates: <a href="https://whatsapp.com/channel/0029VbEFK7JFnSzC6rOW862g" target="_blank" rel="noopener" style="color:var(--accent)">WhatsApp channel</a> · <a href="https://t.me/semiconweekly" target="_blank" rel="noopener" style="color:var(--accent)">Telegram</a></p>
+  </div>
+
+  <h2>Send a message</h2>
+  <form id="cform" class="cform" novalidate>
+    <div class="row2">
+      <label>Your name<input name="name" autocomplete="name" required maxlength="80"></label>
+      <label>Your email<input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+    </div>
+    <label>What is it about?
+      <select name="cat" required>
+        <option value="">Choose one</option>
+        <option>General question</option><option>News tip</option><option>Job opening to list</option><option>Event to list</option>
+        <option>Correction</option><option>Partnership</option><option>Website or bot problem</option><option>Delete my data</option>
+      </select>
+    </label>
+    <label>Subject<input name="subject" required maxlength="120"></label>
+    <label>Message<textarea name="msg" rows="6" required maxlength="3000"></textarea></label>
+    <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
+    <button type="submit" class="cbtn">Open email with my message →</button>
+    <p class="cmsg" role="status"></p>
+    <p class="small" style="font-size:13.5px;color:var(--ink-3)">This opens your email app with everything filled in. Press <b>Send</b> there to reach us. We never see your message until you send it.</p>
+  </form>
+  <style>
+  .cbox { background: var(--paper-2); border-radius: 10px; padding: 14px 18px; margin-top: 12px; }
+  .cbox p { margin: 0; font-size: 16px; }
+  .cform { display: grid; gap: 12px; margin-top: 14px; max-width: 640px; }
+  .cform .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .cform label { display: grid; gap: 5px; font: 600 14px var(--sans); color: var(--ink); }
+  .cform input, .cform select, .cform textarea { font: 400 15.5px var(--sans); padding: 10px 12px; border: 1px solid #b9c2cf; border-radius: 8px; background: var(--paper); color: var(--ink); width: 100%; }
+  .cform input:focus, .cform select:focus, .cform textarea:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  .cform [aria-invalid=true] { border-color: #dc2626; }
+  .cform .hp { position: absolute; left: -9999px; }
+  .cbtn { justify-self: start; background: var(--brand); color: #fff; border: 0; border-radius: 8px; padding: 12px 18px; font: 700 16px var(--slab); cursor: pointer; min-height: 44px; }
+  .cmsg { margin: 0 !important; font-size: 14.5px; min-height: 0; }
+  @media (max-width: 600px) { .cform .row2 { grid-template-columns: 1fr; } .cbtn { justify-self: stretch; } }
+  </style>
+  <script>
+  (function () {
+    var EMAIL = "semiconweekly.team@gmail.com";
+    var c = document.getElementById("copyMail");
+    if (c) c.addEventListener("click", function () { (navigator.clipboard ? navigator.clipboard.writeText(EMAIL) : Promise.reject()).then(function () { c.textContent = "Copied"; }).catch(function () { c.textContent = EMAIL; }); });
+    var f = document.getElementById("cform"), msg = f.querySelector(".cmsg");
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var bad = [];
+      ["name", "email", "cat", "subject", "msg"].forEach(function (k) {
+        var el = f.elements[k], v = (el.value || "").trim(), ok = v && (k !== "email" || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v));
+        el.setAttribute("aria-invalid", String(!ok)); if (!ok) bad.push(el);
+      });
+      if (f.elements.website.value) return;
+      if (bad.length) { msg.style.color = "#b42318"; msg.textContent = "Please fill every field (and check your email address)."; bad[0].focus(); return; }
+      var subj = "[" + f.elements.cat.value + "] " + f.elements.subject.value.trim();
+      var body = f.elements.msg.value.trim() + "\n\n— " + f.elements.name.value.trim() + " (" + f.elements.email.value.trim() + ")";
+      location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(body);
+      msg.style.color = "var(--ink-2)"; msg.textContent = "Your email app should open now with the message ready. Press Send there. If nothing opened, email " + EMAIL + " directly.";
+      try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "contact-form", title: "Contact form", event: true }); } catch (x) {}
+    });
+  })();
+  </script>
 
 </article>
 </main>
@@ -116,7 +177,7 @@ img { max-width: 100%; }
     </div>
     <div class="flinks">
       <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
-      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="editorial-policy.html">Editorial policy</a><a href="corrections.html">Corrections</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
     </div>
   </div>
 </footer>
@@ -128,9 +189,9 @@ menuBtn.addEventListener('click', () => {
   menuBtn.setAttribute('aria-expanded', String(open));
 });
 </script>
-<script src="config.js?v=20261104b"></script>
-<script src="sw.js?v=20261104b"></script>
-<script src="promo.js?v=20261104b" defer></script>
-<script src="site-ui.js?v=20261104b" defer></script>
+<script src="config.js?v=20261104c"></script>
+<script src="sw.js?v=20261104c"></script>
+<script src="promo.js?v=20261104c" defer></script>
+<script src="site-ui.js?v=20261104c" defer></script>
 </body>
 </html>

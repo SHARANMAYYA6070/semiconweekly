@@ -108,6 +108,11 @@
   const hasCols = (rows, ...cols) => rows.length > 0 && cols.every(c => c in rows[0]);
   const active = r => !/^(no|closed|n)$/i.test(r.active || "yes");
 
+  // ---------- Today's date wherever a page asks for it (India time) ----------
+  document.querySelectorAll("[data-today]").forEach(x => {
+    x.textContent = "Updated " + new Date().toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  });
+
   // ---------- Live numbers strip (homepage #sw-stats) ----------
   function setStat(key, n) {
     const box = document.getElementById("sw-stats"); if (!box || !(n > 0)) return;
@@ -278,7 +283,7 @@
   }
   if (isUrl(C.JOBS_CSV_URL)) {
     getCSV(C.JOBS_CSV_URL).then(rows => {
-      if (!hasCols(rows, "type", "title", "link")) return; // wrong tab: keep jobs on the page
+      if (!hasCols(rows, "type", "title", "link")) return jobsFailed(); // wrong tab
       const jobs = jobSort(rows.filter(r => r.title && active(r) && jobOpen(r)));
       window.SW_JOBS = jobs;
       // company pages: <section id="company-jobs" data-match="qualcomm|qcom">
@@ -308,7 +313,15 @@
       if (dl && jobs.length) dl.textContent = jobs.length + " real openings";
       setStat("jobs", jobs.length);
       buildJobFilters(jobs);
-    }).catch(() => { /* keep the jobs already on the page */ });
+      document.querySelectorAll(".jload").forEach(x => { x.textContent = "No openings in this section right now. Check back tomorrow, or see the other tab."; });
+      if (tf && !fresh.length) tf.textContent = "0–1 year · none today";
+      if (te && !exp.length) te.textContent = "1+ years · none today";
+    }).catch(jobsFailed);
+  }
+  function jobsFailed() {
+    document.querySelectorAll(".jload").forEach(x => { x.textContent = "Couldn't load today's jobs. Please check your internet and refresh the page."; });
+    const tf = $("#t-fresh small"), te = $("#t-exp small");
+    if (tf && /loading/.test(tf.textContent)) tf.textContent = "0–1 year"; if (te && /loading/.test(te.textContent)) te.textContent = "1+ years";
   }
 
   // ---------- News (In Short) from the Google Sheet ----------
