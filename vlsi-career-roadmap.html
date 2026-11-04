@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("sw-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VLSI Career Roadmap for Freshers – RTL, DV, PD, DFT, Analog, Embedded · Semicon Weekly</title>
+<meta name="description" content="Complete VLSI career roadmap for ECE students in India: how a chip is made, every job role (RTL, verification, physical design, DFT, analog, embedded), what to learn, tools and projects.">
+<link rel="canonical" href="https://semiconweekly.in/vlsi-career-roadmap.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Semicon Weekly">
+<meta property="og:title" content="VLSI Career Roadmap for Freshers – RTL, DV, PD, DFT, Analog, Embedded">
+<meta property="og:description" content="Complete VLSI career roadmap for ECE students in India: how a chip is made, every job role (RTL, verification, physical design, DFT, analog, embedded), what to learn, tools and projects.">
+<meta property="og:url" content="https://semiconweekly.in/vlsi-career-roadmap.html">
+<meta property="og:image" content="https://semiconweekly.in/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b2447">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Roboto+Slab:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="search.js" defer></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "HowTo", "name": "VLSI career roadmap for freshers in India", "step": [{"@type": "HowToStep", "position": 1, "name": "Foundations", "text": "Digital electronics, CMOS basics, Verilog, Linux and a little Python."}, {"@type": "HowToStep", "position": 2, "name": "Pick one track", "text": "DV, RTL, PD, DFT, analog or embedded. Use the guide below."}, {"@type": "HowToStep", "position": 3, "name": "Learn the track skills", "text": "Follow the track roadmap: the language, the flow and the tools."}, {"@type": "HowToStep", "position": 4, "name": "Build 2–3 projects", "text": "Finished, on GitHub, with README, waveforms and results."}, {"@type": "HowToStep", "position": 5, "name": "Practise and apply", "text": "Mock interviews, fresher jobs, referrals. Repeat every week."}]}</script>
+<style>
+.pg { max-width: 920px; margin-inline: auto; padding-bottom: 40px; }
+.pg h1 { font-family: var(--serif); font-weight: 800; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.12; margin-top: 10px; }
+.pg .dek { font-family: var(--slab); font-size: 18px; color: var(--ink-2); margin-top: 12px; }
+.pg .byline { margin-top: 10px; font-size: 13px; }
+.pg h2 { font-family: var(--serif); font-size: 26px; font-weight: 700; margin-top: 36px; padding-bottom: 8px; border-bottom: 3px double var(--rule); }
+.pg p, .pg li { font-size: 16.5px; line-height: 1.7; }
+.pg p { margin-top: 12px; }
+.pg ul, .pg ol { padding-left: 20px; margin: 12px 0 0; }
+.pg li + li { margin-top: 6px; }
+.pg a.inl { color: var(--accent); font-weight: 600; }
+.pg a.inl:hover { text-decoration: underline; }
+.cta-band { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; background: linear-gradient(100deg, #0b2447, #12366b); color: #fff; border-radius: 12px; padding: 16px 20px; margin-top: 26px; }
+.cta-band p { flex: 1 1 300px; margin: 0; color: #dbe7ff; font-size: 15.5px; }
+.cta-band b { color: #ffd666; }
+.cta-band a { background: #f5b82e; color: #1a1300; font: 700 15px/1 var(--slab); padding: 12px 16px; border-radius: 8px; white-space: nowrap; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin-top: 16px; }
+.card { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; }
+a.card:hover { border-color: var(--accent); box-shadow: 0 10px 24px -16px rgba(11,36,71,.45); }
+.tbl { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 15px; background: var(--paper); border-radius: 10px; overflow: hidden; border: 1px solid var(--rule); }
+.tbl th, .tbl td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.tbl th { background: var(--paper-2); font-family: var(--slab); font-weight: 600; font-size: 14px; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl td b { white-space: nowrap; }
+.tblwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.small { font-size: 13.5px !important; color: var(--ink-3); }
+
+.co-hero { display: flex; gap: 14px; align-items: center; margin-top: 10px; }
+.co-logo { flex: none; width: 58px; height: 58px; border-radius: 14px; background: var(--brand); color: #fff; display: grid; place-items: center; font: 800 24px var(--serif); }
+.co-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 18px; }
+.co-facts div { background: var(--paper-2); border-radius: 10px; padding: 12px 14px; font-size: 15px; }
+.co-facts b { display: block; font: 600 12px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px; }
+.cnt { display: inline-block; font: 700 13px var(--sans); background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 99px; }
+.cnt.zero { background: var(--paper-2); color: var(--ink-3); }
+.cocard b { display: block; font-family: var(--slab); font-size: 19px; }
+.cocard p { font-size: 14px !important; line-height: 1.5 !important; color: var(--ink-2); margin: 6px 0 10px !important; }
+.jlist { display: grid; gap: 14px; margin-top: 18px; }
+
+.rm-why { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 18px; }
+.rm-why div { background: var(--paper-2); border-radius: 12px; padding: 14px 16px; font-size: 15px; }
+.rm-why b { display: block; font: 600 12px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px; }
+.rm-steps { list-style: none; padding: 0 !important; margin-top: 18px !important; position: relative; }
+.rm-steps::before { content: ""; position: absolute; left: 19px; top: 8px; bottom: 8px; width: 3px; background: linear-gradient(var(--accent), var(--brand)); border-radius: 3px; }
+.rm-steps > li { position: relative; padding-left: 56px; margin: 0 0 18px !important; }
+.rm-steps > li > .n { position: absolute; left: 0; top: 0; width: 41px; height: 41px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font: 700 16px var(--sans); box-shadow: 0 0 0 4px var(--paper); }
+.rm-card { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 18px; }
+.rm-card h3 { font-family: var(--slab); font-size: 19px; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.rm-card h3 small { font: 600 12.5px var(--sans); color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+.rm-card ul { margin-top: 8px !important; }
+.rm-card li { font-size: 15.5px !important; line-height: 1.6 !important; }
+.rm-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
+.rm-tools div { border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; background: var(--paper); }
+.rm-tools b { font-family: var(--slab); font-size: 16px; }
+.rm-tools p { font-size: 14.5px !important; margin-top: 6px !important; color: var(--ink-2); line-height: 1.55 !important; }
+.rm-proj { counter-reset: p; list-style: none; padding: 0 !important; }
+.rm-proj li { counter-increment: p; border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px 12px 52px; position: relative; margin-top: 10px !important; background: var(--paper); }
+.rm-proj li::before { content: counter(p); position: absolute; left: 14px; top: 12px; width: 26px; height: 26px; border-radius: 6px; background: #f5b82e; color: #1a1300; display: grid; place-items: center; font: 700 13px var(--sans); }
+.rm-proj li b { font-family: var(--slab); }
+.rm-proj li span.lv { font: 600 11.5px var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-left: 6px; }
+.rm-switch { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 14px; }
+
+.flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 18px; counter-reset: f; }
+.flow div { position: relative; background: linear-gradient(160deg, #0b2447, #12366b); color: #fff; border-radius: 12px; padding: 14px 14px 16px; counter-increment: f; }
+.flow div::before { content: counter(f); display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #f5b82e; color: #1a1300; font: 800 14px var(--sans); }
+.flow div:not(:last-child)::after { content: "→"; position: absolute; right: -12px; top: 50%; transform: translateY(-50%); z-index: 1; width: 22px; height: 22px; border-radius: 50%; background: #2fd3ec; color: #04202a; display: grid; place-items: center; font: 800 13px var(--sans); }
+.flow b { display: block; font: 700 16px/1.25 var(--slab); margin-top: 8px; }
+.flow span { display: block; font-size: 13px; color: #c9d6ee; margin-top: 4px; line-height: 1.45; }
+.chain { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; align-items: stretch; }
+.chain a, .chain span.c { flex: 1 1 130px; border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; background: var(--paper); font-size: 13.5px; color: var(--ink-2); }
+.chain b { display: block; font: 700 14.5px var(--slab); color: var(--ink); }
+.chain i { font-style: normal; display: inline-block; margin-top: 4px; font: 700 11px var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.chain a:hover { border-color: var(--accent); }
+.fe { border-top: 4px solid #2fd3ec !important; } .be { border-top: 4px solid #f5b82e !important; } .mf { border-top: 4px solid #a78bfa !important; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+.legend span::before { content: ""; display: inline-block; width: 12px; height: 4px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+.legend .l1::before { background: #2fd3ec; } .legend .l2::before { background: #f5b82e; } .legend .l3::before { background: #a78bfa; }
+.tracks { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; margin-top: 16px; }
+.track { background: var(--paper); border: 1px solid var(--rule); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; }
+.track h3 { font-family: var(--slab); font-size: 20px; display: flex; gap: 8px; align-items: center; }
+.track h3 .ic { font-size: 22px; }
+.track .what { font-size: 14.5px; color: var(--ink-2); margin-top: 6px; line-height: 1.55; }
+.track dl { margin: 10px 0 12px; font-size: 14px; flex: 1; }
+.track dt { font: 600 11.5px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin-top: 8px; }
+.track dd { margin: 2px 0 0; line-height: 1.5; }
+.track .go { display: block; text-align: center; background: var(--brand); color: #fff; font: 600 15px var(--slab); padding: 10px; border-radius: 8px; }
+.track .go.full { background: #f5b82e; color: #1a1300; }
+.track .tag { font: 700 10.5px var(--sans); letter-spacing: .08em; text-transform: uppercase; padding: 3px 7px; border-radius: 4px; background: #dcfce7; color: #166534; margin-left: auto; }
+.tpick { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-top: 14px; }
+.tpick div { background: var(--paper-2); border-radius: 10px; padding: 12px 14px; font-size: 15px; }
+.tpick b { color: var(--accent); }
+html[data-theme=dark] .track .tag { background: rgba(52,211,153,.16); color: #6ee7b7; }
+@media (max-width: 860px) { .flow { grid-template-columns: 1fr; } .flow div:not(:last-child)::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: -13px; transform: translateX(-50%); } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="chip" viewBox="0 0 100 100">
+    <rect x="22" y="22" width="56" height="56" rx="6" fill="none" stroke="currentColor" stroke-width="4"/>
+    <rect x="36" y="36" width="28" height="28" rx="3" fill="currentColor" opacity=".55"/>
+    <g stroke="currentColor" stroke-width="4" stroke-linecap="round">
+      <path d="M32 22V8M44 22V8M56 22V8M68 22V8M32 78v14M44 78v14M56 78v14M68 78v14M22 32H8M22 44H8M22 56H8M22 68H8M78 32h14M78 44h14M78 56h14M78 68h14"/>
+    </g>
+  </symbol>
+</svg>
+
+
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar"><div class="wrap"><nav class="cats" aria-label="On this page"><a href="#dv">Verification</a><a href="#rtl">RTL design</a><a href="#pd">Physical design</a><a href="#dft">DFT</a><a href="#analog">Analog</a><a href="#emb">Embedded</a></nav></div></div>
+</header>
+<main class="wrap">
+<div class="pg">
+  <div class="crumbs"><a href="./">Home</a> › <a href="careers.html">Careers</a> › VLSI roadmap</div>
+  <h1>VLSI career roadmap: from ECE student to chip engineer</h1>
+  <p class="dek">Every job in making a chip, what each one does, and exactly what to learn for it. Start here if you want a VLSI job in India.</p>
+  <div class="byline"><b>Semicon Weekly</b> · Updated 3 November 2026 · Free for students and freshers</div>
+
+  <h2>The 5 steps</h2>
+  <div class="flow"><div><b>Foundations</b><span>Digital electronics, CMOS basics, Verilog, Linux and a little Python.</span></div><div><b>Pick one track</b><span>DV, RTL, PD, DFT, analog or embedded. Use the guide below.</span></div><div><b>Learn the track skills</b><span>Follow the track roadmap: the language, the flow and the tools.</span></div><div><b>Build 2–3 projects</b><span>Finished, on GitHub, with README, waveforms and results.</span></div><div><b>Practise and apply</b><span>Mock interviews, fresher jobs, referrals. Repeat every week.</span></div></div>
+
+  <h2>How a chip is made, and where each job fits</h2>
+  <div class="chain"><span class="c fe"><b>Specification &amp; architecture</b>What the chip must do<br><i>Architect</i></span><a class="fe" href="roadmap-rtl-design-engineer.html"><b>RTL design</b>Write the logic in Verilog / SV<br><i>RTL design engineer</i></a><a class="fe" href="roadmap-dv-engineer.html"><b>Verification</b>Prove the design works<br><i>DV engineer</i></a><a class="be" href="#dft"><b>Synthesis &amp; DFT</b>Turn RTL into gates; add test logic<br><i>DFT engineer</i></a><a class="be" href="#pd"><b>Physical design</b>Floorplan, place, clock tree, route<br><i>PD engineer</i></a><a class="be" href="#pd"><b>Signoff</b>Timing (STA), DRC/LVS, power checks<br><i>STA / PD engineer</i></a><span class="c mf"><b>Fab</b>Print the chip on silicon wafers<br><i>Process / fab engineer</i></span><span class="c mf"><b>Packaging &amp; test</b>Cut, pack and test every chip<br><i>Test / packaging engineer</i></span></div>
+  <div class="legend"><span class="l1">Front-end (design and verification)</span><span class="l2">Back-end (implementation)</span><span class="l3">Manufacturing</span></div>
+
+  <h2>Pick your track</h2>
+  <div class="tracks"><div class="track" id="dv"><h3><span class="ic" aria-hidden="true">🧪</span>Design Verification (DV)<span class="tag">Full guide</span></h3><p class="what">Find bugs in the design before the chip is made. Most fresher openings are here.</p><dl><dt>Learn</dt><dd>SystemVerilog, UVM, assertions, coverage, a protocol (APB/AXI/UART), scripting.</dd><dt>Tools</dt><dd>EDA Playground, VCS / Xcelium / Questa</dd><dt>Starter project</dt><dd>UVM testbench for an APB slave or UART</dd></dl><a class="go full" href="roadmap-dv-engineer.html">Open the full roadmap →</a></div><div class="track" id="rtl"><h3><span class="ic" aria-hidden="true">🧩</span>RTL Design<span class="tag">Full guide</span></h3><p class="what">Write the Verilog/SystemVerilog that becomes the logic inside a chip.</p><dl><dt>Learn</dt><dd>Digital design, synthesizable Verilog, FSMs, CDC, FIFOs, timing basics, a bus protocol.</dd><dt>Tools</dt><dd>Icarus / Verilator, Yosys; Design Compiler / Genus at work</dd><dt>Starter project</dt><dd>Async FIFO, UART, a small RISC-V core</dd></dl><a class="go full" href="roadmap-rtl-design-engineer.html">Open the full roadmap →</a></div><div class="track" id="pd"><h3><span class="ic" aria-hidden="true">🗺️</span>Physical Design (PD)</h3><p class="what">Turn the gate-level netlist into a real layout that meets timing, power and area.</p><dl><dt>Learn</dt><dd>CMOS basics, floorplan, placement, clock tree synthesis, routing, STA (setup/hold), DRC/LVS, TCL scripting.</dd><dt>Tools</dt><dd>OpenLane / OpenROAD (free); Innovus, ICC2, PrimeTime at work</dd><dt>Starter project</dt><dd>Run a small design (e.g. a counter or UART) through OpenLane to GDSII and explain the timing report</dd></dl><a class="go" href="interview.html?ref=roadmap-hub-pd">Practise interview questions →</a></div><div class="track" id="dft"><h3><span class="ic" aria-hidden="true">🔍</span>DFT (Design for Test)</h3><p class="what">Add test logic so every manufactured chip can be tested quickly for defects.</p><dl><dt>Learn</dt><dd>Scan chains, ATPG, stuck-at and transition faults, MBIST, JTAG, compression, basic STA.</dd><dt>Tools</dt><dd>Synopsys TestMAX / Tessent at work; learn concepts with open examples</dd><dt>Starter project</dt><dd>Insert a scan chain in a small design and explain coverage and test time</dd></dl><a class="go" href="interview.html?ref=roadmap-hub-dft">Practise interview questions →</a></div><div class="track" id="analog"><h3><span class="ic" aria-hidden="true">📈</span>Analog / Mixed-signal &amp; Layout</h3><p class="what">Design or lay out circuits like amplifiers, ADCs, PLLs and memories.</p><dl><dt>Learn</dt><dd>Device physics, MOSFET operation, op-amps, current mirrors, matching, parasitics; for layout: DRC/LVS, floorplanning of analog blocks.</dd><dt>Tools</dt><dd>ngspice, Xschem, Magic, KLayout (free); Cadence Virtuoso at work</dd><dt>Starter project</dt><dd>Design and simulate a two-stage op-amp or a simple bandgap; draw its layout in Magic</dd></dl><a class="go" href="interview.html?ref=roadmap-hub-analog">Practise interview questions →</a></div><div class="track" id="emb"><h3><span class="ic" aria-hidden="true">🔌</span>Embedded / Firmware</h3><p class="what">Write the software that runs on chips and boards: drivers, RTOS and bring-up.</p><dl><dt>Learn</dt><dd>Embedded C, microcontrollers, UART/SPI/I2C, interrupts, RTOS basics, debugging with a logic analyser and oscilloscope.</dd><dt>Tools</dt><dd>ESP32 / STM32 / Arduino, GCC, FreeRTOS, Git</dd><dt>Starter project</dt><dd>A sensor node with an RTOS and a custom SPI/I2C driver</dd></dl><a class="go" href="interview.html?ref=roadmap-hub-emb">Practise interview questions →</a></div></div>
+
+  <h2>Not sure which track? Quick guide</h2>
+  <div class="tpick"><div>You like finding mistakes and writing code → start with <b>DV</b></div><div>You like drawing circuits and logic → start with <b>RTL design</b></div><div>You like tools, scripts and making things fit → try <b>Physical design</b></div><div>You like device physics and maths → try <b>Analog / layout</b></div><div>You like boards, sensors and C programming → go for <b>Embedded / firmware</b></div><div>You are a diploma or non-ECE student → look at <b>fab, packaging and test</b> roles</div></div>
+
+  <h2>Foundations everyone needs first</h2>
+  <ul>
+    <li><b>Digital electronics:</b> logic gates, K-maps, flip-flops, counters, FSMs, setup and hold time.</li>
+    <li><b>CMOS basics:</b> how a MOSFET works, an inverter, delay and power.</li>
+    <li><b>Verilog:</b> enough to write and simulate small circuits. Start with our <a class="inl" href="verilog-interview-questions.html">Verilog questions</a>.</li>
+    <li><b>Linux and scripting:</b> basic shell commands and a little Python or TCL. Every chip team uses them daily.</li>
+    <li><b>New to chips?</b> Read <a class="inl" href="learn.html">what a semiconductor is and how a chip is made</a>.</li>
+  </ul>
+
+  <div class="cta-band"><p><b>Know your track?</b> Practise its interview questions now and get an AI score out of 10 with the model answer.</p><a href="interview.html?ref=roadmap-hub">Start a mock interview →</a></div>
+
+  <h2>Next steps</h2>
+  <div class="cards">
+    <a class="card cocard" href="careers.html#freshers"><b>🔥 Fresher jobs</b><p>Real openings, checked and linked to the official post.</p><span class="cnt">See jobs →</span></a>
+    <a class="card cocard" href="vlsi-fresher-salary-india.html"><b>💰 Salary guide</b><p>What freshers earn in each track, by company type and city.</p><span class="cnt">Read →</span></a>
+    <a class="card cocard" href="referral.html?ref=roadmap-hub"><b>🤝 Get referred</b><p>Share your profile once; we reach out when a role matches.</p><span class="cnt">Free →</span></a>
+  </div>
+</div>
+</main>
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="referral.html">Get referred</a><a href="privacy.html">Privacy</a></nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+</script>
+<script src="config.js?v=20261104b"></script>
+<script src="sw.js?v=20261104b"></script>
+<script src="promo.js?v=20261104b" defer></script>
+<script src="site-ui.js?v=20261104b" defer></script>
+</body>
+</html>

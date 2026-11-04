@@ -17,11 +17,13 @@
     bot: '<rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 3v4"/><circle cx="9" cy="13" r="1.4"/><circle cx="15" cy="13" r="1.4"/><path d="M9.5 16.5h5"/>',
     events: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
     refer: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>',
+    road: '<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>',
   };
   const ITEMS = [
     { key: "home", label: "Home", href: "./", match: p => p === "index.html" },
+    { key: "road", label: "VLSI Roadmap", short: "Roadmap", href: "vlsi-career-roadmap.html", badge: "NEW", guide: true, match: p => /^(vlsi-career-roadmap|roadmap-)/.test(p) },
     { key: "fresh", label: "Fresher Jobs", short: "Freshers", href: "careers.html#freshers", hot: true, match: (p, h) => p === "careers.html" && h !== "#experienced" },
-    { key: "jobs", label: "Experienced Jobs", short: "Experienced", href: "careers.html#experienced", match: (p, h) => p === "careers.html" && h === "#experienced" },
+    { key: "jobs", label: "Experienced Jobs", short: "Experienced", href: "careers.html#experienced", match: (p, h) => p === "careers.html" && h === "#experienced", desktopOnly: true },
     { key: "bot", label: "Interview Bot", short: "Bot", href: "interview.html", badge: "NEW", match: p => ["interview.html", "progress.html", "admin.html"].includes(p) },
     { key: "refer", label: "Get Referred", short: "Referral", href: "referral.html", badge: "FREE", match: p => p === "referral.html" },
     { key: "events", label: "Events", href: "events.html", match: p => p === "events.html", desktopOnly: true },
@@ -48,6 +50,18 @@
   .swui-badge { position: absolute; top: 5px; left: 30px; background: #f5b82e; color: #1a1300; font: 800 8px/1 var(--sans, Roboto, sans-serif); letter-spacing: .05em; padding: 2px 3px; border-radius: 3px; }
   .swui-rail.open .swui-badge { position: static; margin-left: auto; font-size: 10px; padding: 3px 5px; }
   /* Fresher Jobs: always stands out */
+  .swui-item.guide { background: linear-gradient(160deg, #2fd3ec, #0a8fb0); color: #04202a; animation: swuiGlowC 2.6s infinite; }
+  .swui-item.guide:hover, .swui-item.guide[aria-current="page"] { background: linear-gradient(160deg, #6ee3f4, #18a6c6); color: #04202a; }
+  .swui-item.guide .swui-badge { background: #fff; color: #0a6c86; }
+  @keyframes swuiGlowC { 0% { box-shadow: 0 0 0 0 rgba(47,211,236,.55); } 70% { box-shadow: 0 0 0 10px rgba(47,211,236,0); } 100% { box-shadow: 0 0 0 0 rgba(47,211,236,0); } }
+  .swui-call { position: fixed; z-index: 72; max-width: 270px; background: #fff; color: #10213f; border-radius: 12px; padding: 12px 34px 12px 14px;
+    box-shadow: 0 16px 40px -10px rgba(6,17,36,.5), 0 0 0 2px #2fd3ec; font: 500 14px/1.4 var(--sans, Roboto, sans-serif); animation: swuiPop .35s ease-out; }
+  .swui-call b { display: block; font: 700 15px/1.3 var(--slab, Georgia, serif); color: #0b2447; }
+  .swui-call a.go { display: inline-block; margin-top: 8px; background: #0b2447; color: #fff; font: 700 13.5px var(--sans, Roboto, sans-serif); padding: 7px 12px; border-radius: 7px; text-decoration: none; }
+  .swui-call button { position: absolute; top: 6px; right: 6px; border: 0; background: none; font-size: 18px; line-height: 1; color: #64748b; cursor: pointer; padding: 4px; }
+  .swui-call::before { content: ""; position: absolute; width: 14px; height: 14px; background: #fff; transform: rotate(45deg); box-shadow: -2px 2px 0 0 #2fd3ec; left: -7px; top: 18px; }
+  .swui-call.below::before { left: var(--ax, 50%); top: auto; bottom: -7px; box-shadow: 2px 2px 0 0 #2fd3ec; }
+  @keyframes swuiPop { from { opacity: 0; transform: translateY(6px) scale(.96); } to { opacity: 1; transform: none; } }
   .swui-item.hot { background: linear-gradient(160deg, #ffd666, #f5a524); color: #1a1300; animation: swuiGlow 2.2s infinite; }
   .swui-item.hot:hover, .swui-item.hot[aria-current="page"] { background: linear-gradient(160deg, #ffe08a, #f7b23a); color: #1a1300; }
   .swui-item.hot .swui-badge { background: #dc2626; color: #fff; }
@@ -79,7 +93,7 @@
       radial-gradient(800px 520px at 100% 100%, rgba(11,36,71,.07), transparent 70%),
       radial-gradient(circle, rgba(11,36,71,.09) 1px, transparent 1.4px) 0 0 / 22px 22px,
       linear-gradient(180deg, #f7f9fc, #f2f5f9); }
-  @media (prefers-reduced-motion: reduce) { .swui-item.hot, .cats a.swui-hotlink { animation: none; } .swui-rail { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .swui-item.hot, .swui-item.guide, .swui-call, .cats a.swui-hotlink { animation: none; } .swui-rail { transition: none; } }
   @media print { .swui-rail, .swui-bg { display: none; } body.swui-has-rail { padding: 0; } }
   `;
   const st = document.createElement("style"); st.id = "swui-css"; st.textContent = css;
@@ -91,7 +105,7 @@
   let html = `<button class="swui-toggle" type="button" aria-expanded="false" aria-label="Open menu">${svg("menu")}<span class="swui-label">Menu</span></button>`;
   ITEMS.forEach(it => {
     const cur = it.match(page, location.hash);
-    html += `<a class="swui-item${it.hot ? " hot" : ""}${it.desktopOnly ? " swui-deskonly" : ""}" href="${it.href}" data-k="${it.key}" data-label="${it.label}"${cur ? ' aria-current="page"' : ""}>` +
+    html += `<a class="swui-item${it.hot ? " hot" : ""}${it.guide ? " guide" : ""}${it.desktopOnly ? " swui-deskonly" : ""}" href="${it.href}" data-k="${it.key}" data-label="${it.label}"${cur ? ' aria-current="page"' : ""}>` +
       svg(it.key) + `<span class="swui-label">${it.label}</span><span class="swui-short">${it.short || it.label}</span>` +
       (it.hot ? '<span class="swui-badge">HOT</span>' : it.badge ? `<span class="swui-badge">${it.badge}</span>` : "") + "</a>";
   });
@@ -139,6 +153,35 @@
       if (it.match(page, location.hash)) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
   });
+
+  // ---- "New: VLSI roadmap" bubble next to the menu item (first 3 visits, once a day) ----
+  (function roadmapCallout() {
+    if (/^(vlsi-career-roadmap|roadmap-)/.test(page) || ["admin.html", "progress.html"].includes(page)) return;
+    let st = {}; try { st = JSON.parse(localStorage.getItem("sw-roadcall") || "{}"); } catch {}
+    const today = new Date().toISOString().slice(0, 10);
+    if (st.closed || (st.n || 0) >= 3 || st.day === today) return;
+    const target = nav.querySelector('a[data-k="road"]'); if (!target) return;
+    let tries = 0;
+    const show = () => {
+      if (document.querySelector(".swp-ov") && tries++ < 40) return setTimeout(show, 800); // wait until the launch popup is closed
+      if (nav.classList.contains("open")) return;
+      const phone = matchMedia("(max-width: 760px)").matches, r = target.getBoundingClientRect();
+      const c = document.createElement("div"); c.className = "swui-call" + (phone ? " below" : ""); c.setAttribute("role", "status");
+      c.innerHTML = '<b>🗺️ New: VLSI Career Roadmap</b>See every chip job (RTL, DV, PD, DFT, analog, embedded) and exactly what to learn for each.<br><a class="go" href="vlsi-career-roadmap.html?ref=bubble">Show me the roadmap →</a><button type="button" aria-label="Close">×</button>';
+      document.body.appendChild(c);
+      if (phone) { const w = Math.min(270, innerWidth - 24); c.style.width = w + "px"; const left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width / 2 - w / 2));
+        c.style.left = left + "px"; c.style.bottom = (innerHeight - r.top + 12) + "px"; c.style.setProperty("--ax", (r.left + r.width / 2 - left - 7) + "px"); }
+      else { c.style.left = (r.right + 14) + "px"; c.style.top = (r.top - 4) + "px"; }
+      st.n = (st.n || 0) + 1; st.day = today; try { localStorage.setItem("sw-roadcall", JSON.stringify(st)); } catch {}
+      const close = keep => { c.remove(); if (keep) { st.closed = 1; try { localStorage.setItem("sw-roadcall", JSON.stringify(st)); } catch {} } };
+      c.querySelector("button").addEventListener("click", () => close(true));
+      c.querySelector("a.go").addEventListener("click", () => { st.closed = 1; try { localStorage.setItem("sw-roadcall", JSON.stringify(st)); } catch {}
+        try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "roadmap-bubble", title: "Roadmap bubble click", event: true }); } catch {} });
+      setTimeout(() => close(false), 12000);
+      addEventListener("scroll", () => phone || close(false), { once: true, passive: true });
+    };
+    setTimeout(show, 1500);
+  })();
 
   // ---- Fresher jobs link in the category bar: highlighted and always first ----
   function hotFreshers() {
