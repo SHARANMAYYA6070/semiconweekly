@@ -95,6 +95,23 @@ textarea.code { font-family: var(--mono); font-size: 14px; }
 details.model { margin-top: 18px; border: 1px solid var(--rule); border-radius: 8px; }
 details.model summary { cursor: pointer; padding: 12px 14px; font-family: var(--slab); font-weight: 600; }
 details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.6; }
+.bd { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.bd div { background: var(--paper-2); border-radius: 8px; padding: 8px 10px; }
+.bd b { display: block; font: 600 12px var(--sans); color: var(--ink-2); }
+.bd span { font: 700 18px var(--slab); }
+.bd span small { font: 400 12px var(--sans); color: var(--ink-3); }
+.bd i { display: block; height: 5px; border-radius: 99px; background: var(--rule); margin-top: 6px; overflow: hidden; }
+.bd i em { display: block; height: 100%; border-radius: 99px; }
+.block.tips { background: #ecfeff; border-left: 4px solid #0aa5c2; padding: 12px 14px; border-radius: 0 8px 8px 0; margin-top: 14px; }
+.block.tips h3 { color: #0e7490; } .block.tips ul { margin: 0; padding-left: 18px; }
+html[data-theme="dark"] .block.tips { background: rgba(56,198,224,.1); } html[data-theme="dark"] .block.tips h3 { color: #67e8f9; }
+.share { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.share b { font: 600 14px var(--sans); margin-right: 4px; }
+.share a, .share button { display: inline-flex; align-items: center; gap: 6px; font: 600 14px var(--sans); border-radius: 99px; padding: 8px 14px; cursor: pointer; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); text-decoration: none; min-height: 38px; }
+.share a.wa { background: #25d366; border-color: #25d366; color: #04210f; }
+.share .done { font-size: 13px; color: var(--ink-3); }
+.ai-note { font-size: 12.5px; color: var(--ink-3); margin-top: 10px; }
+@media (max-width: 640px) { .bd { grid-template-columns: repeat(2, minmax(0, 1fr)); } .bd div:last-child { grid-column: span 2; } }
 .next-q { margin-top: 18px; background: var(--brand); color: #fff; border-radius: 8px; padding: 14px 16px; }
 .next-q h3 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
 .next-q p { font-family: var(--slab); font-size: 17px; }
@@ -341,14 +358,18 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
           <div class="bar"><i id="rBar"></i></div>
         </div>
       </div>
+      <div class="bd" id="rBreak" hidden></div>
       <div class="cols">
         <div class="list ok"><h3>You covered</h3><ul id="rCovered"></ul></div>
         <div class="list no"><h3>You missed</h3><ul id="rMissed"></ul></div>
       </div>
       <div class="block warn" id="rMistakesWrap" hidden><h3>Fix these</h3><ul id="rMistakes"></ul></div>
+      <div class="block tips" id="rImproveWrap" hidden><h3>How to improve</h3><ul id="rImprove"></ul></div>
       <details class="model" open><summary>How a strong candidate would answer</summary><div id="rModel"></div></details>
       <div class="next-q" id="rFollowWrap"><h3>The interviewer would ask next</h3><p id="rFollow"></p></div>
       <details class="yours"><summary>Show your answer</summary><pre id="rYours"></pre></details>
+      <p class="ai-note">Scored by AI for practice. It can make mistakes and is not an official company assessment.</p>
+      <div class="share" id="rShare"><b>Proud of it?</b><a class="wa" id="rShareWa" target="_blank" rel="noopener" href="#">🟢 Share on WhatsApp</a><button type="button" id="rShareMore">📤 Share</button><span class="done" id="rShareDone" hidden></span></div>
       </div>
       <div class="fb" id="fb">
         <div class="q">Was this feedback fair?
@@ -382,6 +403,7 @@ details.model div { padding: 0 14px 14px; white-space: pre-wrap; line-height: 1.
       <thead><tr><th>Question</th><th>Topic</th><th style="text-align:right">Score</th></tr></thead>
       <tbody id="sRows"></tbody>
     </table>
+    <div class="share" id="sShare"><b>Share your result:</b><a class="wa" id="sShareWa" target="_blank" rel="noopener" href="#">🟢 Share on WhatsApp</a><button type="button" id="sShareMore">📤 Share</button><span class="done" id="sShareDone" hidden></span></div>
     <div class="actions">
       <button class="btn btn-main" id="againBtn">Start another</button>
     </div>
@@ -426,8 +448,8 @@ menuBtn.addEventListener('click', () => {
   menuBtn.setAttribute('aria-expanded', String(open));
 });
 </script>
-<script src="config.js?v=20261104c"></script>
-<script src="sw.js?v=20261104c"></script>
+<script src="config.js?v=20261105a"></script>
+<script src="sw.js?v=20261105a"></script>
 <script src="sw-auth.js"></script>
 <script>
 (function () {
@@ -540,6 +562,20 @@ menuBtn.addEventListener('click', () => {
     $("rModel").textContent = r.model_answer;
     $("rFollow").textContent = r.follow_up; show("rFollowWrap", !!r.follow_up);
     $("rYours").textContent = answer;
+    const bd = $("rBreak"); bd.replaceChildren();
+    if (r.breakdown) {
+      [["correctness", "Correctness", 4], ["concepts", "Concepts", 2], ["completeness", "Completeness", 2], ["clarity", "Clarity", 1], ["example", "Example", 1]].forEach(([k, label, max]) => {
+        const v = r.breakdown[k] || 0, d = document.createElement("div");
+        const b = document.createElement("b"); b.textContent = label;
+        const sp = document.createElement("span"); sp.textContent = v; const sm = document.createElement("small"); sm.textContent = " / " + max; sp.appendChild(sm);
+        const bar = document.createElement("i"), em = document.createElement("em"); em.style.width = (v / max * 100) + "%"; em.style.background = scoreColor(v / max * 10); bar.appendChild(em);
+        d.append(b, sp, bar); bd.appendChild(d);
+      });
+    }
+    show("rBreak", !!r.breakdown);
+    const imp = Array.isArray(r.improve) ? r.improve : [];
+    show("rImproveWrap", imp.length > 0); fillList($("rImprove"), imp, "");
+    setShare("r", "I scored " + r.score + "/10 on a " + (state.q && state.q.topic ? state.q.topic + " " : "") + "VLSI interview question on Semicon Weekly's free AI Interview Bot 🎯 Can you beat me?");
     show("rMcq", false); show("rAi", true);
     show("rLoading", false); show("rBody", true);
   }
@@ -740,8 +776,27 @@ menuBtn.addEventListener('click', () => {
       const c = document.createElement("td"); c.className = "n"; c.textContent = x.mcq ? (x.score ? "✓ correct" : "✗ wrong") : x.score + "/10"; c.style.color = scoreColor(x.score);
       tr.append(a, b, c); tb.appendChild(tr);
     });
+    setShare("s", "I just did a " + r.length + "-question VLSI mock interview on Semicon Weekly's free AI Interview Bot and scored " + avg.toFixed(1) + "/10 🎯 Try it free:");
     $("sCard").scrollIntoView({ behavior: "smooth", block: "start" });
   }
+
+  // ---- share my score (WhatsApp + phone share sheet) ----
+  const SHARE_URL = "https://semiconweekly.in/interview.html?ref=share";
+  function setShare(p, text) {
+    const full = text + " " + SHARE_URL;
+    $(p + "ShareWa").href = "https://wa.me/?text=" + encodeURIComponent(full);
+    $(p + "ShareWa").onclick = () => track("share-whatsapp");
+    $(p + "ShareDone").hidden = true;
+    $(p + "ShareMore").onclick = async () => {
+      track("share-more");
+      try {
+        if (navigator.share) { await navigator.share({ title: "Semicon Weekly AI Interview Bot", text, url: SHARE_URL }); return; }
+        await navigator.clipboard.writeText(full);
+        $(p + "ShareDone").textContent = "Copied. Paste it anywhere."; $(p + "ShareDone").hidden = false;
+      } catch (e) { /* user closed the share sheet */ }
+    };
+  }
+  function track(path) { try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path, title: "Bot share", event: true }); } catch (e) {} }
 
   function reset() {
     state.n = 0; state.results = [];
@@ -817,7 +872,7 @@ menuBtn.addEventListener('click', () => {
   });
 })();
 </script>
-<script src="promo.js?v=20261104c" defer></script>
-<script src="site-ui.js?v=20261104c" defer></script>
+<script src="promo.js?v=20261105a" defer></script>
+<script src="site-ui.js?v=20261105a" defer></script>
 </body>
 </html>

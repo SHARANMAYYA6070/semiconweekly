@@ -1,5 +1,5 @@
 // =====================================================================
-//  Semicon Weekly – Interview Prep bot (Phase 2A + voice + options)
+//  Semicon Weekly – Interview Prep bot (Phase 2A + voice + options + score breakdown)
 //  Cloudflare Worker. Paste this whole file into the Worker editor.
 //
 //  Settings (Cloudflare → sw-interview → Settings):
@@ -271,7 +271,12 @@ const GRADE_TOOL = {
   input_schema: {
     type: "object",
     properties: {
-      score: { type: "integer", minimum: 0, maximum: 10, description: "0-10 overall score" },
+      score: { type: "integer", minimum: 0, maximum: 10, description: "0-10 overall score = sum of the breakdown" },
+      breakdown: { type: "object", description: "Marks per criterion",
+        properties: { correctness: { type: "integer", minimum: 0, maximum: 4 }, concepts: { type: "integer", minimum: 0, maximum: 2 },
+          completeness: { type: "integer", minimum: 0, maximum: 2 }, clarity: { type: "integer", minimum: 0, maximum: 1 }, example: { type: "integer", minimum: 0, maximum: 1 } },
+        required: ["correctness", "concepts", "completeness", "clarity", "example"] },
+      improve: { type: "array", items: { type: "string" }, description: "1-3 short, practical tips to make this answer better next time" },
       verdict: { type: "string", description: "One short sentence an interviewer would say" },
       covered: { type: "array", items: { type: "string" }, description: "Key points the candidate got right, short phrases" },
       missed: { type: "array", items: { type: "string" }, description: "Key points missing or wrong, short phrases" },
@@ -279,7 +284,7 @@ const GRADE_TOOL = {
       model_answer: { type: "string", description: "A strong 4-8 sentence interview answer in simple English. May include a short code snippet if the question asks for code." },
       follow_up: { type: "string", description: "The next question a real interviewer would ask, based on this answer" },
     },
-    required: ["score", "verdict", "covered", "missed", "mistakes", "model_answer", "follow_up"],
+    required: ["score", "breakdown", "verdict", "covered", "missed", "mistakes", "improve", "model_answer", "follow_up"],
   },
 };
 // Same shape in the simpler schema format Gemini accepts.
@@ -287,12 +292,15 @@ GRADE_TOOL.input_schema_gemini = {
   type: "OBJECT",
   properties: {
     score: { type: "INTEGER" }, verdict: { type: "STRING" },
+    breakdown: { type: "OBJECT", properties: { correctness: { type: "INTEGER" }, concepts: { type: "INTEGER" }, completeness: { type: "INTEGER" }, clarity: { type: "INTEGER" }, example: { type: "INTEGER" } },
+      required: ["correctness", "concepts", "completeness", "clarity", "example"] },
+    improve: { type: "ARRAY", items: { type: "STRING" } },
     covered: { type: "ARRAY", items: { type: "STRING" } },
     missed: { type: "ARRAY", items: { type: "STRING" } },
     mistakes: { type: "ARRAY", items: { type: "STRING" } },
     model_answer: { type: "STRING" }, follow_up: { type: "STRING" },
   },
-  required: ["score", "verdict", "covered", "missed", "mistakes", "model_answer", "follow_up"],
+  required: ["score", "breakdown", "verdict", "covered", "missed", "mistakes", "improve", "model_answer", "follow_up"],
 };
 
 function gradingPrompt(q, answer) {
@@ -300,7 +308,14 @@ function gradingPrompt(q, answer) {
 Grade the candidate's answer strictly against the answer key. Use simple, friendly English.
 
 Rules:
-- Score 0-10 by how many key points are correct and how clearly they are explained. Wrong statements lose marks even if other points are right.
+- Mark with this rubric (total 10) and put the marks in "breakdown":
+  correctness 0-4 (are the technical statements right? wrong statements lose marks here even if other points are right),
+  concepts 0-2 (does the answer show real understanding of why, not just words?),
+  completeness 0-2 (how many of the key points are covered?),
+  clarity 0-1 (is it clear and well organised, like a good interview answer?),
+  example 0-1 (does it give a practical example, circuit, waveform or code where it helps? give 1 if the question needs no example and the answer is otherwise strong).
+  score must equal the sum of the five marks.
+- "mistakes": each wrong statement in the answer, with the correction. "improve": 1-3 short, practical tips for a better answer next time.
 - An answer that is empty, off-topic or only repeats the question scores 0-1.
 - For code questions, judge the logic and hardware meaning, not small syntax slips.
 - If the answer says something the key does not mention but is technically correct, do not punish it.
@@ -359,8 +374,8 @@ const goodFormat = {}; // remembers which request format each model accepted, to
 async function gradeWithGemini(q, answer, env) {
   const models = [...new Set(String(env.GEMINI_MODEL || "").split(",").map(s => s.trim()).filter(Boolean).concat(GEMINI_BACKUPS))];
   const prompt = gradingPrompt(q, answer) +
-    "\n\nReply with ONLY a JSON object with these keys: score (integer 0-10), verdict (string), covered (array of strings), " +
-    "missed (array of strings), mistakes (array of strings), model_answer (string), follow_up (string). No markdown.";
+    "\n\nReply with ONLY a JSON object with these keys: score (integer 0-10), breakdown (object with integer correctness 0-4, concepts 0-2, completeness 0-2, clarity 0-1, example 0-1), " +
+    "verdict (string), covered (array of strings), missed (array of strings), mistakes (array of strings), improve (array of strings), model_answer (string), follow_up (string). No markdown.";
 
   // Strictest format first; options a model rejects (400) are dropped one by one.
   // Thinking is kept to the lowest level: grading needs no long reasoning and long thinking timed out.
@@ -428,9 +443,19 @@ function extractJson(text) {
   try { return JSON.parse(text.slice(s, e + 1)); } catch { return null; }
 }
 
+const RUBRIC = { correctness: 4, concepts: 2, completeness: 2, clarity: 1, example: 1 };
+function cleanBreakdown(b) {
+  if (!b || typeof b !== "object") return null;
+  const out = {}; let ok = false;
+  for (const [k, max] of Object.entries(RUBRIC)) { const v = parseInt(b[k], 10); out[k] = clamp(isNaN(v) ? 0 : v, 0, max); if (!isNaN(v)) ok = true; }
+  return ok ? out : null;
+}
 function cleanGrade(g, q) {
+  const breakdown = cleanBreakdown(g.breakdown);
   return {
-    score: clamp(parseInt(g.score, 10) || 0, 0, 10),
+    score: breakdown ? Object.values(breakdown).reduce((a, b) => a + b, 0) : clamp(parseInt(g.score, 10) || 0, 0, 10),
+    breakdown,
+    improve: list(g.improve).slice(0, 3),
     verdict: String(g.verdict || ""),
     covered: list(g.covered), missed: list(g.missed), mistakes: list(g.mistakes),
     model_answer: String(g.model_answer || ""),

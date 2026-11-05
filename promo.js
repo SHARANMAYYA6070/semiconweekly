@@ -19,8 +19,8 @@
   const page = (location.pathname.split("/").pop() || "index.html").toLowerCase();
   const onBot = ["interview.html", "progress.html", "admin.html"].includes(page);
   const BOT = "interview.html";
-  const QCOUNT = 141;                 // shown in the pop-up
-  const TOPICS = "Verilog, SystemVerilog, SVA, UVM and RTL design";
+  const QCOUNT = 181;                 // shown in the pop-up
+  const TOPICS = "Verilog, SystemVerilog, UVM, STA, CDC, physical design and more";
 
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
