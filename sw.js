@@ -4,6 +4,8 @@
   const isUrl = u => typeof u === "string" && /^https:\/\//.test(u.trim());
   const $ = s => document.querySelector(s);
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  // our own img/x.jpg pictures load as the lighter img/x.webp, with the .jpg as a backup
+  const imgSrc = (img, u) => { const m = /^img\/([\w.-]+)\.jpg$/.exec(u || ""); if (m) { img.onerror = () => { img.onerror = null; img.src = u; }; img.src = "img/" + m[1] + ".webp"; } else img.src = u; };
   const link = (href, text, cls) => { const a = el("a", cls, text); a.href = href; if (/^https?:/.test(href)) { a.target = "_blank"; a.rel = "noopener"; } return a; };
 
   // ---------- Today's date in the top strip (India time) ----------
@@ -353,11 +355,11 @@
           h.appendChild(el("small", null, list.length + (list.length > 1 ? " stories" : " story"))); sec.appendChild(h);
           list.forEach(n => {
             const target = n.story_link || n.source_link || "#";
-            const a = el("article", "arch-item");
-            if (isUrl(n.image_link) || /^img\/[\w.-]+$/.test(n.image_link || "")) { const pic = link(target, "", "arch-pic"); const img = el("img"); img.src = n.image_link; img.alt = ""; img.loading = "lazy"; pic.appendChild(img); a.appendChild(pic); }
+            const a = el("article", "arch-item"); a.dataset.cat = ncat(n.category);
+            if (isUrl(n.image_link) || /^img\/[\w.-]+$/.test(n.image_link || "")) { const pic = link(target, "", "arch-pic"); const img = el("img"); imgSrc(img, n.image_link); img.alt = ""; img.loading = "lazy"; pic.appendChild(img); a.appendChild(pic); }
             else a.appendChild(link(target, "", "arch-pic art a-design"));
             const b = el("div");
-            b.appendChild(el("span", "kicker k-design", n.category || "News"));
+            b.appendChild(el("span", "kicker k-" + NCLS[ncat(n.category)], n.category || "News"));
             const h3 = el("h3"); h3.appendChild(link(target, n.title)); b.appendChild(h3);
             b.appendChild(el("p", null, n.summary || ""));
             if (isUrl(n.source_link)) { const s2 = el("span", "src", "Source: "); s2.appendChild(link(n.source_link, n.source_name || "read more")); b.appendChild(s2); }
@@ -366,6 +368,7 @@
           arch.appendChild(sec);
         });
         const ac = $("#archive-count"); if (ac) ac.textContent = recent.length + " stories this week";
+        newsFilters(arch, recent);
       }
       if (!box) return;
       box.textContent = "";
@@ -373,7 +376,7 @@
         const art = el("article", "short");
         const target = n.story_link || n.source_link || "#in-short";
         if (isUrl(n.image_link) || /^img\/[\w.-]+$/.test(n.image_link || "")) {
-          const pic = link(target, "", "pic"); const img = el("img"); img.src = n.image_link; img.alt = n.title; img.loading = "lazy"; pic.appendChild(img); art.appendChild(pic);
+          const pic = link(target, "", "pic"); const img = el("img"); imgSrc(img, n.image_link); img.alt = n.title; img.loading = "lazy"; pic.appendChild(img); art.appendChild(pic);
         } else {
           const art2 = link(target, "", "art a-design"); art2.style.minHeight = "160px";
           art2.appendChild(el("span", "cap", n.category || "News")); art.appendChild(art2);
@@ -412,7 +415,7 @@
             const target = n.story_link || n.source_link || "#in-short";
             const li = el("li"); li.style.cssText = "display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center";
             if (isUrl(n.image_link) || /^img\/[\w.-]+$/.test(n.image_link || "")) {
-              const a = link(target, ""); const img = el("img"); img.src = n.image_link; img.alt = ""; img.loading = "lazy";
+              const a = link(target, ""); const img = el("img"); imgSrc(img, n.image_link); img.alt = ""; img.loading = "lazy";
               img.style.cssText = "width:96px;height:60px;object-fit:cover;border-radius:6px;display:block"; a.appendChild(img); li.appendChild(a);
             } else {
               const a = link(target, "", "art a-design"); a.style.cssText = "width:96px;height:60px;min-height:0;border-radius:6px"; li.appendChild(a);
@@ -435,7 +438,7 @@
         const n = items[0], target = n.story_link || n.source_link || "#in-short";
         lead.textContent = "";
         if (isImg(n.image_link)) {
-          const pic = link(target, "", "pic pic-lead"); const img = el("img"); img.src = n.image_link; img.alt = n.title; pic.appendChild(img); lead.appendChild(pic);
+          const pic = link(target, "", "pic pic-lead"); const img = el("img"); imgSrc(img, n.image_link); img.alt = n.title; pic.appendChild(img); lead.appendChild(pic);
         } else {
           const a = link(target, "", "art a-" + kind(n.category)); a.style.cssText = "aspect-ratio:16/8;max-width:500px"; a.appendChild(el("span", "cap", n.category || "News")); lead.appendChild(a);
         }
@@ -452,7 +455,7 @@
         slot.textContent = "";
         const t = el("div"); t.appendChild(el("span", "kicker k-" + kind(n.category), n.category || "News"));
         const h = el("h3"); h.appendChild(link(target, n.title)); t.appendChild(h); slot.appendChild(t);
-        if (isImg(n.image_link)) { const a = link(target, "", "art"); a.style.padding = "0"; const img = el("img", "thumb-img"); img.src = n.image_link; img.alt = n.title; a.appendChild(img); slot.appendChild(a); }
+        if (isImg(n.image_link)) { const a = link(target, "", "art"); a.style.padding = "0"; const img = el("img", "thumb-img"); imgSrc(img, n.image_link); img.alt = n.title; a.appendChild(img); slot.appendChild(a); }
         else { const a = link(target, "", "art a-" + kind(n.category)); slot.appendChild(a); }
       });
     }).catch(() => { /* keep the stories already on the page */ });
@@ -465,6 +468,56 @@
     g.src = "https://gc.zgo.at/count.js";
     g.setAttribute("data-goatcounter", "https://" + C.GOATCOUNTER_CODE + ".goatcounter.com/count");
     document.head.appendChild(g);
+  }
+
+  // ---------- News page: category filters ----------
+  function ncat(c) {
+    const k = (c || "").trim().toLowerCase();
+    return { policy: "Policy", company: "Companies", companies: "Companies", fab: "Fabs", fabs: "Fabs", "fabs and factories": "Fabs",
+      job: "Jobs", jobs: "Jobs", event: "Events", events: "Events", "chip design": "Chip design", design: "Chip design", explainer: "Chip design" }[k] || "Other";
+  }
+  const NCLS = { Policy: "policy", Companies: "company", Fabs: "fab", Jobs: "jobs", Events: "event", "Chip design": "design", Other: "design" };
+  function newsFilters(arch, recent) {
+    if (!recent.length) return;
+    const old = $("#news-filter"); if (old) old.remove();
+    if (!$("#nf-css")) {
+      const st = el("style"); st.id = "nf-css";
+      st.textContent = ".nf{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px}.nf button{font:600 14px var(--sans);border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:999px;padding:7px 14px;min-height:38px;cursor:pointer}" +
+        ".nf button small{color:var(--ink-3);margin-left:5px;font-weight:500}.nf button[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}.nf button[aria-pressed=true] small{color:#c9d6ee}" +
+        ".nf button:disabled{opacity:.45;cursor:default}.nf-empty{border:1px dashed var(--rule);border-radius:10px;padding:16px;text-align:center;color:var(--ink-2);margin-top:20px}" +
+        "[data-theme=dark] .nf button{background:transparent}";
+      document.head.appendChild(st);
+    }
+    const count = {}; recent.forEach(n => { const c = ncat(n.category); count[c] = (count[c] || 0) + 1; });
+    const cats = ["Policy", "Companies", "Fabs", "Chip design", "Jobs", "Events"].filter(c => c !== "Chip design" || count[c]);
+    const bar = el("div", "nf"); bar.id = "news-filter"; bar.setAttribute("role", "group"); bar.setAttribute("aria-label", "Filter stories by topic");
+    const empty = el("p", "nf-empty", "No stories in this topic this week. "); const all = el("button", null, "See all stories");
+    all.type = "button"; all.className = "inl"; all.style.cssText = "border:0;background:none;color:var(--accent);font-weight:600;cursor:pointer;padding:0"; empty.appendChild(all); empty.hidden = true;
+    const btns = [];
+    const apply = cat => {
+      btns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.cat === cat)));
+      let shown = 0;
+      arch.querySelectorAll(".arch-day").forEach(sec => {
+        let v = 0;
+        sec.querySelectorAll(".arch-item").forEach(it => { const on = cat === "All" || it.dataset.cat === cat; it.hidden = !on; if (on) v++; });
+        sec.hidden = !v; shown += v;
+        const sm = sec.querySelector("h2 small"); if (sm) sm.textContent = v + (v > 1 ? " stories" : " story");
+      });
+      empty.hidden = shown > 0;
+      const ac = $("#archive-count"); if (ac) ac.textContent = cat === "All" ? recent.length + " stories this week" : shown + " " + cat + (shown === 1 ? " story" : " stories") + " this week";
+      try { history.replaceState(null, "", cat === "All" ? location.pathname : "#" + cat.toLowerCase().replace(/ /g, "-")); } catch (e) {}
+    };
+    ["All"].concat(cats).forEach(c => {
+      const b = el("button", null, c); b.type = "button"; b.dataset.cat = c;
+      b.appendChild(el("small", null, String(c === "All" ? recent.length : count[c] || 0)));
+      if (c !== "All" && !count[c]) b.disabled = true;
+      b.addEventListener("click", () => apply(c)); bar.appendChild(b); btns.push(b);
+    });
+    all.addEventListener("click", () => apply("All"));
+    arch.parentNode.insertBefore(bar, arch); arch.appendChild(empty);
+    const want = decodeURIComponent((location.hash || "").slice(1)).replace(/-/g, " ").toLowerCase();
+    const start = cats.find(c => c.toLowerCase() === want && count[c]);
+    apply(start || "All");
   }
 
   // ---------- Events from the Google Sheet ----------
@@ -499,6 +552,26 @@
     if (isUrl(ev.link)) art.appendChild(link(ev.link, (ev.link_label || "Official page") + " →", "go-btn"));
     return art;
   }
+  // Event data (JSON-LD) so Google can show dates and places in search
+  function eventLD(list) {
+    const iso = s => { const d = parseDay(s); return d ? s.trim() : null; };
+    const evs = list.filter(r => iso(r.start_date) && r.place && !r.date_label).map(r => {
+      const online = /online/i.test(r.place), inPerson = !/^online\b/i.test(r.place.trim());
+      const e = { "@type": "Event", name: r.title, startDate: iso(r.start_date), endDate: iso(r.end_date) || iso(r.start_date),
+        eventStatus: "https://schema.org/EventScheduled",
+        eventAttendanceMode: "https://schema.org/" + (online && inPerson ? "Mixed" : online ? "Online" : "Offline") + "EventAttendanceMode",
+        description: r.summary || r.what_happens || r.title, image: ["https://semiconweekly.in/img/events-2026.jpg"],
+        url: "https://semiconweekly.in/events.html#" + slug(r.title) };
+      const place = { "@type": "Place", name: r.place.split(",")[0].trim(), address: { "@type": "PostalAddress", streetAddress: r.place, addressCountry: "IN" } };
+      e.location = online && !inPerson ? { "@type": "VirtualLocation", url: isUrl(r.link) ? r.link : e.url } : online ? [place, { "@type": "VirtualLocation", url: isUrl(r.link) ? r.link : e.url }] : place;
+      return e;
+    });
+    const old = document.getElementById("sw-events-ld"); if (old) old.remove();
+    if (!evs.length) return;
+    const sc = document.createElement("script"); sc.type = "application/ld+json"; sc.id = "sw-events-ld";
+    sc.textContent = JSON.stringify({ "@context": "https://schema.org", "@graph": evs });
+    document.head.appendChild(sc);
+  }
   if (isUrl(C.EVENTS_CSV_URL)) {
     getCSV(C.EVENTS_CSV_URL).then(rows => {
       if (!hasCols(rows, "start_date", "title")) return; // wrong tab: keep events on the page
@@ -511,7 +584,7 @@
       const past = evs.filter(r => endOf(r) < today).sort((a, b) => startOf(b) - startOf(a));
       setStat("events", upcoming.length);
       const up = $("#ev-upcoming"), pa = $("#ev-past");
-      if (up) { up.textContent = ""; upcoming.forEach(r => up.appendChild(eventCard(r, false))); }
+      if (up) { up.textContent = ""; upcoming.forEach(r => up.appendChild(eventCard(r, false))); eventLD(upcoming); }
       if (pa) { pa.textContent = ""; past.forEach(r => pa.appendChild(eventCard(r, true))); }
       const home = $("#home-events");
       if (home && upcoming.length) {
