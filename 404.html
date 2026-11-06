@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<base href="/">
 <meta charset="utf-8">
 <script>try{if(localStorage.getItem("sw-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,17 +9,18 @@
 <!-- sharing, icons and search engines -->
 <meta name="description" content="This page could not be found. Go to the latest India chip news, fresher jobs or interview practice.">
 <meta name="robots" content="noindex">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0b2447">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Roboto+Slab:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="/style.css?v=20261106d">
-<script src="/search.js?v=20261106d" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css?v=20261106e">
+<link rel="stylesheet" href="theme.css?v=20261106e">
+<script src="search.js?v=20261106e" defer></script>
 <style>
 :root { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
 body { margin: 0; }
@@ -30,19 +32,19 @@ img { max-width: 100%; }
 <header>
   <div class="brand">
     <div class="wrap">
-      <a class="logo" href="/" aria-label="Semicon Weekly home">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
         <span class="mark">S<span>W</span></span>
         <span class="word">Semicon Weekly</span>
       </a>
       <nav class="mainnav" id="mainnav" aria-label="Main">
-        <a href="/">Home</a><span class="sep">|</span>
-        <a href="/#top-news">News</a><span class="sep">|</span>
-        <a href="/#in-short">In Short</a><span class="sep">|</span>
-        <a href="/careers.html">Careers</a><span class="sep">|</span>
-        <a href="/events.html">Events</a><span class="sep">|</span>
-        <a href="/learn.html">Learn</a><span class="sep">|</span>
-        <a href="/uses.html">Uses</a><span class="sep">|</span>
-        <a href="/interview.html">Interview Prep</a>
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
       </nav>
       <div class="brand-tools">
         <a class="sub-btn" href="#subscribe">Subscribe</a>
@@ -58,9 +60,9 @@ img { max-width: 100%; }
   <div class="catbar">
     <div class="wrap">
       <nav class="cats" aria-label="On this page">
-        <a href="/">Home</a>
-        <a href="/careers.html">Careers</a>
-        <a href="/events.html">Events</a>
+        <a href="./">Home</a>
+        <a href="careers.html">Careers</a>
+        <a href="events.html">Events</a>
       </nav>
     </div>
   </div>
@@ -73,14 +75,14 @@ img { max-width: 100%; }
   <div class="nf404-guess" id="nf404-guess" hidden><b>Were you looking for:</b><ul></ul></div>
   <form class="nf404-search" action="#" onsubmit="return false"><button type="button" data-search class="nf404-btn">🔍 Search the site</button></form>
   <div class="nf404-grid">
-    <a href="/news.html"><b>📰 Latest chip news</b><span>Every story from the last 7 days</span></a>
-    <a href="/careers.html#freshers"><b>💼 Fresher jobs</b><span>Real, checked VLSI and embedded openings</span></a>
-    <a href="/interview.html"><b>🎯 AI interview practice</b><span>Answer real questions and get a score</span></a>
-    <a href="/vlsi-interview-questions.html"><b>📚 181 interview questions</b><span>Verilog, UVM, STA, CDC and more</span></a>
-    <a href="/vlsi-career-roadmap.html"><b>🗺️ VLSI career roadmap</b><span>What to learn for each chip job</span></a>
-    <a href="/events.html"><b>📅 Events</b><span>Expos, conferences and hackathons</span></a>
+    <a href="news.html"><b>📰 Latest chip news</b><span>Every story from the last 7 days</span></a>
+    <a href="careers.html#freshers"><b>💼 Fresher jobs</b><span>Real, checked VLSI and embedded openings</span></a>
+    <a href="interview.html"><b>🎯 AI interview practice</b><span>Answer real questions and get a score</span></a>
+    <a href="vlsi-interview-questions.html"><b>📚 181 interview questions</b><span>Verilog, UVM, STA, CDC and more</span></a>
+    <a href="vlsi-career-roadmap.html"><b>🗺️ VLSI career roadmap</b><span>What to learn for each chip job</span></a>
+    <a href="events.html"><b>📅 Events</b><span>Expos, conferences and hackathons</span></a>
   </div>
-  <p style="margin-top:22px"><a class="inl" href="/">← Go to the homepage</a></p>
+  <p style="margin-top:22px"><a class="inl" href="./">← Go to the homepage</a></p>
 </article>
 </main>
 <footer id="subscribe">
@@ -98,7 +100,7 @@ img { max-width: 100%; }
     </div>
     <div class="flinks">
       <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
-      <nav aria-label="Footer"><a href="/">Home</a><a href="/vlsi-interview-questions.html">Interview Questions</a><a href="/learn.html">Learn</a><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/editorial-policy.html">Editorial policy</a><a href="/corrections.html">Corrections</a><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a></nav>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="editorial-policy.html">Editorial policy</a><a href="corrections.html">Corrections</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
     </div>
   </div>
 </footer>
@@ -110,10 +112,10 @@ menuBtn.addEventListener('click', () => {
   menuBtn.setAttribute('aria-expanded', String(open));
 });
 </script>
-<script src="/config.js?v=20261106d"></script>
-<script src="/sw.js?v=20261106d"></script>
-<script src="/promo.js?v=20261106d" defer></script>
-<script src="/site-ui.js?v=20261106d" defer></script>
+<script src="config.js?v=20261106e"></script>
+<script src="sw.js?v=20261106e"></script>
+<script src="promo.js?v=20261106e" defer></script>
+<script src="site-ui.js?v=20261106e" defer></script>
 <script>
 (function(){var w=decodeURIComponent(location.pathname).toLowerCase().replace(/\.html?$/,"").split(/[^a-z0-9]+/).filter(function(x){return x.length>2&&["story","html","www"].indexOf(x)<0});
 if(!w.length)return;fetch("/search-index.json").then(function(r){return r.json()}).then(function(idx){

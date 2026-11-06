@@ -1,0 +1,165 @@
+/* Semicon Weekly – "Brand Purple" theme.
+   Loaded after style.css on every page (site_seo.py adds the link). Matches the purple + yellow post images.
+   To go back to the old navy look, remove the theme.css link (or empty this file). */
+
+/* ---------- colours and fonts ---------- */
+:root {
+  --sw-p50: #f5f3ff; --sw-p100: #ede9fe; --sw-p200: #ddd6fe; --sw-p300: #c4b5fd; --sw-p400: #a78bfa;
+  --sw-p500: #8b5cf6; --sw-p600: #7c3aed; --sw-p700: #6d28d9; --sw-p800: #5b21b6; --sw-p900: #4c1d95; --sw-p950: #2e1065;
+  --sw-y: #facc15; --sw-y2: #fde047; --sw-yink: #2a0f5c;
+  --sw-head: linear-gradient(90deg, #2e1065 0%, #4c1d95 100%);
+  --paper: #ffffff; --paper-2: #f6f4fb; --ink: #1c1530; --ink-2: #4a4560; --ink-3: #6b6680; --rule: #e7e3f1;
+  --brand: #4c1d95; --brand-2: #3b0764; --accent: #6d28d9; --gold: #facc15;
+  --c-policy: #2563eb; --c-company: #059669; --c-fab: #c026d3; --c-design: #0891b2; --c-jobs: #7c3aed; --c-event: #db2777;
+  --serif: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --slab: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --sw-bg: #f8f7fc;
+  --sw-shadow: 0 1px 2px rgba(30, 16, 70, .05), 0 6px 18px -12px rgba(46, 16, 101, .25);
+}
+html[data-theme="dark"]:root {
+  --paper: #150e26; --paper-2: #1d1434; --ink: #efeaf8; --ink-2: #c9c0de; --ink-3: #9d93b8; --rule: #33294f;
+  --brand: #6d28d9; --brand-2: #1f0a44; --accent: #c4b5fd; --gold: #facc15;
+  --c-policy: #60a5fa; --c-company: #34d399; --c-fab: #e879f9; --c-design: #22d3ee; --c-jobs: #a78bfa; --c-event: #f472b6;
+  --sw-bg: #100a1d;
+  --sw-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+}
+
+/* ---------- base ---------- */
+body, .swui-bg { background: var(--sw-bg) !important; }
+html[data-theme="dark"] body, html[data-theme="dark"] .swui-bg { background: var(--sw-bg) !important; }
+body { font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, .logo .word { font-family: var(--serif); letter-spacing: -0.015em; }
+h1 { font-weight: 700; }
+:focus-visible { outline-color: var(--sw-p500); }
+::selection { background: var(--sw-p200); color: #1c1530; }
+
+/* ---------- top promo bar ---------- */
+.swp-bar { background: var(--sw-y) !important; color: var(--sw-yink) !important; }
+.swp-bar a.go, .swp-bar .swp-cta { background: var(--sw-p950) !important; color: var(--sw-y) !important; border-color: var(--sw-p950) !important; }
+.swp-bar b.tag, .swp-bar .swp-new { background: var(--sw-p950) !important; color: #fff !important; }
+.swp-bar button, .swp-bar .swp-close { background: transparent !important; color: var(--sw-yink) !important; }
+
+/* ---------- header ---------- */
+.brand { background: var(--sw-head) !important; color: #fff; border-bottom: 1px solid rgba(255, 255, 255, .08); }
+.brand .mainnav a { color: #e9e3fb !important; font-family: var(--sans); font-weight: 500; }
+.brand .mainnav .sep { color: rgba(233, 227, 251, .35) !important; }
+.brand .mainnav a:hover, .brand .mainnav a[aria-current="page"] { color: var(--sw-y) !important; }
+.logo .mark, .logo .mark span { color: var(--sw-y) !important; font-family: var(--serif); }
+.logo .word { color: #fff !important; }
+.brand .icon-btn, .brand .swf-btn { color: #fff !important; border-color: rgba(255, 255, 255, .28) !important; background: rgba(255, 255, 255, .06) !important; }
+.brand .icon-btn:hover, .brand .swf-btn:hover { background: rgba(255, 255, 255, .14) !important; }
+.catbar { background: var(--brand-2) !important; border-bottom: 1px solid rgba(255, 255, 255, .06); }
+.catbar .cats a { color: #f3edff !important; font-family: var(--sans); font-weight: 500; }
+.catbar .cats a::before { border-left-color: var(--sw-y) !important; }
+.catbar .cats a:hover { color: var(--sw-y) !important; }
+.catbar .cats a.swui-hotlink { background: var(--sw-y) !important; color: var(--sw-yink) !important; font-weight: 700; }
+.catbar .social a { color: #f3edff !important; border-color: rgba(255, 255, 255, .3) !important; }
+.dateline { background: transparent !important; color: var(--ink-3); border-color: var(--rule) !important; }
+.dateline b { color: var(--accent) !important; }
+
+/* ---------- left rail (desktop) and bottom bar (phone) ---------- */
+.swui-rail { background: var(--sw-p950) !important; border-right: 1px solid rgba(255, 255, 255, .06); }
+.swui-item { color: #e2d9fb !important; }
+.swui-item:hover { background: rgba(255, 255, 255, .1) !important; color: #fff !important; }
+.swui-item[aria-current="page"] { background: rgba(250, 204, 21, .18) !important; color: var(--sw-y) !important; }
+.swui-item.guide { background: linear-gradient(160deg, #a78bfa, #7c3aed) !important; color: #fff !important; animation-name: swThemeGlowV !important; }
+.swui-item.guide .swui-badge { background: #fff !important; color: var(--sw-p800) !important; }
+.swui-item.hot { background: linear-gradient(160deg, #fde047, #facc15) !important; color: var(--sw-yink) !important; }
+.swui-call { background: var(--sw-p950) !important; border-color: var(--sw-y) !important; color: #fff !important; }
+@keyframes swThemeGlowV { 0%, 100% { box-shadow: 0 0 0 0 rgba(167, 139, 250, .55); } 50% { box-shadow: 0 0 0 7px rgba(167, 139, 250, 0); } }
+
+/* ---------- buttons ---------- */
+.bl-go, .rs-go, .go-btn, .jcard .applyb, .btn-main, .cta-band a, .nf404-btn, .rg-copy button {
+  background: var(--sw-p600) !important; color: #fff !important; border-color: var(--sw-p600) !important; border-radius: 10px !important; font-family: var(--sans) !important; font-weight: 600 !important;
+}
+.bl-go:hover, .rs-go:hover, .go-btn:hover, .jcard .applyb:hover, .btn-main:hover, .cta-band a:hover { background: var(--sw-p700) !important; }
+html[data-theme="dark"] body .btn-main, html[data-theme="dark"] body .rg-copy button { background: var(--sw-p500) !important; color: #fff !important; }
+
+/* ---------- homepage blocks ---------- */
+.botlaunch { background: linear-gradient(120deg, #3b0764 0%, #6d28d9 100%) !important; border: 0 !important; border-radius: 18px !important; box-shadow: 0 18px 40px -26px rgba(76, 29, 149, .8); }
+.botlaunch h2, .botlaunch p, .botlaunch .bl-tags span { color: #fff !important; }
+.botlaunch h2 em, .botlaunch h2 b, .botlaunch h2 span, .botlaunch .hl { color: var(--sw-y) !important; }
+.botlaunch .bl-go { background: var(--sw-y) !important; color: var(--sw-yink) !important; border-color: var(--sw-y) !important; }
+.botlaunch .bl-go:hover { background: var(--sw-y2) !important; }
+.botlaunch .bl-sec { border-color: rgba(255, 255, 255, .5) !important; color: #fff !important; background: rgba(255, 255, 255, .06) !important; border-radius: 10px !important; }
+.botlaunch .bl-tags span, .botlaunch .chip { border-color: rgba(255, 255, 255, .3) !important; background: rgba(255, 255, 255, .08) !important; }
+.refstrip { background: #fefce8 !important; border: 1px solid #fde68a !important; border-radius: 16px !important; }
+.refstrip b { color: var(--sw-p950) !important; }
+html[data-theme="dark"] body .refstrip { background: rgba(250, 204, 21, .08) !important; border-color: rgba(250, 204, 21, .3) !important; }
+html[data-theme="dark"] body .refstrip b { color: var(--sw-y) !important; }
+.swstats .st { border-radius: 16px !important; border-color: var(--rule) !important; background: var(--paper) !important; box-shadow: var(--sw-shadow); }
+.swstats .st b { color: var(--sw-p600) !important; font-family: var(--serif); }
+html[data-theme="dark"] body .swstats .st b { color: var(--sw-p300) !important; }
+.shead h2 { font-weight: 700; }
+.kicker, .cap, .side .kicker { font-family: var(--sans); letter-spacing: .06em; }
+.lead h2, .lead h3, .side h3, .side h4 { font-family: var(--serif); }
+
+/* ---------- cards ---------- */
+.jcard, .ev-card, .card, .tcard, .iq, .use, .toc, .why3 > div, .whybox, .nums .num, .inshort, details.faq, .note-box, .cta-band {
+  border-radius: 14px !important;
+}
+.jcard, .ev-card, .card, .tcard, .iq { box-shadow: var(--sw-shadow); border-color: var(--rule) !important; }
+.chip.hot { background: var(--sw-p100) !important; color: var(--sw-p800) !important; }
+html[data-theme="dark"] body .chip.hot { background: rgba(167, 139, 250, .18) !important; color: var(--sw-p200) !important; }
+.jtab[aria-selected="true"] { border-color: var(--sw-p600) !important; background: var(--sw-p50) !important; color: var(--sw-p900) !important; }
+html[data-theme="dark"] body .jtab[aria-selected="true"] { background: rgba(167, 139, 250, .14) !important; color: #fff !important; }
+.cta-band { background: var(--sw-p50) !important; border-color: var(--sw-p200) !important; }
+html[data-theme="dark"] body .cta-band { background: rgba(167, 139, 250, .1) !important; border-color: rgba(167, 139, 250, .3) !important; }
+.inshort { background: var(--sw-p50) !important; border-color: var(--sw-p200) !important; }
+html[data-theme="dark"] body .inshort { background: rgba(167, 139, 250, .1) !important; border-color: rgba(167, 139, 250, .28) !important; }
+
+/* ---------- links ---------- */
+a.inl, .story p a:not([class]), .story li a:not([class]), .rel-more a, .gl-more a, .sources a, .next a span + *, .toc a { color: var(--accent) !important; }
+.story .next a:hover { color: var(--accent) !important; }
+
+/* ---------- popup + floating button ---------- */
+.swp-pop .swp-top { background: linear-gradient(130deg, #2e1065, #6d28d9) !important; }
+.swp-pop .swp-cta a { background: var(--sw-y) !important; color: var(--sw-yink) !important; font-family: var(--serif) !important; }
+.swp-pop .swp-cta a:hover { background: var(--sw-y2) !important; }
+.swp-pop .swp-stats b { color: var(--sw-p800) !important; }
+.swp-fab { background: var(--sw-p950) !important; border-color: var(--sw-y) !important; color: #fff !important; }
+.swp-fab small, .swp-fab span small { color: var(--sw-y) !important; }
+
+/* ---------- footer ---------- */
+footer { background: linear-gradient(180deg, #2e1065, #1f0a44) !important; color: #e2d9fb !important; }
+footer a { color: #e2d9fb; } footer a:hover { color: var(--sw-y); }
+footer .sub-btn, footer button[type="submit"] { background: var(--sw-y) !important; color: var(--sw-yink) !important; }
+
+/* ---------- small screens ---------- */
+@media (max-width: 760px) {
+  .botlaunch { border-radius: 14px !important; }
+}
+
+/* ---------- remaining navy pieces from promo.js / site-ui.js ---------- */
+.swp-card a.btn, .swui-call a.go, .swf-mail button { background: var(--sw-p600) !important; color: #fff !important; font-family: var(--sans) !important; font-weight: 600 !important; border-radius: 8px !important; }
+.swp-card a.btn:hover, .swui-call a.go:hover, .swf-mail button:hover { background: var(--sw-p700) !important; }
+.swp-card .q { border-left-color: var(--sw-p600) !important; }
+.swp-wide { background: linear-gradient(120deg, #3b0764, #6d28d9) !important; }
+.swp-fab .ico { color: var(--sw-p950) !important; background: var(--sw-y) !important; }
+.swui-call b, .swf-pop h3, .swn-card .swn-h, .swn-done b { color: var(--sw-p900) !important; }
+.swp-card a.btn, .swp-cta a, .bl-go, .bl-sec, .rs-go { font-family: var(--sans) !important; }
+
+/* ---------- leftover cyan from the old theme (light + dark) ---------- */
+.swui-bg { background: var(--sw-bg) !important; }
+.swui-call { box-shadow: 0 16px 40px -10px rgba(20, 8, 50, .5), 0 0 0 2px var(--sw-p400) !important; }
+.swui-call::before { box-shadow: -2px 2px 0 0 var(--sw-p400) !important; }
+.swui-call.below::before { box-shadow: 2px 2px 0 0 var(--sw-p400) !important; }
+a.swf-row:hover { border-color: var(--sw-p500) !important; }
+.swf-mail input:focus, footer .swn-card input[type=email]:focus { outline-color: var(--sw-p500) !important; border-color: var(--sw-p500) !important; }
+.block.tips { border-left-color: var(--sw-p500) !important; }
+html[data-theme="dark"] body .block.tips { background: rgba(167, 139, 250, .1) !important; }
+.mode:has(input:checked) { border-color: var(--sw-p600) !important; background: var(--sw-p50) !important; }
+.ansmodes button[aria-pressed="true"], .speak-q[aria-pressed="true"] { background: var(--sw-p800) !important; border-color: var(--sw-p800) !important; color: #fff !important; }
+html[data-theme="dark"] body .ansmodes button[aria-pressed="true"], html[data-theme="dark"] body .speak-q[aria-pressed="true"] { background: var(--sw-p400) !important; border-color: var(--sw-p400) !important; color: #1a0b38 !important; }
+html[data-theme="dark"] body .mode:has(input:checked), html[data-theme="dark"] body .mic { background: rgba(167, 139, 250, .12) !important; border-color: var(--sw-p400) !important; color: var(--ink) !important; }
+html[data-theme="dark"] body .jf button[aria-pressed="true"], html[data-theme="dark"] body .rg-tabs button[aria-selected="true"] { background: var(--sw-p400) !important; border-color: var(--sw-p400) !important; color: #1a0b38 !important; }
+html[data-theme="dark"] body .jf button[aria-pressed="true"] small { color: #1a0b38 !important; }
+.jf button[aria-pressed="true"], .nf button[aria-pressed="true"], .sw-tabs button[aria-pressed="true"], .rg-tabs button[aria-selected="true"] { background: var(--sw-p700) !important; border-color: var(--sw-p700) !important; color: #fff !important; }
+html[data-theme="dark"] body .nf button[aria-pressed="true"], html[data-theme="dark"] body .sw-tabs button[aria-pressed="true"] { background: var(--sw-p400) !important; border-color: var(--sw-p400) !important; color: #1a0b38 !important; }
+html[data-theme="dark"] body .gl-az a:hover { background: var(--sw-p500) !important; }
+.gl-az a:hover { background: var(--sw-p600) !important; color: #fff !important; }
+.gl-sec h2 { color: var(--accent) !important; }
+
+/* the Learn page's word list uses a class called .word; keep it away from the logo text */
+.logo .word { display: block !important; grid-template-columns: none !important; gap: 0 !important; padding: 0 !important; border: 0 !important; font-family: var(--sans) !important; font-weight: 600; }
