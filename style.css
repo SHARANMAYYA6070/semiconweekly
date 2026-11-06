@@ -392,3 +392,12 @@ picture { display: contents; }
 .nf404-grid a:hover { border-color: var(--accent); transform: translateY(-1px); }
 .nf404-grid b { display: block; font: 700 16.5px var(--slab); }
 .nf404-grid span { display: block; font-size: 14px; color: var(--ink-3); margin-top: 4px; }
+
+/* ---------- Story pages: related fresher jobs + glossary link ---------- */
+.rel-jobs { margin: 30px 0 8px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); overflow: hidden; }
+.rel-jobs h2 { margin: 0; padding: 14px 16px 10px; font-size: 21px; border-bottom: 1px solid var(--rule); }
+.rel-jobs h2::after { display: none; }
+.rel-jobs .job:last-child { border-bottom: 1px solid var(--rule); }
+.rel-more { margin: 0; padding: 12px 16px; font-size: 14.5px; background: var(--paper-2); }
+.rel-more a, .gl-more a { color: var(--accent); font-weight: 600; }
+.gl-more { margin-top: 10px; }

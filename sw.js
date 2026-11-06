@@ -293,9 +293,23 @@
       if (cbox) {
         const re = new RegExp(cbox.dataset.match || "^$", "i");
         const mine = jobs.filter(j => re.test(j.company || ""));
-        if (mine.length) { cbox.textContent = ""; mine.forEach(j => cbox.appendChild(jobCard(j))); }
-        else { cbox.textContent = ""; const p = el("p", "note-box"); p.appendChild(document.createTextNode("No open roles from this company on our list right now. ")); p.appendChild(link("careers.html#freshers", "See all fresher jobs →")); cbox.appendChild(p); }
-        const cc = $("#company-count"); if (cc) cc.textContent = mine.length ? mine.length + (mine.length > 1 ? " open roles" : " open role") : "No open roles today";
+        const isFresh = j => /fresh|intern|trainee/i.test(j.type);
+        const mf = mine.filter(isFresh), me = mine.filter(j => !isFresh(j));
+        cbox.textContent = "";
+        const head = (t, n) => { const h = el("h3", "cj-head", t); h.appendChild(el("small", null, n + (n === 1 ? " role" : " roles"))); return h; };
+        if (mf.length) { cbox.appendChild(head("For freshers and interns", mf.length)); mf.forEach(j => cbox.appendChild(jobCard(j))); }
+        else {
+          const p = el("p", "note-box"); p.appendChild(document.createTextNode("No fresher roles from this company on our list right now. "));
+          p.appendChild(link("careers.html#freshers", "See all fresher jobs →")); cbox.appendChild(p);
+          // similar fresher roles at other companies (same kind of work as this company's roles, else the newest ones)
+          const want = new Set(me.flatMap(j => tagJob(j).role).filter(r => r !== "other"));
+          const others = jobs.filter(j => isFresh(j) && !re.test(j.company || ""));
+          const sim = (want.size ? others.filter(j => tagJob(j).role.some(r => want.has(r))) : []).concat(others).filter((j, i, a) => a.indexOf(j) === i).slice(0, 3);
+          if (sim.length) { cbox.appendChild(head("Similar fresher jobs at other companies", sim.length)); sim.forEach(j => cbox.appendChild(jobCard(j))); }
+        }
+        if (me.length) { cbox.appendChild(head("For experienced engineers", me.length)); me.forEach(j => cbox.appendChild(jobCard(j))); }
+        if (!document.getElementById("cj-css")) { const st = el("style"); st.id = "cj-css"; st.textContent = ".cj-head{font:700 18px var(--slab);margin:22px 0 10px;display:flex;align-items:baseline;gap:10px}.cj-head:first-child{margin-top:4px}.cj-head small{font:500 13px var(--sans);color:var(--ink-3)}"; document.head.appendChild(st); }
+        const cc = $("#company-count"); if (cc) cc.textContent = mine.length ? (mf.length ? mf.length + " for freshers · " : "") + mine.length + (mine.length > 1 ? " open roles" : " open role") : "No open roles today";
       }
       document.querySelectorAll("[data-co-count]").forEach(b => {
         const re = new RegExp(b.dataset.coCount, "i"), n = jobs.filter(j => re.test(j.company || "")).length;
@@ -315,10 +329,45 @@
       if (dl && jobs.length) dl.textContent = jobs.length + " real openings";
       setStat("jobs", jobs.length);
       buildJobFilters(jobs);
+      relatedJobs(jobs);
       document.querySelectorAll(".jload").forEach(x => { x.textContent = "No openings in this section right now. Check back tomorrow, or see the other tab."; });
       if (tf && !fresh.length) tf.textContent = "0–1 year · none today";
       if (te && !exp.length) te.textContent = "1+ years · none today";
     }).catch(jobsFailed);
+  }
+  // ---------- Story pages: "Jobs for freshers related to this story" ----------
+  // Scores each open fresher job against the story: same company named in the story = strong match,
+  // same kind of work (test, verification, physical design, embedded, packaging…) = good match.
+  function relatedJobs(jobs) {
+    const box = $("#rel-jobs"); if (!box) return;
+    const art = document.querySelector("article.story"); if (!art) return;
+    const text = [...art.querySelectorAll("h1, .dek, .inshort, #what ~ ul, .why3, h2 + ul")].map(x => x.textContent).join(" ");
+    const lower = " " + text.toLowerCase().replace(/\s+/g, " ") + " ";
+    const coKey = c => (c || "").replace(/\(.*?\)/g, "").replace(/\b(technologies|technology|semiconductors?|india|inc|ltd|limited|corporation|corp|design systems|electronics|foundry|innovations|analytics)\b/gi, "").trim().toLowerCase();
+    // how strongly the story is about each kind of work = how often its words appear (capped)
+    const weight = {};
+    // extra story words for each kind of work (news stories say "testing" or "plant", job posts say "test engineer")
+    const EXTRA = { mfg: /\btest(s|ing|ed)?\b|\bate\b|\bfabs?\b|factory|plant|wafer/gi, dv: /validat/gi, pd: /tape.?out|layout/gi, embedded: /firmware|software|modem/gi };
+    ROLES.forEach(r => { const n = (text.match(new RegExp(r[2].source, "gi")) || []).length + (EXTRA[r[0]] ? (text.match(EXTRA[r[0]]) || []).length : 0); if (n) weight[r[0]] = Math.min(n, 4); });
+    const fresh = jobs.filter(j => /fresh|intern|trainee/i.test(j.type));
+    const scored = fresh.map((j, i) => {
+      const k = coKey(j.company); let sc = 0, why = "";
+      if (k.length > 2 && new RegExp("\\b" + k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").split(/\s+/)[0] + "\\b", "i").test(lower)) { sc += 10; why = "company"; }
+      // kind of work from the job's title and skills only; words like "apprentice"/"intern" describe the job type, not the work
+      const jt = [j.title, j.skills].join(" ").replace(/apprentic\w*|intern\w*|trainee|graduate/gi, " ");
+      const jr = ROLES.filter(r => r[2].test(jt) && weight[r[0]]).map(r => r[0]);
+      sc += jr.reduce((t, r) => t + 1 + weight[r], 0);
+      if (!why && jr.length) why = "role";
+      if (isFeatured(j)) sc += 1;
+      return { j, sc, i, why };
+    }).filter(x => x.sc >= 3).sort((a, b) => b.sc - a.sc || a.i - b.i);
+    const pick = scored.slice(0, 3).map(x => x.j);
+    const list = box.querySelector(".rel-list"), title = box.querySelector("h2");
+    let final = pick;
+    if (!pick.length) { final = fresh.slice(0, 3); if (title) title.textContent = "Latest fresher jobs"; }
+    if (!final.length) return;
+    list.textContent = ""; final.forEach(j => list.appendChild(jobMini(j)));
+    box.hidden = false;
   }
   function jobsFailed() {
     document.querySelectorAll(".jload").forEach(x => { x.textContent = "Couldn't load today's jobs. Please check your internet and refresh the page."; });

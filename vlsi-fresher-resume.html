@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("sw-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VLSI Fresher Resume Guide: RTL, DV, PD, Analog and Embedded (with Samples) · Semicon Weekly</title>
+<!-- sharing, icons and search engines -->
+<meta name="description" content="How to write a one-page VLSI fresher resume in India that gets shortlisted: what to put in each section, role-wise keywords and project bullets for RTL, DV, physical design, DFT, analog and embedded, a sample layout and a checklist.">
+<link rel="canonical" href="https://semiconweekly.in/vlsi-fresher-resume.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Semicon Weekly">
+<meta property="og:title" content="VLSI Fresher Resume Guide: RTL, DV, PD, Analog and Embedded (with Samples)">
+<meta property="og:description" content="How to write a one-page VLSI fresher resume in India that gets shortlisted: what to put in each section, role-wise keywords and project bullets for RTL, DV, physical design, DFT, analog and embedded, a sample layout and a checklist.">
+<meta property="og:url" content="https://semiconweekly.in/vlsi-fresher-resume.html">
+<meta property="og:image" content="https://semiconweekly.in/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b2447">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Roboto+Slab:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css?v=20261106d">
+<script src="search.js?v=20261106d" defer></script>
+<style>
+:root { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "How to write a VLSI fresher resume that gets shortlisted", "description": "How to write a one-page VLSI fresher resume in India that gets shortlisted: what to put in each section, role-wise keywords and project bullets for RTL, DV, physical design, DFT, analog and embedded, a sample layout and a checklist.", "url": "https://semiconweekly.in/vlsi-fresher-resume.html", "mainEntityOfPage": "https://semiconweekly.in/vlsi-fresher-resume.html", "inLanguage": "en-IN", "image": ["https://semiconweekly.in/img/og.jpg"], "datePublished": "2026-11-06", "dateModified": "2026-11-06", "author": {"@type": "Organization", "@id": "https://semiconweekly.in/#org", "name": "Semicon Weekly", "url": "https://semiconweekly.in/"}, "publisher": {"@type": "Organization", "@id": "https://semiconweekly.in/#org", "name": "Semicon Weekly", "url": "https://semiconweekly.in/", "logo": {"@type": "ImageObject", "url": "https://semiconweekly.in/logo-512.png", "width": 512, "height": 512}}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Should a VLSI fresher resume be one page?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Recruiters spend well under a minute on a first look, and a fresher rarely has enough real work to fill two pages. One clean page with 2–4 strong projects beats two pages of course names."}}, {"@type": "Question", "name": "Should I add my 10th and 12th marks?", "acceptedAnswer": {"@type": "Answer", "text": "In India, yes, keep one line for each. Many campus and off-campus drives filter on 10th/12th percentages and CGPA cut-offs (often 60–70%, sometimes higher). Leaving them out can get you filtered out."}}, {"@type": "Question", "name": "My CGPA is low. Should I hide it?", "acceptedAnswer": {"@type": "Answer", "text": "If a job asks for it, you will be asked anyway. Keep it, and let strong projects, a GitHub link and a good interview do the work. Apply where the stated cut-off fits you, and use referrals."}}, {"@type": "Question", "name": "Should I add a photo, date of birth, father's name or religion?", "acceptedAnswer": {"@type": "Answer", "text": "No. They are not needed for engineering jobs, take space, and can invite bias. Name, city, phone, email, LinkedIn and GitHub are enough."}}, {"@type": "Question", "name": "Can I write a training-institute course as an internship?", "acceptedAnswer": {"@type": "Answer", "text": "Only if it really was an internship with a company. Otherwise list it under “Training” and describe what you built. Interviewers check this, and a mismatch hurts trust."}}, {"@type": "Question", "name": "Should I list every EDA tool I have heard of?", "acceptedAnswer": {"@type": "Answer", "text": "No. List only tools you have actually used and can talk about. Writing “Synopsys VCS, PrimeTime, Innovus, Calibre” after one demo invites hard questions you cannot answer."}}, {"@type": "Question", "name": "Word or PDF?", "acceptedAnswer": {"@type": "Answer", "text": "Send a PDF unless the form asks for Word. Make it from a simple one-column layout (Google Docs, Word or LaTeX) so applicant tracking systems can read the text."}}]}]}</script>
+<style>
+.rg-toc{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin:16px 0 6px;padding:12px 14px;border:1px solid var(--rule);border-radius:10px;background:var(--paper-2);font-size:14.5px}
+.rg-toc a{color:var(--accent);font-weight:600}
+.rg-rules li{margin:8px 0}
+.rg-secs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:12px}
+.rg-secs>div{border:1px solid var(--rule);border-radius:10px;padding:14px 16px;background:var(--paper)}
+.rg-secs h3{font:700 16.5px var(--slab);margin:0 0 6px}.rg-secs p{margin:0;font-size:15px;line-height:1.55}
+.rg-formula{font-size:17px;padding:12px 16px;border-left:4px solid var(--gold);background:var(--paper-2);border-radius:0 8px 8px 0}
+.rg-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.rg-compare>div{border-radius:10px;padding:12px 14px;border:1px solid var(--rule)}
+.rg-compare .bad{background:rgba(220,38,38,.06);border-color:rgba(220,38,38,.35)}.rg-compare .bad b{color:#b91c1c}
+.rg-compare .good{background:rgba(22,163,74,.07);border-color:rgba(22,163,74,.4)}.rg-compare .good b{color:#15803d}
+.rg-compare p{margin:6px 0 0;font-size:15px}
+html[data-theme="dark"] .rg-compare .bad b{color:#fca5a5}html[data-theme="dark"] .rg-compare .good b{color:#86efac}
+.rg-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+.rg-tabs button{font:600 14px var(--sans);border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:999px;padding:8px 14px;min-height:40px;cursor:pointer}
+.rg-tabs button[aria-selected=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+html[data-theme="dark"] .rg-tabs button[aria-selected=true]{background:#38c6e0;border-color:#38c6e0;color:#04202a}
+.rg-pane{border:1px solid var(--rule);border-radius:12px;padding:6px 18px 14px;margin-top:10px;background:var(--paper)}
+.rg-pane h3{font:700 19px var(--slab);margin:12px 0 4px}
+.rg-kw{font-size:14.5px;background:var(--paper-2);padding:10px 12px;border-radius:8px;line-height:1.6}
+.rg-good li{margin:6px 0}.rg-bad{font-size:14.5px;color:var(--ink-2)}
+.rg-links{display:flex;flex-wrap:wrap;gap:8px 18px}.rg-links a{color:var(--accent);font-weight:600}
+.rg-sample{max-width:720px;margin:14px auto;background:#fff;color:#111;border:1px solid #d6dbe3;border-radius:6px;box-shadow:0 12px 30px -18px rgba(0,0,0,.45);padding:26px 30px;font:13.5px/1.45 Arial,Helvetica,sans-serif}
+.rs-top{text-align:center;border-bottom:1.5px solid #111;padding-bottom:8px}.rs-top b{display:block;font-size:22px;letter-spacing:1px}.rs-top span{font-size:12.5px;color:#333}
+.rs-sec{margin-top:10px}.rs-sec h4{font:700 12.5px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid #999;margin:0 0 5px;padding-bottom:2px;color:#111}
+.rs-sec p{margin:0;font-size:13.5px}.rs-sec ul{margin:3px 0 6px;padding-left:18px}.rs-sec li{margin:2px 0;font-size:13.5px}
+.rs-row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px}.rs-row span:last-child{white-space:nowrap;color:#444}
+.rs-note{margin-top:12px;font-size:12px;color:#666;font-style:italic;text-align:center}
+.rg-copy{display:flex;align-items:center;gap:12px;margin-top:10px}
+.rg-copy button{min-height:42px;padding:9px 16px;border:0;border-radius:8px;background:var(--brand);color:#fff;font:600 15px var(--sans);cursor:pointer}
+html[data-theme="dark"] .rg-copy button{background:#38c6e0;color:#04202a}
+#rg-copy-msg{font-size:14px;color:#15803d;font-weight:600}
+.rg-pre{white-space:pre-wrap;font:12.5px/1.5 ui-monospace,Consolas,monospace;background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:14px;max-height:280px;overflow:auto;margin-top:10px;color:var(--ink)}
+.rg-mist li{margin:7px 0}
+.rg-check{list-style:none;padding:0}.rg-check li{margin:6px 0}
+.rg-check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:8px 10px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+.rg-check input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:#16a34a}
+.rg-check label:has(input:checked){border-color:rgba(22,163,74,.5);background:rgba(22,163,74,.07)}
+.rg details.faq{border:1px solid var(--rule);border-radius:10px;padding:10px 14px;margin:8px 0;background:var(--paper)}
+.rg details.faq summary{font-weight:700;cursor:pointer}.rg details.faq p{margin:8px 0 2px}
+.rg-next{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:18px}
+.rg-next a{display:block;padding:14px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);color:var(--ink);text-decoration:none}
+.rg-next a:hover{border-color:var(--accent)}.rg-next b{display:block;font:700 15.5px var(--slab)}.rg-next span{font-size:13.5px;color:var(--ink-3)}
+@media (max-width:640px){.rg-compare{grid-template-columns:1fr}.rg-sample{padding:16px 14px;font-size:12.5px}.rs-row{flex-direction:column;gap:0}.rs-row span:last-child{color:#666}.rs-top b{font-size:19px}}
+@media print{header,footer,.rg-toc,.rg-tabs,.rg-copy,.rg-pre,.cta-band,.rg-next,nav{display:none!important}}
+</style>
+<script type="application/ld+json" id="sw-crumbs-ld">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://semiconweekly.in/"}, {"@type": "ListItem", "position": 2, "name": "Careers", "item": "https://semiconweekly.in/careers.html"}, {"@type": "ListItem", "position": 3, "name": "Resume guide", "item": "https://semiconweekly.in/vlsi-fresher-resume.html"}]}</script>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar">
+    <div class="wrap">
+      <nav class="cats" aria-label="On this page">
+        <a href="./">Home</a>
+        <a href="careers.html">Careers</a>
+        <a href="events.html">Events</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+<article class="story rg">
+  <div class="crumbs"><a href="./">Home</a> › <a href="careers.html">Careers</a> › Resume guide</div>
+  <span class="kicker k-jobs" style="display:block;margin-top:14px">Careers</span>
+  <h1>How to write a VLSI fresher resume that gets shortlisted</h1>
+  <p class="dek">A practical, India-focused guide for ECE freshers applying to RTL, verification, physical design, DFT, analog and embedded roles: what to write, what to leave out, and a sample you can copy.</p>
+  <nav class="rg-toc" aria-label="On this page"><b>On this page:</b> <a href="#rules">5 rules</a> <a href="#sections">Section by section</a> <a href="#bullets">Writing bullets</a> <a href="#roles">Role-wise tips</a> <a href="#sample">Sample resume</a> <a href="#mistakes">Mistakes</a> <a href="#checklist">Checklist</a> <a href="#faq">FAQ</a></nav>
+
+  <h2 id="rules">The 5 rules that matter most</h2>
+  <ol class="rg-rules">
+    <li><b>One page, one column, PDF.</b> No tables, text boxes, icons, skill bars or photos. Applicant tracking systems (ATS) read plain text best, and so do tired recruiters.</li>
+    <li><b>Projects are your experience.</b> For a fresher, 2–4 real projects with GitHub links matter more than anything else on the page.</li>
+    <li><b>Every bullet shows what you built and how well it works.</b> Use numbers: frequency, coverage, slack, area, errors fixed, time saved.</li>
+    <li><b>Only write what you can defend.</b> Interviewers pick any word on your resume and ask about it. One honest skill beats five you cannot explain.</li>
+    <li><b>One resume per role.</b> Keep a DV version, an RTL version and so on, and match the words in the job post (if it says “SystemVerilog Assertions”, write that, not just “SVA”).</li>
+  </ol>
+
+  <h2 id="sections">Section by section (in this order)</h2>
+  <div class="rg-secs">
+    <div><h3>1. Header</h3><p>Name, city, phone, a professional email, LinkedIn, GitHub. That's it. No photo, date of birth, address, father's name or marital status.</p></div>
+    <div><h3>2. Summary (2 lines)</h3><p>Say the role you want and your strongest proof. “B.E. ECE 2026, aiming for DV. Built UVM testbenches for APB and UART with 95%+ coverage.” Skip generic objectives like “seeking a challenging position”.</p></div>
+    <div><h3>3. Education</h3><p>Degree, college, CGPA and years. One line each for Class XII and X with percentages (many Indian drives filter on these). Add M.Tech/PG diploma if you have one.</p></div>
+    <div><h3>4. Technical skills</h3><p>Group them: Languages, Verification/Design methods, Tools, Concepts. 4–6 lines. No “basic knowledge of”, no skill-level bars.</p></div>
+    <div><h3>5. Projects</h3><p>Your most important section. Name, tools, GitHub link, then 2–3 bullets with numbers. Put the project closest to the target role first.</p></div>
+    <div><h3>6. Internships / training</h3><p>Real internships first. Institute courses go under “Training”, described by what you built, not by the course name.</p></div>
+    <div><h3>7. Achievements (optional)</h3><p>Hackathons, tape-out contests, papers, GATE score, open-source contributions, leading a technical club. Skip school-level and unrelated items.</p></div>
+  </div>
+
+  <h2 id="bullets">How to write a strong bullet</h2>
+  <p class="rg-formula"><b>Action verb</b> + <b>what you built</b> + <b>with what</b> + <b>result (a number)</b></p>
+  <div class="rg-compare">
+    <div class="bad"><b>✗ Weak</b><p>Worked on UART project using Verilog.</p></div>
+    <div class="good"><b>✓ Strong</b><p>Designed a UART (8N1, 9600–115200 baud) in Verilog with a self-checking testbench; tested on a Basys-3 FPGA with a USB-serial link.</p></div>
+    <div class="bad"><b>✗ Weak</b><p>Did physical design of RISC-V using OpenLane.</p></div>
+    <div class="good"><b>✓ Strong</b><p>Took a RISC-V core from RTL to GDSII with OpenLane (SKY130): 0 DRC/LVS errors, +0.42 ns worst setup slack at 50 MHz.</p></div>
+  </div>
+  <p>Good verbs: designed, built, verified, implemented, debugged, automated, reduced, optimized, closed (timing/coverage), wrote, integrated.</p>
+
+  <h2 id="roles">Role-wise tips</h2>
+  <p>Pick your target role to see the keywords, sample bullets and projects that work best.</p>
+  <div class="rg-tabs" role="tablist" aria-label="Choose your role"><button type="button" role="tab" data-tab="rtl" aria-selected="true">RTL / Digital design</button><button type="button" role="tab" data-tab="dv" aria-selected="false">Design verification (DV)</button><button type="button" role="tab" data-tab="pd" aria-selected="false">Physical design (PD) / STA</button><button type="button" role="tab" data-tab="dft" aria-selected="false">DFT (design for test)</button><button type="button" role="tab" data-tab="analog" aria-selected="false">Analog design / Layout</button><button type="button" role="tab" data-tab="emb" aria-selected="false">Embedded / Firmware / Validation</button></div><div class="rg-pane" data-pane="rtl" role="tabpanel">
+  <h3>RTL / Digital design</h3>
+  <p><b>Keywords recruiters and ATS look for</b> (add only the ones you can answer questions on):</p>
+  <p class="rg-kw">Verilog, SystemVerilog (design), FSMs, pipelining, FIFOs, clock domain crossing (CDC), synthesis basics, STA basics (setup/hold), linting, AMBA AXI/APB, Xilinx Vivado or Intel Quartus, Yosys, Icarus/Verilator, GTKWave, Python or TCL</p>
+  <p><b>Strong project bullets</b> (copy the pattern, use your own numbers):</p>
+  <ul class="rg-good"><li>Designed a 4-stage pipelined RISC-V (RV32I) core in Verilog; passed 40+ instruction tests and ran at 100 MHz on an Artix-7 FPGA.</li><li>Built an asynchronous FIFO with Gray-code pointers and 2-flop synchronizers for a 50 MHz → 125 MHz crossing; checked full/empty in simulation.</li><li>Wrote an APB slave with 8 registers and a self-checking testbench; synthesized with Yosys and fixed all lint warnings.</li></ul>
+  <p class="rg-bad"><b>Weak:</b> “Designed a processor using Verilog.” – says nothing about what you built or how well it works.</p>
+  <p><b>Projects that impress for this role:</b> RISC-V or MIPS core (single-cycle, then pipelined) · Async FIFO + CDC · UART / SPI / I2C controller · AXI-Lite or APB slave · FSM-based traffic or vending controller (only as a first project).</p>
+  <p class="rg-links"><a href="roadmap-rtl-design-engineer.html">Full RTL / Digital design roadmap →</a> <a href="rtl-design-interview-questions.html">Practise the interview questions →</a></p>
+</div><div class="rg-pane" data-pane="dv" role="tabpanel" hidden>
+  <h3>Design verification (DV)</h3>
+  <p><b>Keywords recruiters and ATS look for</b> (add only the ones you can answer questions on):</p>
+  <p class="rg-kw">SystemVerilog (classes, constraints, interfaces), UVM (agents, sequences, scoreboard, RAL basics), functional coverage, SVA assertions, constrained-random testing, Python, Questa/VCS/Xcelium or EDA Playground, Git</p>
+  <p><b>Strong project bullets</b> (copy the pattern, use your own numbers):</p>
+  <ul class="rg-good"><li>Built a UVM testbench (agent, sequencer, driver, monitor, scoreboard) for an APB slave; reached 96% functional coverage with 12 constrained-random sequences.</li><li>Wrote 15 SVA assertions for a FIFO (no overflow/underflow, ordering) and found 2 bugs in the design's full-flag logic.</li><li>Verified a UART TX/RX at 3 baud rates with a reference model; automated regressions with a Python script.</li></ul>
+  <p class="rg-bad"><b>Weak:</b> “Knowledge of UVM and SystemVerilog.” – says nothing about what you built or how well it works.</p>
+  <p><b>Projects that impress for this role:</b> UVM testbench for APB/AXI-Lite or UART · SVA + coverage for an async FIFO · Constrained-random test of an ALU with a reference model · RAL model for a small register block.</p>
+  <p class="rg-links"><a href="roadmap-dv-engineer.html">Full Design verification (DV) roadmap →</a> <a href="uvm-interview-questions.html">Practise the interview questions →</a></p>
+</div><div class="rg-pane" data-pane="pd" role="tabpanel" hidden>
+  <h3>Physical design (PD) / STA</h3>
+  <p><b>Keywords recruiters and ATS look for</b> (add only the ones you can answer questions on):</p>
+  <p class="rg-kw">RTL-to-GDSII flow, floorplanning, placement, CTS, routing, STA (setup/hold, OCV, SDC), DRC/LVS, IR drop basics, OpenLane/OpenROAD, SKY130 PDK, KLayout/Magic, TCL, Python, Linux</p>
+  <p><b>Strong project bullets</b> (copy the pattern, use your own numbers):</p>
+  <ul class="rg-good"><li>Took a 32-bit RISC-V core from RTL to GDSII with OpenLane on SKY130: 0 DRC/LVS errors, worst setup slack +0.42 ns at 50 MHz.</li><li>Reduced routing congestion by changing core utilization from 60% to 45% and macro placement; compared the results in a short report.</li><li>Wrote SDC constraints (clocks, I/O delays, false paths) and fixed 3 hold violations after CTS.</li></ul>
+  <p class="rg-bad"><b>Weak:</b> “Done physical design of a chip.” – says nothing about what you built or how well it works.</p>
+  <p><b>Projects that impress for this role:</b> OpenLane run of a small design with your own SDC · Timing-closure experiment (clock period sweep) · Floorplan/utilization study with congestion maps · Power grid / IR drop comparison.</p>
+  <p class="rg-links"><a href="roadmap-physical-design-engineer.html">Full Physical design (PD) / STA roadmap →</a> <a href="physical-design-interview-questions.html">Practise the interview questions →</a></p>
+</div><div class="rg-pane" data-pane="dft" role="tabpanel" hidden>
+  <h3>DFT (design for test)</h3>
+  <p><b>Keywords recruiters and ATS look for</b> (add only the ones you can answer questions on):</p>
+  <p class="rg-kw">Scan insertion, ATPG, fault models (stuck-at, transition), fault coverage, MBIST, JTAG/boundary scan, scan compression basics, Verilog, STA basics, TCL/Python</p>
+  <p><b>Strong project bullets</b> (copy the pattern, use your own numbers):</p>
+  <ul class="rg-good"><li>Inserted a scan chain into a 32-flop counter design and shifted/captured test patterns in simulation.</li><li>Implemented a March C- MBIST controller for a 1 KB RAM in Verilog; injected stuck-at faults and detected all of them.</li><li>Wrote a JTAG TAP controller (16-state FSM) with IDCODE and BYPASS and a testbench.</li></ul>
+  <p class="rg-bad"><b>Weak:</b> “Familiar with DFT concepts.” – says nothing about what you built or how well it works.</p>
+  <p><b>Projects that impress for this role:</b> Scan chain on a small design · March C- MBIST controller · JTAG TAP controller · Hand fault-coverage calculation for a small circuit.</p>
+  <p class="rg-links"><a href="roadmap-dft-engineer.html">Full DFT (design for test) roadmap →</a> <a href="digital-electronics-interview-questions.html">Practise the interview questions →</a></p>
+</div><div class="rg-pane" data-pane="analog" role="tabpanel" hidden>
+  <h3>Analog design / Layout</h3>
+  <p><b>Keywords recruiters and ATS look for</b> (add only the ones you can answer questions on):</p>
+  <p class="rg-kw">MOSFET operation, small-signal models, current mirrors, op-amp design, bandgap, LDO basics, SPICE (ngspice/Spectre), PVT corners, Monte Carlo, layout: matching, common-centroid, guard rings, DRC/LVS, Cadence Virtuoso or Magic/KLayout, SKY130</p>
+  <p><b>Strong project bullets</b> (copy the pattern, use your own numbers):</p>
+  <ul class="rg-good"><li>Designed a two-stage op-amp in SKY130: 62 dB gain, 25 MHz unity-gain bandwidth, 63° phase margin across 5 PVT corners (ngspice).</li><li>Laid out a differential pair with common-centroid matching and guard rings in Magic; DRC- and LVS-clean.</li><li>Compared pre- and post-layout simulation; extracted parasitics reduced bandwidth by 12%.</li></ul>
+  <p class="rg-bad"><b>Weak:</b> “Good knowledge of analog circuits.” – says nothing about what you built or how well it works.</p>
+  <p><b>Projects that impress for this role:</b> Two-stage op-amp with compensation · Bandgap reference across temperature · Common-centroid layout of a diff pair · Pre- vs post-layout comparison.</p>
+  <p class="rg-links"><a href="roadmap-analog-layout-engineer.html">Full Analog design / Layout roadmap →</a> <a href="vlsi-interview-questions.html">Practise the interview questions →</a></p>
+</div><div class="rg-pane" data-pane="emb" role="tabpanel" hidden>
+  <h3>Embedded / Firmware / Validation</h3>
+  <p><b>Keywords recruiters and ATS look for</b> (add only the ones you can answer questions on):</p>
+  <p class="rg-kw">Embedded C, pointers and bit manipulation, ARM Cortex-M (STM32), ESP32, interrupts, timers, DMA, UART/SPI/I2C, FreeRTOS, bare-metal drivers, logic analyser, oscilloscope, Python test automation, Git, Linux</p>
+  <p><b>Strong project bullets</b> (copy the pattern, use your own numbers):</p>
+  <ul class="rg-good"><li>Wrote a bare-metal I2C driver for an STM32F4 to read a BME280 sensor at 10 Hz; verified the bus timing on a logic analyser.</li><li>Built a FreeRTOS data logger with 3 tasks (sense, process, log) using queues and a mutex; ran 48 hours without a crash.</li><li>Automated board tests with Python and a USB serial link, cutting manual test time from 20 minutes to 3 minutes.</li></ul>
+  <p class="rg-bad"><b>Weak:</b> “Worked on Arduino projects.” – says nothing about what you built or how well it works.</p>
+  <p><b>Projects that impress for this role:</b> Bare-metal STM32 driver (I2C/SPI) · FreeRTOS multi-task logger · Low-power ESP32 sensor node with measured battery life · Python test automation for a board.</p>
+  <p class="rg-links"><a href="roadmap-embedded-engineer.html">Full Embedded / Firmware / Validation roadmap →</a> <a href="vlsi-interview-questions.html">Practise the interview questions →</a></p>
+</div>
+
+  <h2 id="sample">Sample one-page resume (DV fresher)</h2>
+  <p>This is what a clean, ATS-friendly fresher resume looks like. Copy the plain-text version below into Google Docs or Word and replace everything with your own details.</p>
+  <div class="rg-sample" aria-label="Sample one-page fresher resume for a DV role">
+  <div class="rs-top"><b>YOUR NAME</b><span>Bengaluru · +91 98XXX XXXXX · yourname@gmail.com · linkedin.com/in/yourname · github.com/yourname</span></div>
+  <div class="rs-sec"><h4>Summary</h4><p>B.E. ECE graduate (2026) aiming for a Design Verification role. Built UVM testbenches for APB and UART with coverage-driven verification; comfortable with SystemVerilog, SVA and Python automation.</p></div>
+  <div class="rs-sec"><h4>Education</h4>
+    <div class="rs-row"><span><b>B.E., Electronics and Communication</b> · &lt;College&gt; · CGPA 8.4/10</span><span>2022 – 2026</span></div>
+    <div class="rs-row"><span>Class XII (PCM) · 89% &nbsp;·&nbsp; Class X · 92%</span><span>2022 / 2020</span></div></div>
+  <div class="rs-sec"><h4>Technical skills</h4>
+    <p><b>Languages:</b> Verilog, SystemVerilog, C, Python<br><b>Verification:</b> UVM, SVA, functional coverage, constrained-random<br><b>Tools:</b> Questa (EDA Playground), Icarus, GTKWave, Git, Linux<br><b>Concepts:</b> FSMs, FIFOs, CDC basics, AMBA APB/AXI-Lite</p></div>
+  <div class="rs-sec"><h4>Projects</h4>
+    <div class="rs-row"><span><b>UVM testbench for an APB slave</b> · SystemVerilog, UVM</span><span>github.com/…</span></div>
+    <ul><li>Built agent, sequencer, driver, monitor and scoreboard for an 8-register APB slave; 12 constrained-random sequences.</li><li>Reached 96% functional coverage; found and fixed 2 bugs in address decode.</li></ul>
+    <div class="rs-row"><span><b>Asynchronous FIFO with assertions</b> · Verilog, SVA</span><span>github.com/…</span></div>
+    <ul><li>16-deep async FIFO with Gray-code pointers and 2-flop synchronizers.</li><li>15 SVA checks for overflow, underflow and ordering; all passing.</li></ul></div>
+  <div class="rs-sec"><h4>Training</h4><div class="rs-row"><span><b>VLSI Verification Training</b> · &lt;Institute&gt; · 6 SV/UVM labs + final project</span><span>Jan – Jun 2026</span></div></div>
+  <div class="rs-sec"><h4>Achievements</h4><ul><li>Finalist, &lt;Hackathon&gt; 2025 (team of 3, FPGA design)</li><li>GATE 2026 (EC) qualified</li></ul></div>
+  <p class="rs-note">Sample with made-up details. Replace everything in &lt;angle brackets&gt; and every number with your own real work.</p>
+</div>
+  <div class="rg-copy"><button type="button" id="rg-copy-btn">📋 Copy plain-text template</button><span id="rg-copy-msg" role="status"></span></div>
+  <pre class="rg-pre" id="rg-template">YOUR NAME
+Bengaluru, Karnataka · +91 98XXX XXXXX · yourname@gmail.com
+linkedin.com/in/yourname · github.com/yourname
+
+SUMMARY
+B.E. ECE graduate (2026) aiming for a Design Verification role. Built UVM
+testbenches for APB and UART with coverage-driven verification; comfortable
+with SystemVerilog, SVA and Python automation.
+
+EDUCATION
+B.E., Electronics and Communication Engineering        2022 – 2026
+&lt;College name&gt;, &lt;University&gt; · CGPA 8.4/10
+Class XII (PCM), &lt;Board&gt; · 89%                                   2022
+Class X, &lt;Board&gt; · 92%                                           2020
+
+TECHNICAL SKILLS
+Languages:   Verilog, SystemVerilog, C, Python
+Verification: UVM, SVA, functional coverage, constrained-random testing
+Tools:       Questa (EDA Playground), Icarus Verilog, GTKWave, Git, Linux
+Concepts:    Digital design, FSMs, FIFOs, CDC basics, AMBA APB/AXI-Lite
+
+PROJECTS
+UVM Testbench for an APB Slave  ·  SystemVerilog, UVM        github.com/...
+- Built agent, sequencer, driver, monitor and scoreboard for an 8-register
+  APB slave; 12 constrained-random sequences.
+- Reached 96% functional coverage; found and fixed 2 bugs in address decode.
+
+Asynchronous FIFO with Assertions  ·  Verilog, SVA           github.com/...
+- Designed a 16-deep async FIFO (Gray-code pointers, 2-flop synchronizers).
+- Wrote 15 SVA checks for overflow, underflow and ordering; all passing.
+
+INTERNSHIP / TRAINING
+VLSI Verification Training, &lt;Institute&gt;                 Jan – Jun 2026
+- Completed 6 lab assignments on SV and UVM; final project above.
+
+ACHIEVEMENTS
+- Finalist, &lt;Hackathon name&gt; 2025 (team of 3, FPGA-based design)
+- GATE 2026 (EC) qualified, score 512
+</pre>
+
+  <h2 id="mistakes">Common mistakes that get resumes rejected</h2>
+  <ul class="rg-mist">
+    <li><b>Two or three pages</b> with course lists, school activities and hobbies.</li>
+    <li><b>Listing tools you have only seen in a demo</b> (PrimeTime, Innovus, Calibre…) and then failing basic questions on them.</li>
+    <li><b>“Basic knowledge of C, C++, Java, Python, MATLAB, Verilog…”</b> – a long list says you know none of them well.</li>
+    <li><b>No GitHub links</b>, or GitHub repos with no README, no results and no testbench.</li>
+    <li><b>The same project as 200 other applicants</b> (traffic light, 4-bit ALU) with no extra depth. Add pipelining, assertions, coverage or an FPGA demo to stand out.</li>
+    <li><b>Wrong tool or term spelling:</b> “System verilog”, “UVM methodolgy”, “cadance”. Recruiters notice.</li>
+    <li><b>Unprofessional email</b> or a file named <i>resume_final_new2.pdf</i>. Use <i>YourName_DV_Resume.pdf</i>.</li>
+    <li><b>Calling an institute course an “internship”</b> when it was paid training. Be accurate.</li>
+  </ul>
+
+  <h2 id="checklist">Checklist before you click Apply</h2>
+  <ul class="rg-check" id="rg-check">
+    <li><label><input type="checkbox"> Fits on one page, one column, saved as PDF</label></li>
+    <li><label><input type="checkbox"> Summary names the exact role I am applying for</label></li>
+    <li><label><input type="checkbox"> CGPA, Class XII and Class X are included</label></li>
+    <li><label><input type="checkbox"> 2–4 projects, each with tools, a GitHub link and a number</label></li>
+    <li><label><input type="checkbox"> I can explain every skill and tool I listed for 5 minutes</label></li>
+    <li><label><input type="checkbox"> Keywords from the job post appear in my resume (only if true)</label></li>
+    <li><label><input type="checkbox"> No photo, date of birth, father's name or full address</label></li>
+    <li><label><input type="checkbox"> Spell-checked; tool names spelled correctly</label></li>
+    <li><label><input type="checkbox"> File name is YourName_Role_Resume.pdf</label></li>
+    <li><label><input type="checkbox"> Applying on the official company site, and I will never pay to apply</label></li>
+  </ul>
+  <p class="small" id="rg-check-msg"></p>
+
+  <h2 id="faq">Questions freshers ask</h2>
+  <details class="faq"><summary>Should a VLSI fresher resume be one page?</summary><p>Yes. Recruiters spend well under a minute on a first look, and a fresher rarely has enough real work to fill two pages. One clean page with 2–4 strong projects beats two pages of course names.</p></details><details class="faq"><summary>Should I add my 10th and 12th marks?</summary><p>In India, yes, keep one line for each. Many campus and off-campus drives filter on 10th/12th percentages and CGPA cut-offs (often 60–70%, sometimes higher). Leaving them out can get you filtered out.</p></details><details class="faq"><summary>My CGPA is low. Should I hide it?</summary><p>If a job asks for it, you will be asked anyway. Keep it, and let strong projects, a GitHub link and a good interview do the work. Apply where the stated cut-off fits you, and use referrals.</p></details><details class="faq"><summary>Should I add a photo, date of birth, father's name or religion?</summary><p>No. They are not needed for engineering jobs, take space, and can invite bias. Name, city, phone, email, LinkedIn and GitHub are enough.</p></details><details class="faq"><summary>Can I write a training-institute course as an internship?</summary><p>Only if it really was an internship with a company. Otherwise list it under “Training” and describe what you built. Interviewers check this, and a mismatch hurts trust.</p></details><details class="faq"><summary>Should I list every EDA tool I have heard of?</summary><p>No. List only tools you have actually used and can talk about. Writing “Synopsys VCS, PrimeTime, Innovus, Calibre” after one demo invites hard questions you cannot answer.</p></details><details class="faq"><summary>Word or PDF?</summary><p>Send a PDF unless the form asks for Word. Make it from a simple one-column layout (Google Docs, Word or LaTeX) so applicant tracking systems can read the text.</p></details>
+
+  <div class="cta-band" style="margin-top:28px"><p><b>Resume ready?</b> Practise the interview next: answer real VLSI questions and get a score out of 10.</p><a href="interview.html?ref=resume-guide">Start a free mock interview →</a></div>
+  <div class="rg-next">
+    <a href="careers.html#freshers"><b>💼 Fresher jobs</b><span>Real, checked openings</span></a>
+    <a href="referral.html?ref=resume-guide"><b>🤝 Get referred</b><span>Share your resume with us</span></a>
+    <a href="vlsi-career-roadmap.html"><b>🗺️ Career roadmaps</b><span>What to learn for each role</span></a>
+    <a href="vlsi-interview-questions.html"><b>📚 181 interview questions</b><span>With model answers</span></a>
+  </div>
+</article>
+</main>
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="editorial-policy.html">Editorial policy</a><a href="corrections.html">Corrections</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
+    </div>
+  </div>
+</footer>
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+</script>
+<script src="config.js?v=20261106d"></script>
+<script src="sw.js?v=20261106d"></script>
+<script src="promo.js?v=20261106d" defer></script>
+<script src="site-ui.js?v=20261106d" defer></script>
+<script>
+(function(){
+  var tabs=document.querySelectorAll(".rg-tabs button");
+  function show(k){tabs.forEach(function(b){b.setAttribute("aria-selected",String(b.dataset.tab===k))});
+    document.querySelectorAll(".rg-pane").forEach(function(p){p.hidden=p.dataset.pane!==k});}
+  tabs.forEach(function(b){b.addEventListener("click",function(){show(b.dataset.tab);try{history.replaceState(null,"","#role-"+b.dataset.tab)}catch(e){}})});
+  var m=/^#role-(\w+)/.exec(location.hash);if(m&&document.querySelector('.rg-pane[data-pane="'+m[1]+'"]'))show(m[1]);
+  var btn=document.getElementById("rg-copy-btn"),msg=document.getElementById("rg-copy-msg"),pre=document.getElementById("rg-template");
+  if(btn)btn.addEventListener("click",function(){var t=pre.textContent;
+    function ok(){msg.textContent="Copied! Paste it into Google Docs or Word.";setTimeout(function(){msg.textContent=""},3000)}
+    function fb(){var a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){msg.textContent="Select the text below and copy it."}a.remove()}
+    if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,fb);else fb();});
+  var boxes=[].slice.call(document.querySelectorAll("#rg-check input")),cm=document.getElementById("rg-check-msg"),KEY="sw-resume-check";
+  try{var saved=JSON.parse(localStorage.getItem(KEY)||"[]");boxes.forEach(function(b,i){b.checked=!!saved[i]})}catch(e){}
+  function upd(){var n=boxes.filter(function(b){return b.checked}).length;cm.textContent=n===boxes.length?"✅ All done. Good luck with your applications!":n+" of "+boxes.length+" done";
+    try{localStorage.setItem(KEY,JSON.stringify(boxes.map(function(b){return b.checked})))}catch(e){}}
+  boxes.forEach(function(b){b.addEventListener("change",upd)});upd();
+})();
+</script>
+</body>
+</html>
