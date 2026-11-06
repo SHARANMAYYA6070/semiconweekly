@@ -356,3 +356,39 @@ a.ev:hover h4 { color: var(--accent); text-decoration: underline; }
 /* <picture> wrappers for .webp images: lay out as if only the <img> were there */
 picture { display: contents; }
 .art > picture { display: block; width: 100%; height: 100%; }
+
+/* ---------- Share bars on story pages ---------- */
+.sw-share { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 4px; }
+.sw-share-lab { font: 600 13px var(--sans); color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; margin-right: 2px; }
+.sw-share a, .sw-share button { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 7px 13px; border-radius: 999px; font: 600 14px var(--sans); text-decoration: none; cursor: pointer; border: 1px solid transparent; line-height: 1; }
+.sw-share svg { width: 18px; height: 18px; flex: none; }
+.sw-share .sws-wa { background: #25d366; color: #0b3d1f; }
+.sw-share .sws-tg { background: #229ed9; color: #fff; }
+.sw-share .sws-copy { background: transparent; color: var(--ink); border-color: var(--rule); }
+.sw-share .sws-copy.ok { border-color: #1f9d55; color: #1f9d55; }
+.sw-share a:hover, .sw-share button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.sw-share-big { margin: 30px 0 6px; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-2); }
+.sw-share-big .sw-share-lab { flex-basis: 100%; font: 700 17px var(--slab); color: var(--ink); text-transform: none; letter-spacing: 0; margin-bottom: 2px; }
+@media (max-width: 420px) { .sw-share:not(.sw-share-big) .sw-share-lab { display: none; } .sw-share a, .sw-share button { padding: 7px 11px; font-size: 13.5px; } }
+
+/* ---------- Event cards: official link + "Add to calendar" ---------- */
+.ev-card .ev-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 16px; }
+.ev-card .ev-acts .go-btn { margin-top: 0; }
+.cal-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.cal-lab { font: 600 13px var(--sans); color: var(--ink-3); }
+.cal-btn { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); color: var(--ink); font: 600 14px var(--sans); cursor: pointer; text-decoration: none; }
+.cal-btn::before { content: "📅"; margin-right: 6px; }
+.cal-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---------- 404 page ---------- */
+.nf404 { text-align: left; }
+.nf404 .nf404-code { font: 800 88px/1 var(--serif, Georgia, serif); color: var(--gold, #f2b84b); margin: 18px 0 0; letter-spacing: 2px; }
+.nf404-guess { margin: 18px 0 0; padding: 14px 16px; border-left: 4px solid var(--accent); background: var(--paper-2); border-radius: 0 8px 8px 0; }
+.nf404-guess ul { margin: 6px 0 0; padding-left: 20px; }
+.nf404-guess a { color: var(--accent); font-weight: 600; }
+.nf404-btn { margin-top: 18px; min-height: 46px; padding: 10px 20px; border: 0; border-radius: 8px; background: var(--brand); color: #fff; font: 600 16px var(--sans); cursor: pointer; }
+.nf404-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin-top: 22px; }
+.nf404-grid a { display: block; padding: 16px; border: 1px solid var(--rule); border-radius: 10px; background: var(--paper); color: var(--ink); text-decoration: none; }
+.nf404-grid a:hover { border-color: var(--accent); transform: translateY(-1px); }
+.nf404-grid b { display: block; font: 700 16.5px var(--slab); }
+.nf404-grid span { display: block; font-size: 14px; color: var(--ink-3); margin-top: 4px; }

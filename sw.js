@@ -549,9 +549,44 @@
     [["What it is", ev.summary], [past ? "What happened" : "What happens", ev.what_happens], ["Who should go", ev.who], ["Why go", ev.why], ["How to register", ev.how_to_register]]
       .forEach(([k, v]) => { if (v) { dl.appendChild(el("dt", null, k)); dl.appendChild(el("dd", null, v)); } });
     art.appendChild(dl);
-    if (isUrl(ev.link)) art.appendChild(link(ev.link, (ev.link_label || "Official page") + " →", "go-btn"));
+    const acts = el("div", "ev-acts");
+    if (isUrl(ev.link)) acts.appendChild(link(ev.link, (ev.link_label || "Official page") + " →", "go-btn"));
+    if (!past) calButtons(ev, acts);
+    art.appendChild(acts);
     return art;
   }
+  // ---------- "Add to calendar" for upcoming events (Google Calendar link + .ics file for phones/Outlook) ----------
+  const ymd = d => d.y + String(d.m).padStart(2, "0") + String(d.d).padStart(2, "0");
+  const nextDay = d => { const t = new Date(d.t + 864e5); return { y: t.getUTCFullYear(), m: t.getUTCMonth() + 1, d: t.getUTCDate() }; };
+  function calButtons(ev, box) {
+    const a = parseDay(ev.start_date); if (!a || ev.date_label) return;
+    const b = parseDay(ev.end_date) || a;
+    const pageUrl = "https://semiconweekly.in/events.html#" + slug(ev.title);
+    const details = [ev.summary, ev.how_to_register ? "How to register: " + ev.how_to_register : "", isUrl(ev.link) ? "Official page: " + ev.link : "", "Details: " + pageUrl].filter(Boolean).join("\n\n");
+    const g = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(ev.title) +
+      "&dates=" + ymd(a) + "/" + ymd(nextDay(b)) + "&details=" + encodeURIComponent(details) + "&location=" + encodeURIComponent(ev.place || "");
+    const wrap = el("div", "cal-btns");
+    wrap.appendChild(el("span", "cal-lab", "Add to calendar:"));
+    const ga = link(g, "Google Calendar", "cal-btn"); ga.setAttribute("aria-label", "Add " + ev.title + " to Google Calendar"); wrap.appendChild(ga);
+    const ib = el("button", "cal-btn", "Phone / Outlook (.ics)"); ib.type = "button"; ib.setAttribute("aria-label", "Download calendar file for " + ev.title);
+    ib.addEventListener("click", () => {
+      const icsEsc = t => String(t || "").replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
+      const fold = line => { const out = []; let x = line; while (x.length > 74) { out.push(x.slice(0, 74)); x = " " + x.slice(74); } out.push(x); return out.join("\r\n"); };
+      const now = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+      const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Semicon Weekly//Events//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "BEGIN:VEVENT",
+        "UID:" + slug(ev.title) + "-" + ymd(a) + "@semiconweekly.in", "DTSTAMP:" + now,
+        "DTSTART;VALUE=DATE:" + ymd(a), "DTEND;VALUE=DATE:" + ymd(nextDay(b)),
+        "SUMMARY:" + icsEsc(ev.title), "LOCATION:" + icsEsc(ev.place), "DESCRIPTION:" + icsEsc(details), "URL:" + pageUrl,
+        "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc(ev.title + " is tomorrow"), "END:VALARM",
+        "END:VEVENT", "END:VCALENDAR"].map(fold).join("\r\n");
+      const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
+      const dl = document.createElement("a"); dl.href = url; dl.download = slug(ev.title) + ".ics";
+      document.body.appendChild(dl); dl.click(); dl.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+    });
+    wrap.appendChild(ib);
+    box.appendChild(wrap);
+  }
+
   // Event data (JSON-LD) so Google can show dates and places in search
   function eventLD(list) {
     const iso = s => { const d = parseDay(s); return d ? s.trim() : null; };
@@ -600,4 +635,14 @@
       if (location.hash) { const target = document.getElementById(location.hash.slice(1)); if (target) target.scrollIntoView(); }
     }).catch(() => { /* keep the events already on the page */ });
   }
+  // ---------- Share bars on story pages: "Copy link" (uses the phone's share sheet when there is one) ----------
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-share-copy]"); if (!b) return;
+    const bar = b.closest(".sw-share"); const url = (bar && bar.dataset.shareUrl) || location.href.split("#")[0];
+    const title = (bar && bar.dataset.shareTitle) || document.title;
+    const done = msg => { const sp = b.querySelector("span"); const old = sp.textContent; sp.textContent = msg; b.classList.add("ok"); setTimeout(() => { sp.textContent = old; b.classList.remove("ok"); }, 1800); };
+    if (navigator.share && matchMedia("(pointer:coarse)").matches) { navigator.share({ title: title, url: url }).catch(() => {}); return; }
+    const fallback = () => { const t = document.createElement("textarea"); t.value = url; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done("Link copied ✓"); } catch (x) { done("Copy failed"); } t.remove(); };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url).then(() => done("Link copied ✓"), fallback); else fallback();
+  });
 })();
