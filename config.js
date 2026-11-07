@@ -39,5 +39,5 @@ window.SW_CONFIG = {
   REFERRAL_FORM_URL: "https://forms.gle/qiG7Z2oEr9Hw3Lpi7",
   WHATSAPP_URL: "https://whatsapp.com/channel/0029VbEFK7JFnSzC6rOW862g",
   YOUTUBE_URL: "",
-  INSTAGRAM_URL: "",
+  INSTAGRAM_URL: "https://www.instagram.com/semiconweeklyindia/",
 };

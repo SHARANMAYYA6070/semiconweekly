@@ -3,7 +3,7 @@
 // CSS / JS / images / fonts: use the saved copy at once and refresh it in the background.
 // Google Sheet data (jobs, news, events): internet first, saved copy when offline.
 // VERSION is updated automatically on every release by private/news_tools/site_seo.py.
-const VERSION = "20261107c";
+const VERSION = "20261107d";
 const PAGES = "sw-pages-" + VERSION, ASSETS = "sw-assets-" + VERSION, DATA = "sw-data-v1";
 const CORE = ["./", "offline.html", "saved-jobs.html", "style.css?v=" + VERSION, "theme.css?v=" + VERSION,
   "config.js?v=" + VERSION, "sw.js?v=" + VERSION, "site-ui.js?v=" + VERSION, "promo.js?v=" + VERSION, "search.js?v=" + VERSION,
