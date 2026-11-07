@@ -98,6 +98,27 @@
   .swp-card a.btn{display:inline-block;background:#0b2447;color:#fff;font:600 15px/1 var(--slab,Georgia,serif);padding:11px 16px;border-radius:6px}
   .swp-card a.btn:hover{background:#12366b}
   .swp-card .q{background:#fff;border-left:4px solid #0b2447;padding:10px 12px;border-radius:0 6px 6px 0;font:500 15.5px/1.45 var(--slab,Georgia,serif);color:#111827;margin:8px 0 12px}
+  .swp-card .qmeta{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .swp-card .qtag{font:600 12px/1 var(--sans,sans-serif);background:#fff;border:1px solid #e9d8a6;color:#7c2d12;padding:5px 8px;border-radius:999px}
+  .swp-streak{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:2px 0 12px;padding:10px 12px;background:#fff;border-radius:10px;border:1px solid #f1e3b5}
+  .swp-streak b{font:700 14.5px/1.2 var(--sans,sans-serif);color:#9a3412}
+  .swp-streak small{display:block;font:500 12px/1.3 var(--sans,sans-serif);color:#6b7280;margin-top:2px}
+  .swp-dots{display:flex;gap:4px;flex:none}
+  .swp-dots i{width:18px;height:18px;border-radius:50%;background:#f3f4f6;border:1px solid #e5e7eb;font:700 9px/16px var(--sans,sans-serif);color:#9ca3af;text-align:center;font-style:normal}
+  .swp-dots i.on{background:#f59e0b;border-color:#f59e0b;color:#fff}
+  .swp-dots i.today{outline:2px solid #7c3aed;outline-offset:1px}
+  .swp-qbtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .swp-card a.btn2,.swp-card button.btn2{display:inline-block;background:transparent;border:1px solid #d6c79a;color:#374151;font:600 14px/1 var(--sans,sans-serif);padding:10px 12px;border-radius:8px;cursor:pointer}
+  .swp-card button.btn2.done{border-color:#16a34a;color:#15803d;background:#f0fdf4;cursor:default}
+  html[data-theme="dark"] body .swp-card:not(.swp-wide){background:#1d1434;border-color:rgba(250,204,21,.45)}
+  html[data-theme="dark"] body .swp-card .k{color:#fde68a}html[data-theme="dark"] body .swp-card p{color:#c9c0de}
+  html[data-theme="dark"] body .swp-card .q{background:rgba(255,255,255,.05);color:#efeaf8}
+  html[data-theme="dark"] .swp-streak,html[data-theme="dark"] .swp-card .qtag{background:rgba(255,255,255,.06);border-color:rgba(250,204,21,.25);color:#fde68a}
+  html[data-theme="dark"] .swp-streak b{color:#fde68a}html[data-theme="dark"] .swp-streak small{color:#c9c0de}
+  html[data-theme="dark"] .swp-dots i{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);color:#9d93b8}
+  html[data-theme="dark"] .swp-dots i.on{background:#f59e0b;border-color:#f59e0b;color:#1c1530}
+  html[data-theme="dark"] .swp-card a.btn2,html[data-theme="dark"] .swp-card button.btn2{border-color:rgba(255,255,255,.25);color:#efeaf8}
+  html[data-theme="dark"] .swp-card button.btn2.done{background:rgba(22,163,74,.15);border-color:#22c55e;color:#86efac}
   .swp-wide{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:#0b2447;border:0;color:#fff}
   .swp-wide h3{color:#fff;margin-top:6px}
   .swp-wide p{color:#c9d6ee;margin:0}
@@ -166,15 +187,61 @@
   const [qTopic, qText] = QOTD[dayNo % QOTD.length];
   const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
+  // Daily VLSI question with a streak (homepage). One question per day (India time) from all 181 questions
+  // in search-index.json; the streak counts days in a row you answered, kept only in this browser.
   if (page === "index.html" || page === "") {
     const aside = document.querySelector('aside[aria-label="Jobs and events"]');
     if (aside) {
-      const card = el("div", { class: "swp-card" },
-        `<div class="k">🎯 Interview question of the day</div><div class="q">${esc(qText)}</div>` +
-        `<p>Could you answer this in an interview? Type your answer and get scored in seconds.</p>` +
-        `<a class="btn" href="${botLink("qotd", "topic=" + encodeURIComponent(qTopic) + "&mode=drill")}">Answer it free →</a>`);
-      card.querySelector("a").addEventListener("click", () => track("home-qotd"));
+      const ist = t => new Date(t + 5.5 * 3600000).toISOString().slice(0, 10);
+      const today = ist(Date.now());
+      const getDays = () => { const d = store.get("sw_qotd_days", []); return Array.isArray(d) ? d : []; };
+      function streakInfo() {
+        const set = new Set(getDays()); let n = 0, t = Date.now();
+        if (!set.has(today)) t -= DAY;                  // not answered yet today: count up to yesterday
+        while (set.has(ist(t))) { n++; t -= DAY; }
+        return { n, doneToday: set.has(today), set };
+      }
+      function markDone() {
+        const d = getDays(); if (!d.includes(today)) { d.push(today); store.set("sw_qotd_days", d.slice(-60)); }
+        paintStreak(); track("qotd-done");
+      }
+      const card = el("div", { class: "swp-card", id: "qotd" });
       aside.insertBefore(card, aside.firstChild);
+      function paintStreak() {
+        const box = card.querySelector(".swp-streak"); if (!box) return;
+        const { n, doneToday, set } = streakInfo();
+        const head = doneToday ? `🔥 ${n}-day streak · done for today ✓` : n ? `🔥 ${n}-day streak` : "Start a streak today";
+        const sub = doneToday ? "Come back tomorrow for a new question." : n ? "Answer today's question to keep it going." : "Answer one question a day. Miss a day and it starts again.";
+        const L = ["S", "M", "T", "W", "T", "F", "S"];
+        let dots = "";
+        for (let k = 6; k >= 0; k--) { const t = Date.now() - k * DAY, key = ist(t), wd = new Date(t + 5.5 * 3600000).getUTCDay();
+          dots += `<i class="${set.has(key) ? "on" : ""}${k === 0 ? " today" : ""}" title="${key}">${L[wd]}</i>`; }
+        box.innerHTML = `<div><b>${head}</b><small>${sub}</small></div><div class="swp-dots" aria-hidden="true">${dots}</div>`;
+        const db = card.querySelector("button.btn2");
+        if (db) { db.textContent = doneToday ? "✓ Answered today" : "✓ I answered it"; db.classList.toggle("done", doneToday); db.disabled = doneToday; }
+      }
+      function paint(q) {
+        card.innerHTML = `<div class="qmeta"><div class="k">🎯 Today's VLSI question</div>${q.topic ? `<span class="qtag">${esc(q.topic)}</span>` : ""}</div>` +
+          `<div class="q">${esc(q.text)}</div><div class="swp-streak" role="status"></div>` +
+          `<div class="swp-qbtns"><a class="btn" href="${esc(q.bot)}">Answer with AI →</a>` +
+          (q.page ? `<a class="btn2" href="${esc(q.page)}">See model answer</a>` : "") +
+          `<button type="button" class="btn2">✓ I answered it</button></div>`;
+        card.querySelector("a.btn").addEventListener("click", () => { markDone(); track("home-qotd"); });
+        const pa = card.querySelector("a.btn2"); if (pa) pa.addEventListener("click", () => track("qotd-answer"));
+        card.querySelector("button.btn2").addEventListener("click", markDone);
+        paintStreak();
+      }
+      // start with the built-in list, then switch to the full question bank when it loads
+      paint({ text: qText, topic: qTopic, bot: botLink("qotd", "topic=" + encodeURIComponent(qTopic) + "&mode=drill"), page: "" });
+      fetch("search-index.json").then(r => r.ok ? r.json() : null).then(d => {
+        const qs = (d || []).filter(r => r[2] === "Question" && r[0]).sort((a, b) => a[1] < b[1] ? -1 : 1);
+        if (qs.length < 20) return;
+        const r = qs[(dayNo * 37) % qs.length];             // 37 is co-prime with the bank size, so topics rotate
+        const topic = (r[3] || "").split(" ")[0] === "Static" ? "STA" : (r[3] || "").replace(/\s+(easy|medium|hard)\b.*$/i, "").trim();
+        const bot = r[4] ? r[4].replace(/ref=[^&]*/, "ref=qotd") : botLink("qotd", "mode=drill");
+        const tm = /[?&]topic=([^&]+)/.exec(r[4] || "");
+        paint({ text: r[0], topic: tm ? decodeURIComponent(tm[1].replace(/\+/g, " ")) : topic.split(" ").slice(0, 3).join(" "), bot, page: r[1] });
+      }).catch(() => {});
     }
   }
   if (page === "careers.html") {

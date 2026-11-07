@@ -1,0 +1,25 @@
+{
+  "name": "Semicon Weekly – India chip news & VLSI jobs",
+  "short_name": "Semicon Weekly",
+  "description": "India semiconductor news in simple English, fresher VLSI jobs, interview practice and career roadmaps.",
+  "id": "/",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2e1065",
+  "theme_color": "#2e1065",
+  "lang": "en-IN",
+  "categories": ["news", "education", "business"],
+  "icons": [
+    { "src": "app-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "app-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "app-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Fresher jobs", "short_name": "Jobs", "url": "/careers.html?source=app#freshers", "icons": [{ "src": "app-192.png", "sizes": "192x192" }] },
+    { "name": "Interview practice", "short_name": "Practice", "url": "/interview.html?ref=app", "icons": [{ "src": "app-192.png", "sizes": "192x192" }] },
+    { "name": "Latest news", "short_name": "News", "url": "/news.html?source=app", "icons": [{ "src": "app-192.png", "sizes": "192x192" }] },
+    { "name": "My saved jobs", "short_name": "Saved", "url": "/saved-jobs.html", "icons": [{ "src": "app-192.png", "sizes": "192x192" }] }
+  ]
+}

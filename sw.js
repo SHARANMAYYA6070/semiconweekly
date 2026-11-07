@@ -220,6 +220,7 @@
     foot.appendChild(el("span", "posted", j.posted ? "Posted " + j.posted : ""));
     if (isUrl(j.link)) foot.appendChild(link(j.link, "View and apply →", "applyb"));
     card.appendChild(foot);
+    card.appendChild(starBtn(j));
     return card;
   }
   function jobMini(j) {
@@ -232,6 +233,7 @@
     (j.skills || "").split(/[,;]/).map(s => s.trim()).filter(Boolean).slice(0, 2).forEach(s => row.appendChild(el("span", "chip", s)));
     d.appendChild(row);
     if (isUrl(j.link)) d.appendChild(link(j.link, "View and apply →", "apply"));
+    d.appendChild(starBtn(j));
     return d;
   }
   function buildJobFilters(jobs) {
@@ -330,6 +332,8 @@
       setStat("jobs", jobs.length);
       buildJobFilters(jobs);
       relatedJobs(jobs);
+      renderSaved(jobs);
+      savedLink();
       document.querySelectorAll(".jload").forEach(x => { x.textContent = "No openings in this section right now. Check back tomorrow, or see the other tab."; });
       if (tf && !fresh.length) tf.textContent = "0–1 year · none today";
       if (te && !exp.length) te.textContent = "1+ years · none today";
@@ -369,7 +373,79 @@
     list.textContent = ""; final.forEach(j => list.appendChild(jobMini(j)));
     box.hidden = false;
   }
+  // ---------- Saved jobs (☆ on every job card; kept only in this browser) ----------
+  const SAVED_KEY = "sw-saved-jobs";
+  const jobId = j => (j.link || (j.title + "|" + j.company)).trim();
+  function loadSaved() { try { const a = JSON.parse(localStorage.getItem(SAVED_KEY) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+  function storeSaved(a) { try { localStorage.setItem(SAVED_KEY, JSON.stringify(a.slice(0, 100))); return true; } catch (e) { return false; } }
+  const isSaved = j => loadSaved().some(x => x.id === jobId(j));
+  function toast(msg, href, linkText) {
+    let t = document.getElementById("sw-toast"); if (t) t.remove();
+    t = el("div", "sw-toast"); t.id = "sw-toast"; t.setAttribute("role", "status"); t.appendChild(el("span", null, msg));
+    if (href) t.appendChild(link(href, linkText || "View"));
+    document.body.appendChild(t); requestAnimationFrame(() => t.classList.add("on"));
+    setTimeout(() => { t.classList.remove("on"); setTimeout(() => t.remove(), 300); }, 3200);
+  }
+  function syncStars() {
+    const ids = new Set(loadSaved().map(x => x.id));
+    document.querySelectorAll(".sw-star").forEach(b => { const on = ids.has(b.dataset.id); b.setAttribute("aria-pressed", String(on)); b.textContent = on ? "★" : "☆"; b.title = on ? "Saved – tap to remove" : "Save this job"; b.setAttribute("aria-label", (on ? "Remove from saved jobs: " : "Save job: ") + b.dataset.title); });
+    document.querySelectorAll("[data-saved-count]").forEach(x => { const n = ids.size; x.textContent = n ? String(n) : ""; x.hidden = !n; });
+  }
+  function starBtn(j) {
+    const b = el("button", "sw-star", "☆"); b.type = "button"; b.dataset.id = jobId(j); b.dataset.title = j.title || "job";
+    b.addEventListener("click", e => {
+      e.preventDefault(); e.stopPropagation();
+      let a = loadSaved(); const id = jobId(j);
+      if (a.some(x => x.id === id)) { a = a.filter(x => x.id !== id); storeSaved(a); toast("Removed from saved jobs"); }
+      else {
+        a.unshift({ id, title: j.title, company: j.company, location: j.location, experience: j.experience, skills: j.skills, link: j.link, posted: j.posted, deadline: j.deadline, type: j.type, savedAt: new Date().toISOString().slice(0, 10) });
+        if (storeSaved(a)) toast("★ Job saved on this device", "saved-jobs.html", "My saved jobs →"); else toast("Couldn't save here (private browsing?)");
+        try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "job-save", title: "Saved a job", event: true }); } catch (x) {}
+      }
+      syncStars();
+      if ($("#saved-jobs")) renderSaved(window.SW_JOBS || null);
+    });
+    setTimeout(syncStars, 0);
+    return b;
+  }
+  function savedLink() {
+    const tabs = $(".jtabs"); if (!tabs || $("#saved-link")) return;
+    const a = link("saved-jobs.html", "★ My saved jobs ", "saved-link"); a.id = "saved-link";
+    const n = el("span", "saved-n"); n.setAttribute("data-saved-count", ""); a.appendChild(n);
+    tabs.insertAdjacentElement("beforebegin", a); syncStars();
+  }
+  function renderSaved(jobs) {
+    const box = $("#saved-jobs"); if (!box) return;
+    const saved = loadSaved(), tools = $("#saved-tools");
+    const open = jobs ? new Map(jobs.map(j => [jobId(j), j])) : null;
+    box.textContent = "";
+    if (!saved.length) {
+      const p = el("div", "jf-empty"); p.appendChild(el("p", null, "You haven't saved any jobs yet."));
+      p.appendChild(link("careers.html#freshers", "Browse fresher jobs and tap ☆ to save →", "go-btn")); box.appendChild(p);
+      if (tools) tools.textContent = ""; return;
+    }
+    if (tools) {
+      tools.textContent = "";
+      tools.appendChild(el("span", null, saved.length + (saved.length === 1 ? " saved job" : " saved jobs")));
+      const clr = el("button", "saved-clear", "Remove all"); clr.type = "button";
+      clr.addEventListener("click", () => { if (confirmClear(clr)) { storeSaved([]); syncStars(); renderSaved(jobs); } });
+      tools.appendChild(clr);
+    }
+    saved.forEach(s => {
+      const live = open && open.get(s.id);
+      const card = jobCard(live || s);
+      if (open && !live) { card.classList.add("gone"); const n = el("p", "gone-note", "⚠ No longer on our jobs list – it may be closed. Check the official page."); card.insertBefore(n, card.firstChild); }
+      const when = el("span", "saved-when", "Saved " + (s.savedAt || "")); const f = card.querySelector(".foot .posted"); if (f && s.savedAt) f.textContent = (f.textContent ? f.textContent + " · " : "") + "Saved " + s.savedAt; else if (s.savedAt) card.appendChild(when);
+      box.appendChild(card);
+    });
+    syncStars();
+  }
+  function confirmClear(b) { if (b.dataset.sure) return true; b.dataset.sure = "1"; b.textContent = "Tap again to remove all"; setTimeout(() => { delete b.dataset.sure; b.textContent = "Remove all"; }, 3000); return false; }
+  // saved-jobs page works even if the jobs sheet can't load (offline): show the saved copies
+  if ($("#saved-jobs")) setTimeout(() => { if (!window.SW_JOBS) renderSaved(null); }, isUrl(C.JOBS_CSV_URL) ? 2500 : 0);
+
   function jobsFailed() {
+    if ($("#saved-jobs")) renderSaved(null);
     document.querySelectorAll(".jload").forEach(x => { x.textContent = "Couldn't load today's jobs. Please check your internet and refresh the page."; });
     const tf = $("#t-fresh small"), te = $("#t-exp small");
     if (tf && /loading/.test(tf.textContent)) tf.textContent = "0–1 year"; if (te && /loading/.test(te.textContent)) te.textContent = "1+ years";
@@ -694,4 +770,37 @@
     const fallback = () => { const t = document.createElement("textarea"); t.value = url; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done("Link copied ✓"); } catch (x) { done("Copy failed"); } t.remove(); };
     if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url).then(() => done("Link copied ✓"), fallback); else fallback();
   });
+  // ---------- Install as an app (service worker + "Add to home screen" card) ----------
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+    window.addEventListener("load", () => { navigator.serviceWorker.register("/service-worker.js").catch(() => {}); });
+  }
+  (function installCard() {
+    const KEY = "sw-install-hide", VISITS = "sw-visits";
+    const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+    if (standalone) { try { localStorage.setItem("sw-installed", "1"); } catch (e) {} return; }
+    let visits = 0; try { visits = +(localStorage.getItem(VISITS) || 0) + 1; localStorage.setItem(VISITS, String(visits)); } catch (e) {}
+    let hidden = false; try { hidden = +(localStorage.getItem(KEY) || 0) > Date.now(); } catch (e) {}
+    const phone = matchMedia("(max-width: 820px)").matches;
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !/crios|fxios|edgios/i.test(navigator.userAgent);
+    let deferred = null;
+    let waited = 0;
+    function show(kind) {
+      if (hidden || visits < 2 || document.getElementById("sw-install") || /interview\.html|offline\.html/.test(location.pathname)) return;
+      // don't cover another pop-up (roadmap bubble, launch pop-up): try again a bit later
+      if (document.querySelector(".swui-call, .swp-ov") && waited++ < 6) { setTimeout(() => show(kind), 8000); return; }
+      const c = el("div", "sw-install"); c.id = "sw-install"; c.setAttribute("role", "dialog"); c.setAttribute("aria-label", "Install Semicon Weekly");
+      const ic = document.createElement("img"); ic.src = "app-192.png"; ic.alt = ""; ic.width = 44; ic.height = 44; c.appendChild(ic);
+      const t = el("div", "sw-install-t"); t.appendChild(el("b", null, "Get the Semicon Weekly app"));
+      t.appendChild(el("span", null, kind === "ios" ? "Tap the Share button ⎋ below, then “Add to Home Screen”." : "Free · daily chip news, fresher jobs and interview practice on your home screen."));
+      c.appendChild(t);
+      if (kind !== "ios") { const go = el("button", "sw-install-go", "Install"); go.type = "button"; go.addEventListener("click", async () => {
+        if (!deferred) return; deferred.prompt(); try { const r = await deferred.userChoice; if (r && r.outcome === "accepted") c.remove(); } catch (e) {} deferred = null; }); c.appendChild(go); }
+      const x = el("button", "sw-install-x", "×"); x.type = "button"; x.setAttribute("aria-label", "Not now");
+      x.addEventListener("click", () => { c.remove(); try { localStorage.setItem(KEY, String(Date.now() + 21 * 864e5)); } catch (e) {} });
+      c.appendChild(x); document.body.appendChild(c);
+    }
+    window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; window.SW_INSTALL = e; if (phone) setTimeout(() => show("android"), 4000); });
+    window.addEventListener("appinstalled", () => { const c = document.getElementById("sw-install"); if (c) c.remove(); try { localStorage.setItem("sw-installed", "1"); } catch (e) {} });
+    if (ios && phone) setTimeout(() => show("ios"), 5000);
+  })();
 })();
