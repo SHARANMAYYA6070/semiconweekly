@@ -28,9 +28,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20261107b">
-<link rel="stylesheet" href="theme.css?v=20261107b">
-<script src="search.js?v=20261107b" defer></script>
+<link rel="stylesheet" href="style.css?v=20261107c">
+<link rel="stylesheet" href="theme.css?v=20261107c">
+<script src="search.js?v=20261107c" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "FAQPage", "name": "SystemVerilog Constraint Interview Questions with Code", "mainEntity": [{"@type": "Question", "name": "Write a constraint for a dynamic array of size 6 to 10 with unique even values between 16 and 127.", "acceptedAnswer": {"@type": "Answer", "text": "arr.size() inside {[6:10]}; foreach (arr[i]) { arr[i] inside {[16:127]}; arr[i] % 2 == 0; } unique {arr}; (or nested foreach with i != j check if unique not allowed) Common mistake: Forgetting to constrain size"}}, {"@type": "Question", "name": "Write a constraint to generate unique array elements without using unique.", "acceptedAnswer": {"@type": "Answer", "text": "foreach (a[i]) foreach (a[j]) if (i != j) a[i] != a[j];"}}, {"@type": "Question", "name": "Constrain a 32-bit variable so that exactly one bit is high (one-hot).", "acceptedAnswer": {"@type": "Answer", "text": "$countones(x) == 1; or x != 0 && (x & (x - 1)) == 0"}}, {"@type": "Question", "name": "Generate a value between 34 and 43 without using inside.", "acceptedAnswer": {"@type": "Answer", "text": "x >= 34; x <= 43;"}}, {"@type": "Question", "name": "How do you generate random real numbers between 1.35 and 2.68?", "acceptedAnswer": {"@type": "Answer", "text": "rand real is not supported by many tools; randomize an int scaled value, e.g. rand int v; v inside {[135:268]}; then real r = v / 100.0 in post_randomize Common mistake: Declaring rand real and assuming it works everywhere"}}, {"@type": "Question", "name": "Write a constraint to fill an array with the pattern 0 1 0 2 0 3 0 4 ...", "acceptedAnswer": {"@type": "Answer", "text": "foreach (a[i]) if (i % 2 == 0) a[i] == 0; else a[i] == (i + 1) / 2;"}}, {"@type": "Question", "name": "Array of size 10: first five ascending, last five descending, all multiples of 5.", "acceptedAnswer": {"@type": "Answer", "text": "foreach (a[i]) { a[i] % 5 == 0; if (i > 0 && i < 5) a[i] > a[i-1]; if (i > 5) a[i] < a[i-1]; } Common mistake: Off-by-one in the index conditions"}}, {"@type": "Question", "name": "Write a constraint that generates prime numbers between 1 and 100.", "acceptedAnswer": {"@type": "Answer", "text": "Build a list of primes (2..97) in pre_randomize or a helper function, then constrain x inside {primes}; a function called inside a constraint is evaluated before solving, so it cannot search divisors of the value being solved"}}, {"@type": "Question", "name": "How can you override an existing constraint?", "acceptedAnswer": {"@type": "Answer", "text": "Extend the class and redefine a constraint with the SAME name (replaces it); add a new constraint in the child (adds to it); inline randomize() with {} (adds); turn off with constraint_mode(0); conflicts make randomize() fail and return 0"}}, {"@type": "Question", "name": "Write a constraint for int arr[2][4] so every element is even and less than 50.", "acceptedAnswer": {"@type": "Answer", "text": "foreach (arr[i, j]) { arr[i][j] % 2 == 0; arr[i][j] < 50; arr[i][j] >= 0; } Common mistake: Forgetting the lower bound for signed int (negatives appear)"}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://semiconweekly.in/"}, {"@type": "ListItem", "position": 2, "name": "VLSI Interview Questions", "item": "https://semiconweekly.in/vlsi-interview-questions.html"}, {"@type": "ListItem", "position": 3, "name": "Constraints", "item": "https://semiconweekly.in/sv-constraints-interview-questions.html"}]}]}</script>
 <style>
 :root { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
@@ -163,9 +163,9 @@ menuBtn.addEventListener('click', () => {
   menuBtn.setAttribute('aria-expanded', String(open));
 });
 </script>
-<script src="config.js?v=20261107b"></script>
-<script src="sw.js?v=20261107b"></script>
-<script src="promo.js?v=20261107b" defer></script>
-<script src="site-ui.js?v=20261107b" defer></script>
+<script src="config.js?v=20261107c"></script>
+<script src="sw.js?v=20261107c"></script>
+<script src="promo.js?v=20261107c" defer></script>
+<script src="site-ui.js?v=20261107c" defer></script>
 </body>
 </html>
