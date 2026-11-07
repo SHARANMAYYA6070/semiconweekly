@@ -18,10 +18,12 @@
     events: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
     refer: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>',
     road: '<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>',
+    learn: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M10 8v5l4.5-2.5z"/><path d="M8 21h8M12 17v4"/>',
   };
   const ITEMS = [
     { key: "home", label: "Home", href: "./", match: p => p === "index.html" },
-    { key: "road", label: "VLSI Roadmap", short: "Roadmap", href: "vlsi-career-roadmap.html", badge: "NEW", guide: true, match: p => /^(vlsi-career-roadmap|roadmap-)/.test(p) },
+    { key: "road", label: "VLSI Roadmap", short: "Roadmap", href: "vlsi-career-roadmap.html", match: p => /^(vlsi-career-roadmap|roadmap-)/.test(p) },
+    { key: "learn", label: "Video Courses", short: "Courses", href: "learn-digital-electronics.html", badge: "NEW", guide: true, match: p => /^(learn-|digital-electronics-lesson)/.test(p) },
     { key: "fresh", label: "Fresher Jobs", short: "Freshers", href: "careers.html#freshers", hot: true, match: (p, h) => p === "careers.html" && h !== "#experienced" },
     { key: "jobs", label: "Experienced Jobs", short: "Experienced", href: "careers.html#experienced", match: (p, h) => p === "careers.html" && h === "#experienced", desktopOnly: true },
     { key: "bot", label: "Interview Bot", short: "Bot", href: "interview.html", badge: "NEW", match: p => ["interview.html", "progress.html", "admin.html"].includes(p) },
@@ -154,29 +156,29 @@
     });
   });
 
-  // ---- "New: VLSI roadmap" bubble next to the menu item (first 3 visits, once a day) ----
+  // ---- "New: video course" bubble next to the menu item (first 3 visits, once a day) ----
   (function roadmapCallout() {
-    if (/^(vlsi-career-roadmap|roadmap-)/.test(page) || ["admin.html", "progress.html"].includes(page)) return;
-    let st = {}; try { st = JSON.parse(localStorage.getItem("sw-roadcall") || "{}"); } catch {}
+    if (/^(learn-|digital-electronics-lesson)/.test(page) || ["admin.html", "progress.html", "interview.html"].includes(page)) return;
+    let st = {}; try { st = JSON.parse(localStorage.getItem("sw-learncall") || "{}"); } catch {}
     const today = new Date().toISOString().slice(0, 10);
     if (st.closed || (st.n || 0) >= 3 || st.day === today) return;
-    const target = nav.querySelector('a[data-k="road"]'); if (!target) return;
+    const target = nav.querySelector('a[data-k="learn"]'); if (!target) return;
     let tries = 0;
     const show = () => {
       if (document.querySelector(".swp-ov") && tries++ < 40) return setTimeout(show, 800); // wait until the launch popup is closed
       if (nav.classList.contains("open")) return;
       const phone = matchMedia("(max-width: 760px)").matches, r = target.getBoundingClientRect();
       const c = document.createElement("div"); c.className = "swui-call" + (phone ? " below" : ""); c.setAttribute("role", "status");
-      c.innerHTML = '<b>🗺️ New: VLSI Career Roadmap</b>See every chip job (RTL, DV, PD, DFT, analog, embedded) and exactly what to learn for each.<br><a class="go" href="vlsi-career-roadmap.html?ref=bubble">Show me the roadmap →</a><button type="button" aria-label="Close">×</button>';
+      c.innerHTML = '<b>🎬 New: free video course</b>Digital Electronics in short animated lessons, with notes. Lesson 1: Analog vs Digital.<br><a class="go" href="learn-digital-electronics.html?ref=bubble">Watch Lesson 1 →</a><button type="button" aria-label="Close">×</button>';
       document.body.appendChild(c);
       if (phone) { const w = Math.min(270, innerWidth - 24); c.style.width = w + "px"; const left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width / 2 - w / 2));
         c.style.left = left + "px"; c.style.bottom = (innerHeight - r.top + 12) + "px"; c.style.setProperty("--ax", (r.left + r.width / 2 - left - 7) + "px"); }
       else { c.style.left = (r.right + 14) + "px"; c.style.top = (r.top - 4) + "px"; }
-      st.n = (st.n || 0) + 1; st.day = today; try { localStorage.setItem("sw-roadcall", JSON.stringify(st)); } catch {}
-      const close = keep => { c.remove(); if (keep) { st.closed = 1; try { localStorage.setItem("sw-roadcall", JSON.stringify(st)); } catch {} } };
+      st.n = (st.n || 0) + 1; st.day = today; try { localStorage.setItem("sw-learncall", JSON.stringify(st)); } catch {}
+      const close = keep => { c.remove(); if (keep) { st.closed = 1; try { localStorage.setItem("sw-learncall", JSON.stringify(st)); } catch {} } };
       c.querySelector("button").addEventListener("click", () => close(true));
-      c.querySelector("a.go").addEventListener("click", () => { st.closed = 1; try { localStorage.setItem("sw-roadcall", JSON.stringify(st)); } catch {}
-        try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "roadmap-bubble", title: "Roadmap bubble click", event: true }); } catch {} });
+      c.querySelector("a.go").addEventListener("click", () => { st.closed = 1; try { localStorage.setItem("sw-learncall", JSON.stringify(st)); } catch {}
+        try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "course-bubble", title: "Course bubble click", event: true }); } catch {} });
       setTimeout(() => close(false), 12000);
       addEventListener("scroll", () => phone || close(false), { once: true, passive: true });
     };
