@@ -23,11 +23,11 @@
   const ITEMS = [
     { key: "home", label: "Home", href: "./", match: p => p === "index.html" },
     { key: "road", label: "VLSI Roadmap", short: "Roadmap", href: "vlsi-career-roadmap.html", match: p => /^(vlsi-career-roadmap|roadmap-)/.test(p) },
-    { key: "learn", label: "Video Courses", short: "Courses", href: "learn-digital-electronics.html", badge: "NEW", guide: true, match: p => /^(learn-|digital-electronics-lesson)/.test(p) },
-    { key: "fresh", label: "Fresher Jobs", short: "Freshers", href: "careers.html#freshers", hot: true, match: (p, h) => p === "careers.html" && h !== "#experienced" },
+    { key: "learn", label: "Video Courses", short: "Courses", href: "learn-digital-electronics.html", badge: "NEW", match: p => /^(learn-|digital-electronics-lesson)/.test(p) },
+    { key: "fresh", label: "Fresher Jobs", short: "Freshers", href: "careers.html#freshers", match: (p, h) => p === "careers.html" && h !== "#experienced" },
     { key: "jobs", label: "Experienced Jobs", short: "Experienced", href: "careers.html#experienced", match: (p, h) => p === "careers.html" && h === "#experienced", desktopOnly: true },
-    { key: "bot", label: "Interview Bot", short: "Bot", href: "interview.html", badge: "NEW", match: p => ["interview.html", "progress.html", "admin.html"].includes(p) },
-    { key: "refer", label: "Get Referred", short: "Referral", href: "referral.html", badge: "FREE", match: p => p === "referral.html" },
+    { key: "bot", label: "Interview Bot", short: "Bot", href: "interview.html", match: p => ["interview.html", "progress.html", "admin.html"].includes(p) },
+    { key: "refer", label: "Get Referred", short: "Referral", href: "referral.html", match: p => p === "referral.html" },
     { key: "events", label: "Events", href: "events.html", match: p => p === "events.html", desktopOnly: true },
   ];
   const svg = k => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
@@ -158,6 +158,7 @@
 
   // ---- "New: video course" bubble next to the menu item (first 3 visits, once a day) ----
   (function roadmapCallout() {
+    return; // bubble switched off in the Nov 2026 clean-up
     if (/^(learn-|digital-electronics-lesson)/.test(page) || ["admin.html", "progress.html", "interview.html"].includes(page)) return;
     let st = {}; try { st = JSON.parse(localStorage.getItem("sw-learncall") || "{}"); } catch {}
     const today = new Date().toISOString().slice(0, 10);
@@ -193,7 +194,7 @@
       if (a.parentNode.firstElementChild !== a) a.parentNode.insertBefore(a, a.parentNode.firstElementChild);
     });
   }
-  hotFreshers(); setTimeout(hotFreshers, 0);
+  // hotFreshers(); – no yellow 🔥 pill since the Nov 2026 clean-up
 
   // ---- header "Follow" menu (replaces the loud yellow Subscribe button) ----
   (function followMenu() {

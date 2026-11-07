@@ -1,0 +1,45 @@
+# Semicon Weekly – response headers for Cloudflare Pages.
+# GitHub Pages ignores this file; it only takes effect once the site is served by Cloudflare Pages.
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/
+
+# Security headers on every page and file
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), geolocation=(), payment=(), microphone=(self)
+  Strict-Transport-Security: max-age=31536000
+
+# CSS and JS: every page links them with a content tag (style.css?v=3f9a1c2e) that site_seo.py
+# changes whenever the file changes, so browsers may keep them for a year.
+# Files are named one by one on purpose: if two rules match, Cloudflare joins their values.
+/style.css
+  Cache-Control: public, max-age=31536000, immutable
+/theme.css
+  Cache-Control: public, max-age=31536000, immutable
+/config.js
+  Cache-Control: public, max-age=31536000, immutable
+/search.js
+  Cache-Control: public, max-age=31536000, immutable
+/sw.js
+  Cache-Control: public, max-age=31536000, immutable
+/promo.js
+  Cache-Control: public, max-age=31536000, immutable
+/site-ui.js
+  Cache-Control: public, max-age=31536000, immutable
+/sw-auth.js
+  Cache-Control: public, max-age=31536000, immutable
+
+# The offline helper must always be checked for updates
+/service-worker.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Cache-Control: public, max-age=86400
+
+# Search data changes with each release
+/search-index.json
+  Cache-Control: public, max-age=3600
+
+# Story images: one week
+/img/*
+  Cache-Control: public, max-age=604800

@@ -140,35 +140,12 @@
       a = el("a", { href: "interview.html" }, "Interview Prep");
       mainnav.appendChild(a);
     }
-    a.classList.add("swp-nav");
-    if (!a.querySelector(".swp-new")) a.appendChild(el("span", { class: "swp-new" }, "NEW"));
     a.addEventListener("click", () => track("menu"));
-  }
-  const cats = document.querySelector(".cats");
-  if (cats && !cats.querySelector('a[href^="interview.html"]')) {
-    const c = el("a", { href: botLink("cat"), class: "swp-cat" }, "Interview Prep");
-    c.addEventListener("click", () => track("catbar"));
-    cats.insertBefore(c, cats.firstChild);
   }
 
   if (onBot) return; // the bot page itself gets only the menu highlight
 
-  // ---------- 1. launch bar ----------
-  const barHidden = Date.now() < store.get("swp_bar_hide_until", 0);
-  if (!barHidden) {
-    const bar = el("div", { class: "swp-bar", role: "region", "aria-label": "Announcement" },
-      `<div class="wrap"><b class="tag">NEW</b><span>🎉 <b>Grand opening:</b> free VLSI Interview Practice Bot<span class="long"> – answer real questions, get scored instantly</span></span>` +
-      `<a class="go" href="${botLink("bar")}">Try free →</a></div><button class="x" aria-label="Close announcement">×</button>`);
-    bar.querySelector(".go").addEventListener("click", () => track("bar"));
-    bar.querySelector(".x").addEventListener("click", () => { bar.remove(); store.set("swp_bar_hide_until", Date.now() + 3 * DAY); });
-    document.body.insertBefore(bar, document.body.firstChild);
-  }
-
-  // ---------- 4. floating button ----------
-  const fab = el("a", { class: "swp-fab", href: botLink("float"), "aria-label": "Practice a VLSI interview, free" },
-    `<span class="ico" aria-hidden="true">🎯</span><span>Practice interview<small>FREE · AI SCORED</small></span>`);
-  fab.addEventListener("click", () => track("float"));
-  document.body.appendChild(fab);
+  // 1. launch bar and 4. floating button were removed in the Nov 2026 clean-up (Interview Prep stays in the menu and homepage).
 
   // ---------- 5. page cards ----------
   const QOTD = [
@@ -252,10 +229,8 @@
         `<p>${QCOUNT} real VLSI questions on ${TOPICS}. Free AI scoring with model answers.</p></div>` +
         `<a class="btn" href="${botLink("careers")}">Start a mock interview →</a>`);
       card.querySelector("a").addEventListener("click", () => track("careers"));
-      const h1 = main.querySelector("h1");
-      const anchor = h1 ? (h1.closest("section,div,header") || h1) : null;
-      if (anchor && anchor.parentNode === main) main.insertBefore(card, anchor.nextSibling);
-      else main.insertBefore(card, main.firstChild);
+      const after = main.querySelector("#experienced") || main.querySelector("#freshers");
+      if (after && after.parentNode) after.parentNode.insertBefore(card, after.nextSibling); else main.appendChild(card);
     }
   }
   const story = document.querySelector("article.story");
@@ -268,7 +243,8 @@
     story.appendChild(card);
   }
 
-  // ---------- 3. grand-opening pop-up ----------
+  // ---------- 3. grand-opening pop-up (switched off in the Nov 2026 clean-up; delete the next line to bring it back) ----------
+  return;
   const pop = store.get("swp_pop", { n: 0, last: 0, clicked: false });
   const popAllowed = !usedBot && !pop.clicked && pop.n < 2 && Date.now() - pop.last > 7 * DAY
     && !/[?&]nopopup/.test(location.search);

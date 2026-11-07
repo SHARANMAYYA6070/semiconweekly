@@ -3,10 +3,9 @@
 // CSS / JS / images / fonts: use the saved copy at once and refresh it in the background.
 // Google Sheet data (jobs, news, events): internet first, saved copy when offline.
 // VERSION is updated automatically on every release by private/news_tools/site_seo.py.
-const VERSION = "20261107e";
+const VERSION = "cfba49378a";
 const PAGES = "sw-pages-" + VERSION, ASSETS = "sw-assets-" + VERSION, DATA = "sw-data-v1";
-const CORE = ["./", "offline.html", "saved-jobs.html", "style.css?v=" + VERSION, "theme.css?v=" + VERSION,
-  "config.js?v=" + VERSION, "sw.js?v=" + VERSION, "site-ui.js?v=" + VERSION, "promo.js?v=" + VERSION, "search.js?v=" + VERSION,
+const CORE = ["./", "offline.html", "saved-jobs.html", "style.css?v=b72186fe", "theme.css?v=dd3b004b", "config.js?v=8d2c0d37", "search.js?v=2364e7ae", "sw.js?v=078e9aa7", "promo.js?v=adb1dc50", "site-ui.js?v=d350b211",
   "manifest.webmanifest", "app-192.png", "favicon-32.png"];
 
 self.addEventListener("install", e => {
