@@ -71,7 +71,7 @@ html[data-theme="dark"] .crs-row.live .crs-s{background:rgba(167,139,250,.18);co
 .ls-gate form{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%;max-width:440px}
 .ls-gate input{flex:1;min-width:200px;font:inherit;font-size:16px;padding:11px 12px;border-radius:10px;border:0}
 .ls-gate button{border:0;border-radius:10px;background:#facc15;color:#2a0f5c;font:700 15px var(--sans);padding:11px 16px;cursor:pointer}
-.ls-gate small{display:block;margin-top:10px;color:#ddd6fe;font-size:12.5px}.ls-gate .msg{min-height:20px;margin-top:8px;font-size:13.5px;color:#fde68a}
+.ls-gbtn{min-height:44px;display:flex;justify-content:center}.ls-gate small{display:block;margin-top:10px;color:#ddd6fe;font-size:12.5px}.ls-gate .msg{min-height:20px;margin-top:8px;font-size:13.5px;color:#fde68a}
 .crs .go-btn{display:inline-block;padding:12px 20px;border-radius:10px;font:700 15.5px var(--sans);text-decoration:none}
 .ls-video.gated{aspect-ratio:auto;min-height:260px}.ls-video.gated .ls-gate{position:relative;inset:auto;height:auto;min-height:260px;padding:26px 18px}
 .ls-soon{display:flex;align-items:center;justify-content:center;text-align:center;color:#e2d9fb;font:600 16px var(--sans);padding:20px}
@@ -183,20 +183,22 @@ menuBtn.addEventListener('click', () => {
 <script src="sw.js?v=078e9aa7"></script>
 <script src="promo.js?v=adb1dc50" defer></script>
 <script src="site-ui.js?v=d350b211" defer></script>
+<script src="sw-auth.js?v=88c44c95"></script>
 <script>
 (function(){
   var KEY="sw-course-digital-electronics", FREE=1, N=1;
   function st(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}}}
   function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
   var S=st(); S.done=S.done||[];
-  function unlocked(){return !!(S.unlocked||st().unlocked)}
+  function signedIn(){try{return !!(window.SWAuth&&SWAuth.user())}catch(e){return false}}
+  function unlocked(){return !!(S.unlocked||st().unlocked||signedIn())}
   // course page: progress + row states
   var rows=document.querySelectorAll(".crs-row[data-n]"), total=+((document.querySelector(".crs-prog")||{}).dataset||{}).total||0;
   function paintCourse(){
     var d=0; rows.forEach(function(r){var k=+r.dataset.n,live=r.classList.contains("live")||r.classList.contains("done")||r.classList.contains("lock");
       if(!r.dataset.href)return; var done=S.done.indexOf(k)>=0, lock=k>FREE&&!unlocked();
       r.classList.toggle("done",done);r.classList.toggle("lock",!done&&lock);r.classList.toggle("live",!done&&!lock);
-      var s=r.querySelector(".crs-s"); if(s) s.textContent=done?"✓ Done":lock?"🔒 Free with email":"▶ Watch";
+      var s=r.querySelector(".crs-s"); if(s) s.textContent=done?"✓ Done":lock?"🔒 Free with Google sign-in":"▶ Watch";
       if(done)d++;});
     var bar=document.querySelector(".crs-prog .bar i"), lab=document.querySelector(".crs-prog small");
     if(bar){bar.style.width=(total?Math.round(100*d/total):0)+"%";} if(lab){lab.textContent=d+" of "+total+" lessons done"+(d?" · keep going!":"");}
@@ -204,6 +206,7 @@ menuBtn.addEventListener('click', () => {
       if(nx){go.href=nx.dataset.href;go.textContent=(d?"Continue: Lesson ":"Start Lesson ")+nx.dataset.n+" →";}}
   }
   if(rows.length)paintCourse();
+  if(window.SWAuth)SWAuth.onChange(function(u){if(u){S=st();S.done=S.done||[];S.unlocked=true;save(S);if(rows.length)paintCourse();}});
   // lesson page
   if(N){
     var v=document.querySelector(".ls-video"), id=v&&v.dataset.yt;
@@ -211,11 +214,12 @@ menuBtn.addEventListener('click', () => {
       try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:"lesson-play-"+KEY+"-"+N,title:"Lesson play",event:true})}catch(e){}}
     function poster(){v.classList.remove("gated");v.innerHTML='<img src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="" loading="eager"><button type="button" class="ls-play" aria-label="Play the lesson video"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><em>▶ Play lesson · '+(v.dataset.dur||"")+'</em></button>';
       v.querySelector(".ls-play").addEventListener("click",play);}
-    function gate(){v.classList.add("gated");v.innerHTML='<div class="ls-gate"><b>🔓 Unlock all lessons free</b><p>Lesson 1 is open to everyone. Enter your email once to watch every lesson of this course, free. You will also get our Sunday Brief: chip news, jobs and new lessons, once a week.</p><form novalidate><input type="email" required placeholder="Your email" aria-label="Your email" autocomplete="email"><button type="submit">Unlock lessons</button></form><div class="msg" role="status"></div><small>One email a week · unsubscribe any time · already subscribed? Enter the same email.</small></div>';
-      var f=v.querySelector("form"),m=v.querySelector(".msg");f.addEventListener("submit",async function(ev){ev.preventDefault();var inp=f.querySelector("input"),b=f.querySelector("button");
-        if(!window.SWSubscribe){m.textContent="Please try again in a moment.";return;} b.disabled=true;m.textContent="Unlocking…";
-        var r=await window.SWSubscribe(inp.value); b.disabled=false;
-        if(r.ok){S=st();S.done=S.done||[];S.unlocked=true;save(S);m.textContent="Unlocked ✓";setTimeout(poster,500);}else m.textContent=r.text;});}
+    function gate(){v.classList.add("gated");v.innerHTML='<div class="ls-gate"><b>🔓 Unlock all lessons free</b><p>Lesson 1 is open to everyone. Sign in with Google once to watch every lesson of this course, free. No password and no spam.</p><div class="ls-gbtn"></div><div class="msg" role="status"></div><small>We only use your name and email to keep your lessons unlocked. Same sign-in as Interview Prep.</small></div>';
+      var g=v.querySelector(".ls-gbtn"),m=v.querySelector(".msg");
+      if(!window.SWAuth||!SWAuth.enabled){m.textContent="Sign-in is not available right now. Please try again later.";return;}
+      SWAuth.renderButton(g,{text:"continue_with",width:260}).then(function(ok){if(!ok)m.textContent="Google sign-in could not load. Check your internet or turn off content blockers, then refresh.";});
+      SWAuth.onChange(function(u){if(u&&v.classList.contains("gated")){m.textContent="Unlocked ✓ Welcome, "+((u.name||"").split(" ")[0]||"friend")+"!";setTimeout(poster,600);}});
+      window.addEventListener("swauth-error",function(e){m.textContent=e.detail||"Sign-in failed. Please try again.";});}
     if(v){ if(!id){} else if(N>FREE&&!unlocked()) gate(); else poster(); }
     var b=document.getElementById("ls-done");
     function paintDone(){var on=S.done.indexOf(N)>=0;b.setAttribute("aria-pressed",String(on));b.textContent=on?"✓ Lesson done":"Mark lesson as done";}
