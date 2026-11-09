@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("sw-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Binary numbers – Digital Electronics Lesson 2 (Video) · Semicon Weekly</title>
+<!-- sharing, icons and search engines -->
+<meta name="description" content="Digital Electronics lesson 2: Binary numbers. How a computer counts with only 0 and 1 Free animated video lesson with notes, a memory trick and a quick question, for ECE students and VLSI freshers.">
+<link rel="canonical" href="https://semiconweekly.in/digital-electronics-lesson-02-binary-numbers">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Semicon Weekly">
+<meta property="og:title" content="Binary numbers – Digital Electronics Lesson 2 (Video)">
+<meta property="og:description" content="Digital Electronics lesson 2: Binary numbers. How a computer counts with only 0 and 1 Free animated video lesson with notes, a memory trick and a quick question, for ECE students and VLSI freshers.">
+<meta property="og:url" content="https://semiconweekly.in/digital-electronics-lesson-02-binary-numbers">
+<meta property="og:image" content="https://semiconweekly.in/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#2e1065">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Semicon Weekly">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css?v=b72186fe">
+<link rel="stylesheet" href="theme.css?v=dd3b004b">
+<script src="search.js?v=2364e7ae" defer></script>
+<style>
+:root { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoObject", "name": "Binary numbers | Digital Electronics Lesson 2", "description": "Digital Electronics lesson 2: Binary numbers. How a computer counts with only 0 and 1 Free animated video lesson with notes, a memory trick and a quick question, for ECE students and VLSI freshers.", "thumbnailUrl": ["https://i.ytimg.com/vi/3M_ph27T-BY/hqdefault.jpg"], "uploadDate": "2026-11-09", "duration": "PT2M51S", "embedUrl": "https://www.youtube-nocookie.com/embed/3M_ph27T-BY", "inLanguage": "en-IN", "isAccessibleForFree": true, "publisher": {"@type": "Organization", "name": "Semicon Weekly", "url": "https://semiconweekly.in/", "logo": {"@type": "ImageObject", "url": "https://semiconweekly.in/logo-512.png"}}}</script>
+<style>
+.crs-hero{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;align-items:center;margin-top:14px}
+.crs-hero .cover{border-radius:18px;background:linear-gradient(135deg,#2e1065,#6d28d9);color:#fff;padding:22px;min-height:190px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 18px 40px -26px rgba(76,29,149,.9)}
+.crs-hero .cover b{font:800 30px/1.1 var(--serif);color:#facc15}.crs-hero .cover span{font-size:14px;color:#e2d9fb}
+.crs-stats{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.crs-stats span{border:1px solid var(--rule);border-radius:999px;padding:6px 12px;font:600 13.5px var(--sans);background:var(--paper)}
+.crs-prog{margin:14px 0 4px}.crs-prog .bar{height:10px;border-radius:99px;background:var(--paper-2);border:1px solid var(--rule);overflow:hidden}
+.crs-prog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7c3aed,#facc15);transition:width .4s}
+.crs-prog small{display:block;margin-top:6px;font-size:13.5px;color:var(--ink-3)}
+.crs-mod{margin-top:26px}.crs-mod h2{font-size:21px;margin:0 0 10px}.crs-mod h2 small{font:500 13px var(--sans);color:var(--ink-3);margin-left:8px}
+.crs-list{list-style:none;margin:0;padding:0;border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:var(--paper)}
+.crs-list li{border-top:1px solid var(--rule)}.crs-list li:first-child{border-top:0}
+.crs-row{display:flex;align-items:center;gap:12px;padding:12px 14px;color:var(--ink);text-decoration:none}
+a.crs-row:hover{background:var(--paper-2)}
+.crs-n{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 13.5px var(--sans);background:var(--paper-2);color:var(--ink-3);border:1px solid var(--rule)}
+.crs-row.live .crs-n{background:#7c3aed;color:#fff;border-color:#7c3aed}.crs-row.done .crs-n{background:#16a34a;border-color:#16a34a;color:#fff}
+.crs-t{flex:1;min-width:0}.crs-t b{display:block;font:600 15.5px/1.35 var(--sans)}.crs-t small{display:block;font-size:13px;color:var(--ink-3);margin-top:2px}
+.crs-s{flex:none;font:600 12.5px var(--sans);padding:5px 10px;border-radius:999px;background:var(--paper-2);color:var(--ink-3);white-space:nowrap}
+.crs-row.live .crs-s{background:#ede9fe;color:#5b21b6}.crs-row.done .crs-s{background:#dcfce7;color:#166534}.crs-row.lock .crs-s{background:#fef3c7;color:#92400e}
+html[data-theme="dark"] .crs-row.live .crs-s{background:rgba(167,139,250,.18);color:#ddd6fe}html[data-theme="dark"] .crs-row.done .crs-s{background:rgba(34,197,94,.16);color:#86efac}html[data-theme="dark"] .crs-row.lock .crs-s{background:rgba(250,204,21,.14);color:#fde68a}
+.crs-row.soon{opacity:.62}
+.ls-video{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#100a1d;margin:16px 0 10px;box-shadow:0 18px 40px -24px rgba(30,10,70,.8)}
+.ls-video iframe,.ls-video img,.ls-video .ls-play,.ls-video .ls-gate{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ls-video img{object-fit:cover;opacity:.9}
+.ls-play{display:flex;align-items:center;justify-content:center;background:linear-gradient(0deg,rgba(16,10,29,.55),rgba(16,10,29,.1));cursor:pointer;border:0;padding:0}
+.ls-play span{width:84px;height:84px;border-radius:50%;background:#facc15;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .15s}
+.ls-play:hover span{transform:scale(1.08)}.ls-play svg{width:34px;height:34px;margin-left:5px;fill:#2a0f5c}
+.ls-play em{position:absolute;left:16px;bottom:14px;font:600 14px var(--sans);color:#fff;font-style:normal;background:rgba(0,0,0,.45);padding:5px 10px;border-radius:8px}
+.ls-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;background:linear-gradient(135deg,#2e1065,#5b21b6);color:#fff}
+.ls-gate b{font:700 21px/1.3 var(--serif);color:#fff}.ls-gate p{color:#e2d9fb;margin:6px 0 14px;max-width:440px;font-size:14.5px}
+.ls-gate form{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%;max-width:440px}
+.ls-gate input{flex:1;min-width:200px;font:inherit;font-size:16px;padding:11px 12px;border-radius:10px;border:0}
+.ls-gate button{border:0;border-radius:10px;background:#facc15;color:#2a0f5c;font:700 15px var(--sans);padding:11px 16px;cursor:pointer}
+.ls-gate small{display:block;margin-top:10px;color:#ddd6fe;font-size:12.5px}.ls-gate .msg{min-height:20px;margin-top:8px;font-size:13.5px;color:#fde68a}
+.crs .go-btn{display:inline-block;padding:12px 20px;border-radius:10px;font:700 15.5px var(--sans);text-decoration:none}
+.ls-video.gated{aspect-ratio:auto;min-height:260px}.ls-video.gated .ls-gate{position:relative;inset:auto;height:auto;min-height:260px;padding:26px 18px}
+.ls-soon{display:flex;align-items:center;justify-content:center;text-align:center;color:#e2d9fb;font:600 16px var(--sans);padding:20px}
+.ls-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 4px}
+.ls-done{border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:10px;padding:10px 14px;font:600 15px var(--sans);cursor:pointer}
+.ls-done[aria-pressed="true"]{background:#dcfce7;border-color:#16a34a;color:#166534}
+html[data-theme="dark"] .ls-done[aria-pressed="true"]{background:rgba(34,197,94,.16);color:#86efac}
+.ls-nav{display:flex;gap:8px}.ls-nav a{border:1px solid var(--rule);border-radius:10px;padding:9px 12px;font:600 14px var(--sans);color:var(--ink);text-decoration:none;background:var(--paper)}
+.ls-nav a.next{background:#7c3aed;border-color:#7c3aed;color:#fff}
+.ls-notes h2{margin-top:26px}.ls-key li{margin:6px 0}
+.ls-box{border-radius:14px;padding:14px 16px;margin:14px 0;border:1px solid var(--rule);background:var(--paper)}
+.ls-box b.h{display:block;font:700 13px var(--sans);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.ls-box.mis{border-color:rgba(220,38,38,.35);background:rgba(220,38,38,.05)}.ls-box.mis b.h{color:#b91c1c}
+.ls-box.trick{border-color:rgba(250,204,21,.6);background:rgba(250,204,21,.1)}.ls-box.trick b.h{color:#92400e}
+.ls-box.q{border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.06)}.ls-box.q b.h{color:#6d28d9}
+html[data-theme="dark"] .ls-box.mis b.h{color:#fca5a5}html[data-theme="dark"] .ls-box.trick b.h{color:#fde68a}html[data-theme="dark"] .ls-box.q b.h{color:#c4b5fd}
+.ls-text details{border:1px solid var(--rule);border-radius:12px;padding:10px 14px;background:var(--paper)}
+.ls-text summary{font-weight:700;cursor:pointer}.ls-text p{margin:8px 0}.ls-text p i{font-style:normal;font:700 11.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-right:6px}
+@media (max-width:760px){.crs-hero{grid-template-columns:1fr}.crs-hero .cover{min-height:140px}.ls-play span{width:66px;height:66px}.ls-video{border-radius:12px;margin-left:-4px;margin-right:-4px}}
+</style>
+<script type="application/ld+json" id="sw-crumbs-ld">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://semiconweekly.in/"}, {"@type": "ListItem", "position": 2, "name": "Digital Electronics course", "item": "https://semiconweekly.in/learn-digital-electronics"}, {"@type": "ListItem", "position": 3, "name": "Lesson 2", "item": "https://semiconweekly.in/digital-electronics-lesson-02-binary-numbers"}]}</script>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar">
+    <div class="wrap">
+      <nav class="cats" aria-label="On this page">
+        <a href="./">Home</a>
+        <a href="careers.html">Careers</a>
+        <a href="events.html">Events</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+<article class="story ls">
+  <div class="crumbs"><a href="./">Home</a> › <a href="learn-digital-electronics.html">Digital Electronics course</a> › Lesson 2</div>
+  <span class="kicker k-design" style="display:block;margin-top:14px">Digital Electronics · Lesson 2 of 33 · Numbers a computer understands</span>
+  <h1>Binary numbers</h1>
+  <p class="dek">How a computer counts with only 0 and 1</p>
+  <div class="ls-video" data-yt="3M_ph27T-BY" data-dur="2:51" data-title="Binary numbers"><img src="https://i.ytimg.com/vi/3M_ph27T-BY/hqdefault.jpg" alt="" loading="eager"><div class="ls-soon">🔒 Free with email: loading…</div></div>
+  <div class="ls-bar"><button type="button" class="ls-done" id="ls-done" aria-pressed="false">Mark lesson as done</button><div class="ls-nav"><a href="digital-electronics-lesson-01-analog-vs-digital.html">← Lesson 1</a><a href="learn-digital-electronics.html">All lessons</a></div></div>
+  <section class="ls-notes">
+    <h2>Key ideas</h2>
+    <ul class="ls-key"><li>Decimal = base 10</li><li>Digits 0 to 9</li><li>Each place is worth ×10</li><li>Binary = base 2</li><li>Only two digits: 0 and 1</li><li>Each place is worth ×2: 1, 2, 4, 8, 16</li><li>n bits → 2ⁿ values</li><li>3 bits → 8 values</li><li>8 bits = 1 byte → 256 values (0 to 255)</li></ul>
+    <h2>Worked example</h2><ul class="ls-key"><li>Multiply each bit by its place value</li><li>Add them up</li><li>10110₂ = 22</li><li>Or picture light bulbs. Lit bulbs count, and dark bulbs don't. Sixteen, plus four, plus two. Twenty two.</li><li>Now the other way. Let's convert thirteen to binary. Keep dividing by two, and write down each remainder. Thirteen divided by two is six, remainder one. Six gives three, remainder zero. Three gives one, remainder one. One gives zero, remainder one. Now read the remainders from bottom to top. One one zero one.</li><li>Let's check it. Eight, plus four, plus one, is thirteen. Correct.</li></ul>
+    <div class="ls-box mis"><b class="h">✗ Common mistake</b>The most common exam mistake is reading the remainders from top to bottom. That gives one zero one one, which is eleven, not thirteen. Always read from the bottom up.</div><div class="ls-box trick"><b class="h">💡 Memory trick</b>Here's a memory trick. Place values just keep doubling. One, two, four, eight, sixteen. And for remainders, think of climbing a ladder. You always read them going up.</div><div class="ls-box"><b class="h">Recap</b>Binary is base two, with only zero and one. Place values double at each step. To go from binary to decimal, add the place values of the ones. To go from decimal to binary, divide by two, and read the remainders upward.</div><div class="ls-box q"><b class="h">❓ Quick question</b>Quick question. What is one one one one one in decimal? The answer is in the next lesson.<br><small>The answer is in Lesson 3, coming soon.</small></div>
+  </section>
+  <section class="ls-text"><h2>Full lesson text</h2><details><summary>Read everything said in the video</summary><p><i>Where you have seen it</i>First, last lesson's question. Three binary digits can make eight different patterns, from zero zero zero, all the way to one one one.</p><p><i>Where you have seen it</i>Here's a fun fact. On your fingers, you count to ten. But if each finger is just up or down, a one or a zero, ten fingers can count all the way to one thousand twenty three.</p><p><i>The idea</i>To understand binary, look at normal numbers first. In three hundred five, each place is worth ten times the one on its right. Ones, tens, hundreds. Three hundreds, zero tens, and five ones make three hundred five.</p><p><i>The idea</i>Binary works the same way, but in base two. There are only two digits, zero and one. And each place is worth double the one on its right. One, two, four, eight, sixteen.</p><p><i>Worked example</i>Let's convert one zero one one zero to decimal. Multiply each bit by its place value. Then add them up. Sixteen plus four plus two, is twenty two. The same number our wire sent in lesson one.</p><p><i>Worked example</i>Or picture light bulbs. Lit bulbs count, and dark bulbs don't. Sixteen, plus four, plus two. Twenty two.</p><p><i>Worked example</i>Now the other way. Let's convert thirteen to binary. Keep dividing by two, and write down each remainder. Thirteen divided by two is six, remainder one. Six gives three, remainder zero. Three gives one, remainder one. One gives zero, remainder one. Now read the remainders from bottom to top. One one zero one.</p><p><i>Worked example</i>Let's check it. Eight, plus four, plus one, is thirteen. Correct.</p><p><i>The idea</i>In general, n bits give two to the power n values. Eight bits, called a byte, give two hundred fifty six values, from zero to two hundred fifty five.</p><p><i>Common mistake</i>The most common exam mistake is reading the remainders from top to bottom. That gives one zero one one, which is eleven, not thirteen. Always read from the bottom up.</p><p><i>Memory trick</i>Here's a memory trick. Place values just keep doubling. One, two, four, eight, sixteen. And for remainders, think of climbing a ladder. You always read them going up.</p><p><i>Recap</i>Let's recap. Binary is base two, with only zero and one. Place values double at each step. To go from binary to decimal, add the place values of the ones. To go from decimal to binary, divide by two, and read the remainders upward.</p><p><i>Recap</i>Quick question. What is one one one one one in decimal? The answer is in the next lesson.</p></details></section>
+  <div class="cta-band" style="margin-top:26px"><p><b>Ready to test yourself?</b> Practise real digital electronics interview questions, with model answers.</p><a href="digital-electronics-interview-questions.html?ref=lesson-2">Practice questions →</a></div>
+  <p style="margin-top:14px"><a class="inl" href="learn-digital-electronics.html">← All 33 lessons of the Digital Electronics course</a></p>
+</article>
+</main>
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="editorial-policy.html">Editorial policy</a><a href="corrections.html">Corrections</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
+    </div>
+  </div>
+</footer>
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+</script>
+<script src="config.js?v=8d2c0d37"></script>
+<script src="sw.js?v=078e9aa7"></script>
+<script src="promo.js?v=adb1dc50" defer></script>
+<script src="site-ui.js?v=d350b211" defer></script>
+<script>
+(function(){
+  var KEY="sw-course-digital-electronics", FREE=1, N=2;
+  function st(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}}}
+  function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+  var S=st(); S.done=S.done||[];
+  function unlocked(){return !!(S.unlocked||st().unlocked)}
+  // course page: progress + row states
+  var rows=document.querySelectorAll(".crs-row[data-n]"), total=+((document.querySelector(".crs-prog")||{}).dataset||{}).total||0;
+  function paintCourse(){
+    var d=0; rows.forEach(function(r){var k=+r.dataset.n,live=r.classList.contains("live")||r.classList.contains("done")||r.classList.contains("lock");
+      if(!r.dataset.href)return; var done=S.done.indexOf(k)>=0, lock=k>FREE&&!unlocked();
+      r.classList.toggle("done",done);r.classList.toggle("lock",!done&&lock);r.classList.toggle("live",!done&&!lock);
+      var s=r.querySelector(".crs-s"); if(s) s.textContent=done?"✓ Done":lock?"🔒 Free with email":"▶ Watch";
+      if(done)d++;});
+    var bar=document.querySelector(".crs-prog .bar i"), lab=document.querySelector(".crs-prog small");
+    if(bar){bar.style.width=(total?Math.round(100*d/total):0)+"%";} if(lab){lab.textContent=d+" of "+total+" lessons done"+(d?" · keep going!":"");}
+    var go=document.getElementById("crs-continue"); if(go){var nx=[].slice.call(rows).find(function(r){return r.dataset.href&&S.done.indexOf(+r.dataset.n)<0});
+      if(nx){go.href=nx.dataset.href;go.textContent=(d?"Continue: Lesson ":"Start Lesson ")+nx.dataset.n+" →";}}
+  }
+  if(rows.length)paintCourse();
+  // lesson page
+  if(N){
+    var v=document.querySelector(".ls-video"), id=v&&v.dataset.yt;
+    function play(){v.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1&playsinline=1" title="'+(v.dataset.title||"Lesson video")+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+      try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:"lesson-play-"+KEY+"-"+N,title:"Lesson play",event:true})}catch(e){}}
+    function poster(){v.classList.remove("gated");v.innerHTML='<img src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="" loading="eager"><button type="button" class="ls-play" aria-label="Play the lesson video"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><em>▶ Play lesson · '+(v.dataset.dur||"")+'</em></button>';
+      v.querySelector(".ls-play").addEventListener("click",play);}
+    function gate(){v.classList.add("gated");v.innerHTML='<div class="ls-gate"><b>🔓 Unlock all lessons free</b><p>Lesson 1 is open to everyone. Enter your email once to watch every lesson of this course, free. You will also get our Sunday Brief: chip news, jobs and new lessons, once a week.</p><form novalidate><input type="email" required placeholder="Your email" aria-label="Your email" autocomplete="email"><button type="submit">Unlock lessons</button></form><div class="msg" role="status"></div><small>One email a week · unsubscribe any time · already subscribed? Enter the same email.</small></div>';
+      var f=v.querySelector("form"),m=v.querySelector(".msg");f.addEventListener("submit",async function(ev){ev.preventDefault();var inp=f.querySelector("input"),b=f.querySelector("button");
+        if(!window.SWSubscribe){m.textContent="Please try again in a moment.";return;} b.disabled=true;m.textContent="Unlocking…";
+        var r=await window.SWSubscribe(inp.value); b.disabled=false;
+        if(r.ok){S=st();S.done=S.done||[];S.unlocked=true;save(S);m.textContent="Unlocked ✓";setTimeout(poster,500);}else m.textContent=r.text;});}
+    if(v){ if(!id){} else if(N>FREE&&!unlocked()) gate(); else poster(); }
+    var b=document.getElementById("ls-done");
+    function paintDone(){var on=S.done.indexOf(N)>=0;b.setAttribute("aria-pressed",String(on));b.textContent=on?"✓ Lesson done":"Mark lesson as done";}
+    if(b){paintDone();b.addEventListener("click",function(){S=st();S.done=S.done||[];var i=S.done.indexOf(N);if(i>=0)S.done.splice(i,1);else S.done.push(N);save(S);paintDone();});}
+  }
+})();
+</script>
+</body>
+</html>
