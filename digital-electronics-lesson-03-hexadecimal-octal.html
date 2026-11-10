@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("sw-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hexadecimal &amp; Octal – Digital Electronics Lesson 3 (Video) · Semicon Weekly</title>
+<!-- sharing, icons and search engines -->
+<meta name="description" content="Digital Electronics lesson 3: Hexadecimal &amp; Octal. Binary&#x27;s shorthand Free animated video lesson with notes, a memory trick and a quick question, for ECE students and VLSI freshers.">
+<link rel="canonical" href="https://semiconweekly.in/digital-electronics-lesson-03-hexadecimal-octal">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Semicon Weekly">
+<meta property="og:title" content="Hexadecimal &amp; Octal – Digital Electronics Lesson 3 (Video)">
+<meta property="og:description" content="Digital Electronics lesson 3: Hexadecimal &amp; Octal. Binary&#x27;s shorthand Free animated video lesson with notes, a memory trick and a quick question, for ECE students and VLSI freshers.">
+<meta property="og:url" content="https://semiconweekly.in/digital-electronics-lesson-03-hexadecimal-octal">
+<meta property="og:image" content="https://semiconweekly.in/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#2e1065">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Semicon Weekly">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css?v=b72186fe">
+<link rel="stylesheet" href="theme.css?v=dd3b004b">
+<script src="search.js?v=2364e7ae" defer></script>
+<style>
+:root { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoObject", "name": "Hexadecimal & Octal | Digital Electronics Lesson 3", "description": "Digital Electronics lesson 3: Hexadecimal & Octal. Binary's shorthand Free animated video lesson with notes, a memory trick and a quick question, for ECE students and VLSI freshers.", "thumbnailUrl": ["https://i.ytimg.com/vi/8XqmsxEcl_Q/hqdefault.jpg"], "uploadDate": "2026-11-10", "duration": "PT3M10S", "embedUrl": "https://www.youtube-nocookie.com/embed/8XqmsxEcl_Q", "inLanguage": "en-IN", "isAccessibleForFree": true, "publisher": {"@type": "Organization", "name": "Semicon Weekly", "url": "https://semiconweekly.in/", "logo": {"@type": "ImageObject", "url": "https://semiconweekly.in/logo-512.png"}}}</script>
+<style>
+.crs-hero{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;align-items:center;margin-top:14px}
+.crs-hero .cover{border-radius:18px;background:linear-gradient(135deg,#2e1065,#6d28d9);color:#fff;padding:22px;min-height:190px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 18px 40px -26px rgba(76,29,149,.9)}
+.crs-hero .cover b{font:800 30px/1.1 var(--serif);color:#facc15}.crs-hero .cover span{font-size:14px;color:#e2d9fb}
+.crs-stats{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.crs-stats span{border:1px solid var(--rule);border-radius:999px;padding:6px 12px;font:600 13.5px var(--sans);background:var(--paper)}
+.crs-prog{margin:14px 0 4px}.crs-prog .bar{height:10px;border-radius:99px;background:var(--paper-2);border:1px solid var(--rule);overflow:hidden}
+.crs-prog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7c3aed,#facc15);transition:width .4s}
+.crs-prog small{display:block;margin-top:6px;font-size:13.5px;color:var(--ink-3)}
+.crs-mod{margin-top:26px}.crs-mod h2{font-size:21px;margin:0 0 10px}.crs-mod h2 small{font:500 13px var(--sans);color:var(--ink-3);margin-left:8px}
+.crs-list{list-style:none;margin:0;padding:0;border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:var(--paper)}
+.crs-list li{border-top:1px solid var(--rule)}.crs-list li:first-child{border-top:0}
+.crs-row{display:flex;align-items:center;gap:12px;padding:12px 14px;color:var(--ink);text-decoration:none}
+a.crs-row:hover{background:var(--paper-2)}
+.crs-n{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 13.5px var(--sans);background:var(--paper-2);color:var(--ink-3);border:1px solid var(--rule)}
+.crs-row.live .crs-n{background:#7c3aed;color:#fff;border-color:#7c3aed}.crs-row.done .crs-n{background:#16a34a;border-color:#16a34a;color:#fff}
+.crs-t{flex:1;min-width:0}.crs-t b{display:block;font:600 15.5px/1.35 var(--sans)}.crs-t small{display:block;font-size:13px;color:var(--ink-3);margin-top:2px}
+.crs-s{flex:none;font:600 12.5px var(--sans);padding:5px 10px;border-radius:999px;background:var(--paper-2);color:var(--ink-3);white-space:nowrap}
+.crs-row.live .crs-s{background:#ede9fe;color:#5b21b6}.crs-row.done .crs-s{background:#dcfce7;color:#166534}.crs-row.lock .crs-s{background:#fef3c7;color:#92400e}
+html[data-theme="dark"] .crs-row.live .crs-s{background:rgba(167,139,250,.18);color:#ddd6fe}html[data-theme="dark"] .crs-row.done .crs-s{background:rgba(34,197,94,.16);color:#86efac}html[data-theme="dark"] .crs-row.lock .crs-s{background:rgba(250,204,21,.14);color:#fde68a}
+.crs-row.soon{opacity:.62}
+.ls-video{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#100a1d;margin:16px 0 10px;box-shadow:0 18px 40px -24px rgba(30,10,70,.8)}
+.ls-video iframe,.ls-video img,.ls-video .ls-play,.ls-video .ls-gate{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ls-video img{object-fit:cover;opacity:.9}
+.ls-play{display:flex;align-items:center;justify-content:center;background:linear-gradient(0deg,rgba(16,10,29,.55),rgba(16,10,29,.1));cursor:pointer;border:0;padding:0}
+.ls-play span{width:84px;height:84px;border-radius:50%;background:#facc15;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .15s}
+.ls-play:hover span{transform:scale(1.08)}.ls-play svg{width:34px;height:34px;margin-left:5px;fill:#2a0f5c}
+.ls-play em{position:absolute;left:16px;bottom:14px;font:600 14px var(--sans);color:#fff;font-style:normal;background:rgba(0,0,0,.45);padding:5px 10px;border-radius:8px}
+.ls-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;background:linear-gradient(135deg,#2e1065,#5b21b6);color:#fff}
+.ls-gate b{font:700 21px/1.3 var(--serif);color:#fff}.ls-gate p{color:#e2d9fb;margin:6px 0 14px;max-width:440px;font-size:14.5px}
+.ls-gate form{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%;max-width:440px}
+.ls-gate input{flex:1;min-width:200px;font:inherit;font-size:16px;padding:11px 12px;border-radius:10px;border:0}
+.ls-gate button{border:0;border-radius:10px;background:#facc15;color:#2a0f5c;font:700 15px var(--sans);padding:11px 16px;cursor:pointer}
+.ls-gbtn{min-height:44px;display:flex;justify-content:center}.ls-gate small{display:block;margin-top:10px;color:#ddd6fe;font-size:12.5px}.ls-gate .msg{min-height:20px;margin-top:8px;font-size:13.5px;color:#fde68a}
+.crs .go-btn{display:inline-block;padding:12px 20px;border-radius:10px;font:700 15.5px var(--sans);text-decoration:none}
+.ls-video.gated{aspect-ratio:auto;min-height:260px}.ls-video.gated .ls-gate{position:relative;inset:auto;height:auto;min-height:260px;padding:26px 18px}
+.ls-soon{display:flex;align-items:center;justify-content:center;text-align:center;color:#e2d9fb;font:600 16px var(--sans);padding:20px}
+.ls-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 4px}
+.ls-done{border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:10px;padding:10px 14px;font:600 15px var(--sans);cursor:pointer}
+.ls-done[aria-pressed="true"]{background:#dcfce7;border-color:#16a34a;color:#166534}
+html[data-theme="dark"] .ls-done[aria-pressed="true"]{background:rgba(34,197,94,.16);color:#86efac}
+.ls-nav{display:flex;gap:8px}.ls-nav a{border:1px solid var(--rule);border-radius:10px;padding:9px 12px;font:600 14px var(--sans);color:var(--ink);text-decoration:none;background:var(--paper)}
+.ls-nav a.next{background:#7c3aed;border-color:#7c3aed;color:#fff}
+.ls-notes h2{margin-top:26px}.ls-key li{margin:6px 0}
+.ls-box{border-radius:14px;padding:14px 16px;margin:14px 0;border:1px solid var(--rule);background:var(--paper)}
+.ls-box b.h{display:block;font:700 13px var(--sans);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.ls-box.mis{border-color:rgba(220,38,38,.35);background:rgba(220,38,38,.05)}.ls-box.mis b.h{color:#b91c1c}
+.ls-box.trick{border-color:rgba(250,204,21,.6);background:rgba(250,204,21,.1)}.ls-box.trick b.h{color:#92400e}
+.ls-box.q{border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.06)}.ls-box.q b.h{color:#6d28d9}
+html[data-theme="dark"] .ls-box.mis b.h{color:#fca5a5}html[data-theme="dark"] .ls-box.trick b.h{color:#fde68a}html[data-theme="dark"] .ls-box.q b.h{color:#c4b5fd}
+.ls-text details{border:1px solid var(--rule);border-radius:12px;padding:10px 14px;background:var(--paper)}
+.ls-text summary{font-weight:700;cursor:pointer}.ls-text p{margin:8px 0}.ls-text p i{font-style:normal;font:700 11.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-right:6px}
+@media (max-width:760px){.crs-hero{grid-template-columns:1fr}.crs-hero .cover{min-height:140px}.ls-play span{width:66px;height:66px}.ls-video{border-radius:12px;margin-left:-4px;margin-right:-4px}}
+</style>
+<script type="application/ld+json" id="sw-crumbs-ld">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://semiconweekly.in/"}, {"@type": "ListItem", "position": 2, "name": "Digital Electronics course", "item": "https://semiconweekly.in/learn-digital-electronics"}, {"@type": "ListItem", "position": 3, "name": "Lesson 3", "item": "https://semiconweekly.in/digital-electronics-lesson-03-hexadecimal-octal"}]}</script>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Semicon Weekly home">
+        <span class="mark">S<span>W</span></span>
+        <span class="word">Semicon Weekly</span>
+      </a>
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <a href="./">Home</a><span class="sep">|</span>
+        <a href="./#top-news">News</a><span class="sep">|</span>
+        <a href="./#in-short">In Short</a><span class="sep">|</span>
+        <a href="careers.html">Careers</a><span class="sep">|</span>
+        <a href="events.html">Events</a><span class="sep">|</span>
+        <a href="learn.html">Learn</a><span class="sep">|</span>
+        <a href="uses.html">Uses</a><span class="sep">|</span>
+        <a href="interview.html">Interview Prep</a>
+      </nav>
+      <div class="brand-tools">
+        <a class="sub-btn" href="#subscribe">Subscribe</a>
+        <button class="icon-btn" data-search aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="catbar">
+    <div class="wrap">
+      <nav class="cats" aria-label="On this page">
+        <a href="./">Home</a>
+        <a href="careers.html">Careers</a>
+        <a href="events.html">Events</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+<article class="story ls">
+  <div class="crumbs"><a href="./">Home</a> › <a href="learn-digital-electronics.html">Digital Electronics course</a> › Lesson 3</div>
+  <span class="kicker k-design" style="display:block;margin-top:14px">Digital Electronics · Lesson 3 of 33 · Numbers a computer understands</span>
+  <h1>Hexadecimal &amp; Octal</h1>
+  <p class="dek">Binary's shorthand</p>
+  <div class="ls-video" data-yt="8XqmsxEcl_Q" data-dur="3:10" data-title="Hexadecimal &amp; Octal"><img src="https://i.ytimg.com/vi/8XqmsxEcl_Q/hqdefault.jpg" alt="" loading="eager"><div class="ls-soon">🔒 Free with Google sign-in: loading…</div></div>
+  <div class="ls-bar"><button type="button" class="ls-done" id="ls-done" aria-pressed="false">Mark lesson as done</button><div class="ls-nav"><a href="digital-electronics-lesson-02-binary-numbers.html">← Lesson 2</a><a href="learn-digital-electronics.html">All lessons</a></div></div>
+  <section class="ls-notes">
+    <h2>Key ideas</h2>
+    <ul class="ls-key"><li>Binary gets long very fast</li><li>Easy to misread</li><li>We need a shorthand</li><li>Hexadecimal = base 16</li><li>Digits: 0–9, then A–F</li><li>A = 10 … F = 15</li><li>16 = 2⁴</li><li>1 hex digit = exactly 4 bits</li><li>1 byte = 2 hex digits</li><li>Octal = base 8, digits 0–7</li><li>1 octal digit = 3 bits</li><li>Seen in Linux permissions: 755</li></ul>
+    <h2>Worked example</h2><ul class="ls-key"><li>Hex place values: 1, 16, 256 …</li><li>F = 15</li><li>2F in hex = 47</li><li>What if the bits don't divide evenly? Take this nine bit number. Group in fours, starting from the right. The last group has only one bit, so pad it with zeros on the left. Now read each group. One, A, F.</li><li>Back to our colour code. F F is two hundred fifty five, the maximum red. Green is zero. Blue is zero. So the colour is pure red.</li></ul>
+    <div class="ls-box mis"><b class="h">✗ Common mistake</b>A common mistake is grouping the bits from the left. That gives a wrong answer whenever the length isn't a multiple of four. Always group from the right, and pad zeros on the left.</div><div class="ls-box trick"><b class="h">💡 Memory trick</b>Here's a memory trick. F means full. All four bits are one, which is fifteen. And remember, sixteen is two to the power four, so hex takes four bits. Eight is two to the power three, so octal takes three.</div><div class="ls-box"><b class="h">Recap</b>Hexadecimal is base sixteen, with digits zero to nine and A to F. One hex digit equals four bits. Octal is base eight, and one octal digit equals three bits. And always group from the right.</div><div class="ls-box q"><b class="h">❓ Quick question</b>Quick question. What is one zero one zero, one one zero zero, in hexadecimal? The answer is in the next lesson.<br><small>The answer is in Lesson 4, coming soon.</small></div>
+  </section>
+  <section class="ls-text"><h2>Full lesson text</h2><details><summary>Read everything said in the video</summary><p><i>Where you have seen it</i>First, last lesson's question. One one one one one is sixteen, plus eight, plus four, plus two, plus one. Thirty one.</p><p><i>Where you have seen it</i>Have you ever seen a colour code like this? Hash, F F, zero zero, zero zero. It means pure red. But why are there letters inside a number? Because it's written in hexadecimal.</p><p><i>The idea</i>Binary is perfect for computers, but hard for humans. Even two hundred fifty five needs eight digits. Long strings of ones and zeros are easy to misread. So engineers use a shorthand.</p><p><i>The idea</i>Hexadecimal is base sixteen, so it needs sixteen digits. Zero to nine, and then the letters A to F, which stand for ten to fifteen.</p><p><i>The idea</i>Here's why engineers love it. Sixteen is two to the power four, so one hex digit is exactly four bits. Split the bits into groups of four. One zero one one is eleven, which is B. The second group, zero one one zero, is six. So this whole byte is just B six.</p><p><i>Worked example</i>Now let's convert hex two F to decimal. The place values are powers of sixteen. Two times sixteen is thirty two. F is fifteen, times one. Thirty two plus fifteen is forty seven.</p><p><i>Worked example</i>What if the bits don't divide evenly? Take this nine bit number. Group in fours, starting from the right. The last group has only one bit, so pad it with zeros on the left. Now read each group. One, A, F.</p><p><i>Worked example</i>Back to our colour code. F F is two hundred fifty five, the maximum red. Green is zero. Blue is zero. So the colour is pure red.</p><p><i>The idea</i>Octal is the same idea in base eight. Digits zero to seven, and each octal digit is exactly three bits. One zero one is five. One one zero is six. You'll see octal in Linux file permissions, like seven five five.</p><p><i>Common mistake</i>A common mistake is grouping the bits from the left. That gives a wrong answer whenever the length isn't a multiple of four. Always group from the right, and pad zeros on the left.</p><p><i>Memory trick</i>Here's a memory trick. F means full. All four bits are one, which is fifteen. And remember, sixteen is two to the power four, so hex takes four bits. Eight is two to the power three, so octal takes three.</p><p><i>Recap</i>Let's recap. Hexadecimal is base sixteen, with digits zero to nine and A to F. One hex digit equals four bits. Octal is base eight, and one octal digit equals three bits. And always group from the right.</p><p><i>Recap</i>Quick question. What is one zero one zero, one one zero zero, in hexadecimal? The answer is in the next lesson.</p></details></section>
+  <div class="cta-band" style="margin-top:26px"><p><b>Ready to test yourself?</b> Practise real digital electronics interview questions, with model answers.</p><a href="digital-electronics-interview-questions.html?ref=lesson-3">Practice questions →</a></div>
+  <p style="margin-top:14px"><a class="inl" href="learn-digital-electronics.html">← All 33 lessons of the Digital Electronics course</a></p>
+</article>
+</main>
+<footer id="subscribe">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h2>Get the week's chip news every Sunday</h2>
+        <p>Top stories, events and jobs. Free. One email a week.</p>
+      </div>
+      <form id="signup" novalidate>
+        <input id="email" type="email" placeholder="Your email" aria-label="Your email" autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe</button>
+        <div class="form-msg" id="formMsg" role="status"></div>
+      </form>
+    </div>
+    <div class="flinks">
+      <span>© 2026 Semicon Weekly · Summaries are our own words; every story links to its source.</span>
+      <nav aria-label="Footer"><a href="./">Home</a><a href="vlsi-interview-questions.html">Interview Questions</a><a href="learn.html">Learn</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="editorial-policy.html">Editorial policy</a><a href="corrections.html">Corrections</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
+    </div>
+  </div>
+</footer>
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('mainnav');
+menuBtn.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+</script>
+<script src="config.js?v=8d2c0d37"></script>
+<script src="sw.js?v=078e9aa7"></script>
+<script src="promo.js?v=adb1dc50" defer></script>
+<script src="site-ui.js?v=d350b211" defer></script>
+<script src="sw-auth.js?v=88c44c95"></script>
+<script>
+(function(){
+  var KEY="sw-course-digital-electronics", FREE=1, N=3;
+  function st(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}}}
+  function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+  var S=st(); S.done=S.done||[];
+  function signedIn(){try{return !!(window.SWAuth&&SWAuth.user())}catch(e){return false}}
+  function unlocked(){return !!(S.unlocked||st().unlocked||signedIn())}
+  // course page: progress + row states
+  var rows=document.querySelectorAll(".crs-row[data-n]"), total=+((document.querySelector(".crs-prog")||{}).dataset||{}).total||0;
+  function paintCourse(){
+    var d=0; rows.forEach(function(r){var k=+r.dataset.n,live=r.classList.contains("live")||r.classList.contains("done")||r.classList.contains("lock");
+      if(!r.dataset.href)return; var done=S.done.indexOf(k)>=0, lock=k>FREE&&!unlocked();
+      r.classList.toggle("done",done);r.classList.toggle("lock",!done&&lock);r.classList.toggle("live",!done&&!lock);
+      var s=r.querySelector(".crs-s"); if(s) s.textContent=done?"✓ Done":lock?"🔒 Free with Google sign-in":"▶ Watch";
+      if(done)d++;});
+    var bar=document.querySelector(".crs-prog .bar i"), lab=document.querySelector(".crs-prog small");
+    if(bar){bar.style.width=(total?Math.round(100*d/total):0)+"%";} if(lab){lab.textContent=d+" of "+total+" lessons done"+(d?" · keep going!":"");}
+    var go=document.getElementById("crs-continue"); if(go){var nx=[].slice.call(rows).find(function(r){return r.dataset.href&&S.done.indexOf(+r.dataset.n)<0});
+      if(nx){go.href=nx.dataset.href;go.textContent=(d?"Continue: Lesson ":"Start Lesson ")+nx.dataset.n+" →";}}
+  }
+  if(rows.length)paintCourse();
+  if(window.SWAuth)SWAuth.onChange(function(u){if(u){S=st();S.done=S.done||[];S.unlocked=true;save(S);if(rows.length)paintCourse();}});
+  // lesson page
+  if(N){
+    var v=document.querySelector(".ls-video"), id=v&&v.dataset.yt;
+    function play(){v.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1&playsinline=1" title="'+(v.dataset.title||"Lesson video")+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+      try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:"lesson-play-"+KEY+"-"+N,title:"Lesson play",event:true})}catch(e){}}
+    function poster(){v.classList.remove("gated");v.innerHTML='<img src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="" loading="eager"><button type="button" class="ls-play" aria-label="Play the lesson video"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><em>▶ Play lesson · '+(v.dataset.dur||"")+'</em></button>';
+      v.querySelector(".ls-play").addEventListener("click",play);}
+    function gate(){v.classList.add("gated");v.innerHTML='<div class="ls-gate"><b>🔓 Unlock all lessons free</b><p>Lesson 1 is open to everyone. Sign in with Google once to watch every lesson of this course, free. No password and no spam.</p><div class="ls-gbtn"></div><div class="msg" role="status"></div><small>We only use your name and email to keep your lessons unlocked. Same sign-in as Interview Prep.</small></div>';
+      var g=v.querySelector(".ls-gbtn"),m=v.querySelector(".msg");
+      if(!window.SWAuth||!SWAuth.enabled){m.textContent="Sign-in is not available right now. Please try again later.";return;}
+      SWAuth.renderButton(g,{text:"continue_with",width:260}).then(function(ok){if(!ok)m.textContent="Google sign-in could not load. Check your internet or turn off content blockers, then refresh.";});
+      SWAuth.onChange(function(u){if(u&&v.classList.contains("gated")){m.textContent="Unlocked ✓ Welcome, "+((u.name||"").split(" ")[0]||"friend")+"!";setTimeout(poster,600);}});
+      window.addEventListener("swauth-error",function(e){m.textContent=e.detail||"Sign-in failed. Please try again.";});}
+    if(v){ if(!id){} else if(N>FREE&&!unlocked()) gate(); else poster(); }
+    var b=document.getElementById("ls-done");
+    function paintDone(){var on=S.done.indexOf(N)>=0;b.setAttribute("aria-pressed",String(on));b.textContent=on?"✓ Lesson done":"Mark lesson as done";}
+    if(b){paintDone();b.addEventListener("click",function(){S=st();S.done=S.done||[];var i=S.done.indexOf(N);if(i>=0)S.done.splice(i,1);else S.done.push(N);save(S);paintDone();});}
+  }
+})();
+</script>
+</body>
+</html>
